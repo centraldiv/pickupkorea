@@ -1,14 +1,7 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import { verifySession } from "@/lib/sessions";
 
 export const prerender = false;
-
-const cookie = await verifySession(Astro.cookies);
-
-if (!cookie) {
-  return Astro.redirect("/login");
-}
 
 const accountMenus = [
   {

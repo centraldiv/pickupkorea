@@ -60,6 +60,8 @@ model buyOrder {
 
   locked Boolean @default(false)
 
+  shipRightAway Boolean @default(false)
+
   userMemo  String?
   staffMemo String?
 
@@ -88,8 +90,11 @@ model item {
 
   productStatus String @default("Pending Review")
 
-  isUnboxing  Boolean @default(false)
-  isInclusion Boolean @default(false)
+  unboxingVideoRequested Boolean @default(false)
+  unboxingPhotoRequested Boolean @default(false)
+  unboxingVideoUrl       String?
+  unboxingPhotoUrl       String?
+  isInclusion            Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
