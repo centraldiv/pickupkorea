@@ -1,0 +1,27 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Submit Order | Pickup Korea"
+  currentRoute="/account/submit-order"
+>
+  <main class="min-h-screen py-16 max-w-md w-full mx-auto text-center">
+    <h1 class="text-4xl font-bold">Submit Order</h1>
+    <p class="text-gray-500 mt-12">
+      Please select the type of order you want to submit.
+    </p>
+    <div class="flex flex-col gap-4 text-center py-12 w-full max-w-md">
+      <a href="/account/submit-order/buy-order">Buy Order</a>
+      <a href="/account/submit-order/package-forwarding-order"
+        >Package Forwarding Order</a
+      >
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  a {
+    @apply py-4 px-2 bg-primary rounded-md text-white font-medium hover:bg-primary/80 transition-colors duration-300;
+  }
+</style>

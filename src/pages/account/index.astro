@@ -1,0 +1,76 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import { verifySession } from "@/lib/sessions";
+
+export const prerender = false;
+
+const cookie = await verifySession(Astro.cookies);
+
+if (!cookie) {
+  return Astro.redirect("/login");
+}
+
+const accountMenus = [
+  {
+    title: "Submit an Order",
+    href: "/account/submit-order",
+  },
+  {
+    title: "My Orders",
+    href: "/account/orders",
+  },
+  {
+    title: "Payments",
+    href: "/account/payments",
+  },
+  {
+    title: "Address Book",
+    href: "/account/address-book",
+  },
+  {
+    title: "Credits",
+    href: "/account/credits",
+  },
+  {
+    title: "Account Info",
+    href: "/account/account-info",
+  },
+];
+---
+
+<MainLayout title="Account | Pickup Korea" currentRoute="/account">
+  <main class="flex flex-col items-center justify-start min-h-screen py-16">
+    <h1 class="text-2xl font-bold">Account</h1>
+    <div class="py-12">
+      <div
+        class="grid grid-cols-2 max-w-md w-full gap-4 place-items-center text-lg"
+      >
+        {
+          accountMenus.map((menu) => (
+            <a
+              href={menu.href}
+              class="bg-primary/60 w-full py-2 px-4 text-center rounded-lg text-black"
+            >
+              {menu.title}
+            </a>
+          ))
+        }
+        <button
+          class="bg-primary/30 w-full py-2 px-4 text-center rounded-lg text-black col-span-2 mt-24 hover:bg-primary/60 transition-colors duration-300"
+          id="logout-button"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<script>
+  import { logoutFn } from "@/lib/utils";
+
+  const logoutButton = document.getElementById("logout-button")!;
+  logoutButton.addEventListener("click", async () => {
+    await logoutFn();
+  });
+</script>

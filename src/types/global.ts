@@ -1,0 +1,17 @@
+export type Href =
+  | "/"
+  | "/service-rate"
+  | "/shipping-rate"
+  | "/order"
+  | "/faq"
+  | "/contact"
+  | "/signup"
+  | "/login"
+  | "/account"
+  | "/account/submit-order"
+  | "/account/orders"
+  | "/account/payments"
+  | "/account/address-book"
+  | "/account/credits"
+  | "/account/account-info"
+  | string;

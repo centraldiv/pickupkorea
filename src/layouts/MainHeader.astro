@@ -1,0 +1,58 @@
+---
+import { Image } from "astro:assets";
+---
+
+<header class="flex px-12 py-4 items-center h-28">
+  <a href="/">
+    <Image src="/core/logo.svg" alt="logo" height="50" width="250" />
+  </a>
+  <div class="mr-0 ml-auto space-x-12" id="auth-links"></div>
+</header>
+
+<script>
+  import { logoutFn } from "@/lib/utils";
+
+  const response = await fetch("/api/auth/get-session", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.ok) {
+    const session = await response.json();
+    if (session.userId) {
+      const authLinks = document.getElementById("auth-links")!;
+      const logoutButton = document.createElement("button");
+      const accountLink = document.createElement("a");
+      logoutButton.innerText = "Logout";
+      logoutButton.classList.add("font-semibold");
+      logoutButton.classList.add("text-xl");
+      accountLink.href = "/account";
+      accountLink.innerText = "Account";
+      accountLink.classList.add("font-semibold");
+      accountLink.classList.add("text-xl");
+      authLinks.appendChild(accountLink);
+      authLinks.appendChild(logoutButton);
+
+      logoutButton.addEventListener("click", async () => {
+        await logoutFn();
+      });
+    }
+  }
+
+  if (!response.ok) {
+    const authLinks = document.getElementById("auth-links")!;
+    const loginLink = document.createElement("a");
+    const registerLink = document.createElement("a");
+    loginLink.href = "/login";
+    loginLink.innerText = "Login";
+    loginLink.classList.add("font-semibold");
+    loginLink.classList.add("text-xl");
+    registerLink.href = "/signup";
+    registerLink.innerText = "Sign up";
+    registerLink.classList.add("font-semibold");
+    registerLink.classList.add("text-xl");
+    authLinks.appendChild(loginLink);
+    authLinks.appendChild(registerLink);
+  }
+</script>

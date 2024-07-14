@@ -1,0 +1,85 @@
+---
+import "@/styles/globals.css";
+import MainHeader from "./MainHeader.astro";
+import SecondaryHeader from "./SecondaryHeader.astro";
+import type { Href } from "@/types/global";
+
+interface Props {
+  title: string;
+  currentRoute?: Href;
+}
+
+const { title, currentRoute } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <MainHeader />
+    <SecondaryHeader currentRoute={currentRoute} />
+    <slot />
+  </body>
+</html>
+<style is:global>
+  :root {
+    --background: 40 0% 100%;
+    --foreground: 40 0% 10%;
+    --card: 40 0% 100%;
+    --card-foreground: 40 0% 15%;
+    --popover: 40 0% 100%;
+    --popover-foreground: 40 95% 10%;
+    --primary: 40 93.5% 57.6%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 10% 90%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 2 10% 95%;
+    --muted-foreground: 40 0% 40%;
+    --accent: 2 10% 90%;
+    --accent-foreground: 40 0% 15%;
+    --destructive: 0 50% 50%;
+    --destructive-foreground: 40 0% 100%;
+    --border: 40 20% 82%;
+    --input: 40 20% 50%;
+    --ring: 40 93.5% 57.6%;
+    --radius: 1rem;
+  }
+  .dark {
+    --background: 40 10% 10%;
+    --foreground: 40 0% 100%;
+    --card: 40 0% 10%;
+    --card-foreground: 40 0% 100%;
+    --popover: 40 10% 5%;
+    --popover-foreground: 40 0% 100%;
+    --primary: 40 93.5% 57.6%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 10% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 2 10% 25%;
+    --muted-foreground: 40 0% 65%;
+    --accent: 2 10% 25%;
+    --accent-foreground: 40 0% 95%;
+    --destructive: 0 50% 50%;
+    --destructive-foreground: 40 0% 100%;
+    --border: 40 20% 50%;
+    --input: 40 20% 50%;
+    --ring: 40 93.5% 57.6%;
+    --radius: 1rem;
+  }
+
+  html {
+  }
+</style>

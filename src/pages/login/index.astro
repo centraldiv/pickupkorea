@@ -1,0 +1,12 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import LoginForm from "./LoginForm";
+export const prerender = true;
+---
+
+<MainLayout title="Login | Pickup Korea" currentRoute="/signup">
+  <main class="flex flex-col items-center justify-start h-screen py-16">
+    <h1 class="text-4xl font-bold">Login</h1>
+    <LoginForm client:load />
+  </main>
+</MainLayout>
