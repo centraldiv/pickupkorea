@@ -1,0 +1,16 @@
+{
+  "Post Request JSON": {
+    "scope": "typescript, javascript",
+    "prefix": ["_post", "_content"],
+    "body": [
+      "if (context.request.headers.get('Content-Type') !== 'application/json') {",
+      "\treturn new Response(JSON.stringify({ message: 'Unauthorized' }), {",
+      "\t\tstatus: 401,",
+      "\t});",
+      "}",
+      "\t$0",
+      "}"
+    ],
+    "description": "Content-Type: application/json"
+  }
+}

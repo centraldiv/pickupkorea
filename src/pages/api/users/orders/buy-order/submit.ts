@@ -1,0 +1,84 @@
+import { ClientBuyOrderSchema } from "@/definitions/zod-definitions";
+import { verifySession } from "@/lib/sessions";
+import prisma from "@/lib/prisma";
+import type { APIContext } from "astro";
+
+export const prerender = false;
+
+export async function POST(context: APIContext) {
+  try {
+    if (context.request.headers.get("Content-Type") !== "application/json") {
+      return new Response(JSON.stringify({ message: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+    const session = await verifySession(context.cookies);
+
+    if (!session) {
+      return new Response(
+        JSON.stringify({ message: "You are not logged in!" }),
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const body = await context.request.json();
+
+    const parsed = ClientBuyOrderSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return new Response(
+        JSON.stringify({
+          message: "Invalid Input was found. Please try again",
+        }),
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const { data } = parsed;
+    console.log(data);
+    const buyOrder = await prisma.buyOrder.create({
+      data: {
+        userId: session.userId,
+        shipRightAway: data.shipRightAway,
+        userMemo: data.userMemo,
+        items: {
+          createMany: {
+            data: data.items.map((item) => ({
+              href: item.href,
+              quantity: item.quantity,
+              unboxingVideoRequested: item.unboxingVideoRequested,
+              unboxingPhotoRequested: item.unboxingPhotoRequested,
+              isInclusion: item.isInclusion,
+              memo: item.memo,
+              option: item.option,
+            })),
+          },
+        },
+      },
+    });
+
+    if (!buyOrder) {
+      return new Response(
+        JSON.stringify({ message: "Failed to submit buy order" }),
+        {
+          status: 500,
+        }
+      );
+    }
+    return new Response(
+      JSON.stringify({ message: "Buy order submitted!", orderId: buyOrder.id }),
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify({ message: "Internal server error" }), {
+      status: 500,
+    });
+  }
+}

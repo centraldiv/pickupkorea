@@ -9,7 +9,7 @@ export async function POST(context: APIContext) {
     if (session) {
       await deleteSession(context.cookies);
     }
-    console.log(context.cookies.has("session"));
+
     return new Response(
       JSON.stringify({ message: "You have been logged out!" }),
       {

@@ -84,8 +84,10 @@ model item {
   quantity         Int
   receivedQuantity Int    @default(0)
 
-  option    String
-  memo      String
+  price Int @default(0)
+
+  option    String?
+  memo      String?
   staffMemo String?
 
   productStatus String @default("Pending Review")

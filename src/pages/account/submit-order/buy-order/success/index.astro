@@ -1,0 +1,33 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+const query = Astro.url.searchParams;
+const orderId = query.get("orderId");
+
+export const prerender = false;
+---
+
+<MainLayout
+  title="Buy Order Success | Pickup Korea"
+  currentRoute="/account/submit-order/buy-order/success"
+>
+  <main
+    class="max-w-7xl w-full px-4 py-16 gap-4 mx-auto min-h-screen flex flex-col justify-start items-center"
+  >
+    <h1 class="text-2xl font-bold">Buy Order Submitted</h1>
+    <p class="text-gray-500">Your order has been submitted successfully.</p>
+
+    <p>Your Unique Order ID is: <span class="font-bold">{orderId}</span></p>
+
+    <p>
+      Once the submitted order is reviewed by our trusted staff, you will be
+      issued a product invoice. Once it is paid, we will proceed with the
+      purchasing.
+    </p>
+
+    <p>
+      You can check your order status by going to the
+      <a href="/account/orders" class="text-blue-500 hover:underline">Orders</a>
+      page.
+    </p>
+  </main>
+</MainLayout>

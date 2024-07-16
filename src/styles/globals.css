@@ -51,7 +51,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border break-keep;
   }
   body {
     @apply bg-background text-foreground;

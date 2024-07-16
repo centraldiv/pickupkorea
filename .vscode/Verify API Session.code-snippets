@@ -1,0 +1,19 @@
+{
+  "Verify API Session": {
+    "scope": "typescript, javascript",
+    "prefix": ["verify_api_session"],
+    "body": [
+      "const session = await verifySession(context.cookies);",
+      "if (!session) {",
+      "  return new Response(",
+      "    JSON.stringify({ message: 'You are not logged in!' }),",
+      "    {",
+      "      status: 401,",
+      "    );",
+      "}",
+      "$0",
+      "}"
+    ],
+    "description": "Content-Type: application/json"
+  }
+}

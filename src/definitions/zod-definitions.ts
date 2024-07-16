@@ -69,3 +69,42 @@ export const LoginSchema = RawSignUpSchema.pick({
     })
     .trim(),
 });
+
+export const AddressSchema = z.object({
+  receiverName: z
+    .string({ required_error: "Receiver name is required" })
+    .trim(),
+  phone: z.string({ required_error: "Receiver phone is required" }).trim(),
+  email: z
+    .string({ required_error: "Receiver email is required" })
+    .email("Invalid email address")
+    .trim(),
+  street: z.string({ required_error: "Street is required" }).trim(),
+  city: z.string({ required_error: "City is required" }).trim(),
+  state: z.string({ required_error: "State is required" }).trim(),
+  zipCode: z.string({ required_error: "Zip code is required" }).trim(),
+  country: z.string({ required_error: "Country is required" }).trim(),
+});
+
+export const ClientBuyItemSchema = z.object({
+  href: z
+    .string({ required_error: "Link to product is required" })
+    .min(1, { message: "Link to product is required" })
+    .trim(),
+  memo: z.string().optional(),
+  option: z.string().optional(),
+  quantity: z.coerce
+    .number({ required_error: "Quantity is required" })
+    .min(1, { message: "Quantity must be at least 1" }),
+
+  unboxingVideoRequested: z.boolean().default(false),
+  unboxingPhotoRequested: z.boolean().default(false),
+  isInclusion: z.boolean().default(false),
+});
+
+export const ClientBuyOrderSchema = z.object({
+  shipRightAway: z.boolean().default(false),
+  items: z.array(ClientBuyItemSchema).nonempty("Items are required"),
+  userMemo: z.string().optional(),
+  address: AddressSchema.nullish(),
+});
