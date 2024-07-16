@@ -1,0 +1,44 @@
+---
+import MainContainer from "@/layouts/MainContainer.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import type { Href } from "@/types/global";
+
+const links: { label: string; href: Href }[] = [
+  { label: "Country List", href: "/account/admin/settings/country-list" },
+];
+---
+
+<MainLayout
+  title="Settings | Admin | Pickup Korea"
+  currentRoute="/account/admin/settings"
+  isAdmin
+>
+  <MainContainer>
+    <h1 class="text-2xl font-bold text-center">Settings</h1>
+    <section class="py-16">
+      <ul>
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </MainContainer>
+</MainLayout>
+
+<style>
+  ul {
+    @apply flex flex-col gap-4;
+
+    li {
+      @apply flex items-center justify-center gap-2 bg-primary max-w-sm mx-auto px-4 py-2 rounded-md font-medium w-full hover:bg-primary/80 cursor-pointer;
+
+      a {
+        @apply w-full block text-center;
+      }
+    }
+  }
+</style>

@@ -20,7 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { UseFormReturn } from "react-hook-form";
-import { ClientBuyOrderSchema } from "@/definitions/zod-definitions";
+import { ClientPFOrderSchema } from "@/definitions/zod-definitions";
 import { z } from "zod";
 
 const addressDefault = {
@@ -30,48 +30,51 @@ const addressDefault = {
   street: "",
   city: "",
   state: "",
-  zipCode: "",
+  zipcode: "",
   country: "",
 };
 
-const BuyOrderSteps = ({
+const PFOrderSteps = ({
   form,
 }: {
-  form: UseFormReturn<z.infer<typeof ClientBuyOrderSchema>>;
+  form: UseFormReturn<z.infer<typeof ClientPFOrderSchema>>;
 }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmitAddressOrder = (
-    values: z.infer<typeof ClientBuyOrderSchema>
+    values: z.infer<typeof ClientPFOrderSchema>
   ) => {
     setStep(2);
   };
 
   const onSubmitFinalStep = async (
-    values: z.infer<typeof ClientBuyOrderSchema>
+    values: z.infer<typeof ClientPFOrderSchema>
   ) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
-
-      const response = await fetch("/api/users/orders/buy-order/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        "/api/private/users/orders/pf-order/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
       const { message, orderId }: { message: string; orderId?: string } =
         await response.json();
       if (!response.ok) {
         return alert(message);
       }
-      localStorage.removeItem("buyOrderForm");
+      localStorage.removeItem("pfOrderForm");
 
-      window.location.href = `/account/submit-order/buy-order/success?orderId=${orderId}`;
+      window.location.href = `/account/submit-order/pf-order/success?orderId=${orderId}`;
     } catch (error) {
       console.error(error);
-      alert("Error: Failed to submit buy order");
+      alert("Error: Failed to submit package forwarding order");
     } finally {
       setIsSubmitting(false);
     }
@@ -227,7 +230,7 @@ const BuyOrderSteps = ({
               />
               <FormField
                 control={form.control}
-                name="address.zipCode"
+                name="address.zipcode"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Zipcode</FormLabel>
@@ -281,11 +284,7 @@ const BuyOrderSteps = ({
               order such as being careful with a particular item needs to be
               mentioned below!
             </p>
-            <p>
-              If this order contains any event promos such as Video Call Events
-              with your favorite artists, please leave us your event details
-              below!
-            </p>
+
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmitFinalStep)}
@@ -328,4 +327,4 @@ const BuyOrderSteps = ({
   );
 };
 
-export default BuyOrderSteps;
+export default PFOrderSteps;

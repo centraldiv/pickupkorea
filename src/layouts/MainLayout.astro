@@ -1,15 +1,18 @@
 ---
 import "@/styles/globals.css";
+import RQDevTools from "@/components/devtools/RQDevTools.tsx";
 import MainHeader from "./MainHeader.astro";
 import SecondaryHeader from "./SecondaryHeader.astro";
+import AdminHeader from "./AdminHeader.astro";
 import type { Href } from "@/types/global";
 
 interface Props {
   title: string;
   currentRoute?: Href;
+  isAdmin?: boolean;
 }
 
-const { title, currentRoute } = Astro.props;
+const { title, currentRoute, isAdmin } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,8 +33,10 @@ const { title, currentRoute } = Astro.props;
   </head>
   <body>
     <MainHeader />
-    <SecondaryHeader currentRoute={currentRoute} />
+    {!isAdmin && <SecondaryHeader currentRoute={currentRoute} />}
+    {isAdmin && <AdminHeader currentRoute={currentRoute} />}
     <slot />
+    {import.meta.env.DEV && <RQDevTools client:load />}
   </body>
 </html>
 <style is:global>

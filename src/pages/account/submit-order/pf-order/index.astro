@@ -1,0 +1,15 @@
+---
+import PFOrderForm from "@/components/order-forms/PFOrderForm";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Package Forwarding Order | Pickup Korea"
+  currentRoute="/account/submit-order/pf-order"
+>
+  <main class="min-h-screen py-16 px-4 max-w-7xl mx-auto w-full">
+    <h1 class="text-4xl font-bold text-center">Package Forwarding Order</h1>
+
+    <PFOrderForm client:load />
+  </main></MainLayout
+>

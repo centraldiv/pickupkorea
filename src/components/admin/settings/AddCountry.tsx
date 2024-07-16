@@ -1,0 +1,42 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import type { z } from "zod";
+
+const AddCountry = () => {
+  return (
+    <aside className="flex justify-end mb-6 max-w-xl mx-auto w-full">
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="">Add Country</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Country</DialogTitle>
+            <DialogDescription>
+              중복된 국가 코드나 이름은 추가할 수 없습니다.
+            </DialogDescription>
+          </DialogHeader>
+          <div></div>
+        </DialogContent>
+      </Dialog>
+    </aside>
+  );
+};
+
+export default AddCountry;

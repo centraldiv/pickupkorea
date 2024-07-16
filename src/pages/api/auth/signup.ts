@@ -1,4 +1,4 @@
-import { createSession, deleteSession, verifySession } from "@/lib/sessions";
+import { deleteSession, verifySession } from "@/lib/sessions";
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
@@ -26,7 +26,8 @@ export async function POST(context: APIContext) {
       });
     }
 
-    const data = validated.data;
+    const { data } = validated;
+
     let userWithKakao = null;
 
     const [userWithUsername, userWithEmail] = await prisma.$transaction([
@@ -75,6 +76,7 @@ export async function POST(context: APIContext) {
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
+    console.log(hashedPassword, data.password);
 
     const user = await prisma.user.create({
       data: {

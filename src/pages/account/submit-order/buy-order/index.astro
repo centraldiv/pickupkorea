@@ -1,16 +1,14 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import BuyOrderForm from "./BuyOrderForm";
+import BuyOrderForm from "../../../../components/order-forms/BuyOrderForm";
 ---
 
 <MainLayout
   title="Buy Order | Pickup Korea"
   currentRoute="/account/submit-order/buy-order"
 >
-  <main
-    class="flex flex-col items-center justify-start min-h-screen py-16 px-4"
-  >
-    <h1 class="text-4xl font-bold">Buy Order</h1>
+  <main class="min-h-screen py-16 px-4 max-w-7xl mx-auto w-full">
+    <h1 class="text-4xl font-bold text-center">Buy Order</h1>
     <BuyOrderForm client:load />
   </main>
 </MainLayout>

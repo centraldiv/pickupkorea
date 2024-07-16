@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import BuyOrderSteps from "./BuyOrderSteps";
+
 const formDefault = {
   shipRightAway: false,
   userMemo: "",
@@ -33,8 +34,7 @@ const formDefault = {
   ],
 };
 const BuyOrderForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [nextStep, setNextStep] = useState(true);
+  const [nextStep, setNextStep] = useState(false);
 
   const form = useForm<z.infer<typeof ClientBuyOrderSchema>>({
     resolver: zodResolver(ClientBuyOrderSchema),

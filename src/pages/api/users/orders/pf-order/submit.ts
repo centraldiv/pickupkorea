@@ -1,4 +1,4 @@
-import { ClientBuyOrderSchema } from "@/definitions/zod-definitions";
+import { ClientPFOrderSchema } from "@/definitions/zod-definitions";
 import { verifySession } from "@/lib/sessions";
 import prisma from "@/lib/prisma";
 import type { APIContext } from "astro";
@@ -26,7 +26,7 @@ export async function POST(context: APIContext) {
 
     const body = await context.request.json();
 
-    const parsed = ClientBuyOrderSchema.safeParse(body);
+    const parsed = ClientPFOrderSchema.safeParse(body);
 
     if (!parsed.success) {
       return new Response(
@@ -49,7 +49,7 @@ export async function POST(context: APIContext) {
         },
       });
     }
-    const buyOrder = await prisma.buyOrder.create({
+    const buyOrder = await prisma.pfOrder.create({
       data: {
         userId: session.userId,
         shipRightAway: data.shipRightAway,

@@ -9,8 +9,14 @@
 /api/auth/logout
 : POST , empty body, deletes the current session.
 
-/api/users/orders/buy-order/submit
+/api/private/users/orders/buy-order/submit
 : POST , requires buy order data with items, it is parsed client and server. If success, returns 200 and proceeds to /account/submit-order/buy-order/success.
+
+/api/private/users/orders/pf-order/submit
+: POST , requires pf order data with items, it is parsed client and server. If success, returns 200 and proceeds to /account/submit-order/pf-order/success.
+
+/api/public/settings/country-list
+: GET , returns a list of available countries.
 
 # Todo
 

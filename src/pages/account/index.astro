@@ -1,7 +1,12 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
+import AccountAdminEntry from "@/components/admin/AccountAdminEntry.astro";
+import { verifySession } from "@/lib/sessions";
 
 export const prerender = false;
+
+const session = await verifySession(Astro.cookies);
+const isAdmin = session?.isAdmin;
 
 const accountMenus = [
   {
@@ -34,6 +39,7 @@ const accountMenus = [
 <MainLayout title="Account | Pickup Korea" currentRoute="/account">
   <main class="flex flex-col items-center justify-start min-h-screen py-16">
     <h1 class="text-2xl font-bold">Welcome</h1>
+    {isAdmin && <AccountAdminEntry />}
     <div class="py-12">
       <div
         class="grid grid-cols-2 max-w-md w-full gap-4 place-items-center text-lg"
@@ -57,13 +63,13 @@ const accountMenus = [
       </div>
     </div>
   </main>
+
+  <script>
+    import { logoutFn } from "@/lib/utils";
+
+    const logoutButton = document.getElementById("logout-button")!;
+    logoutButton.addEventListener("click", async () => {
+      await logoutFn();
+    });
+  </script>
 </MainLayout>
-
-<script>
-  import { logoutFn } from "@/lib/utils";
-
-  const logoutButton = document.getElementById("logout-button")!;
-  logoutButton.addEventListener("click", async () => {
-    await logoutFn();
-  });
-</script>

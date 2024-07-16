@@ -3,12 +3,11 @@ import { cn } from "@/lib/utils";
 import type { Href } from "@/types/global";
 
 const links: { label: string; href: Href }[] = [
-  { label: "Home", href: "/" },
-  { label: "Service Rate", href: "/service-rate" },
-  { label: "Shipping Rate", href: "/shipping-rate" },
-  { label: "Order", href: "/order" },
-  { label: "Q/A", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Buy Orders", href: "/account/admin/buy-orders" },
+  { label: "PF Orders", href: "/account/admin/pf-orders" },
+  { label: "Payments", href: "/account/admin/payments" },
+  { label: "Users", href: "/account/admin/users" },
+  { label: "Settings", href: "/account/admin/settings" },
 ];
 
 interface Props {

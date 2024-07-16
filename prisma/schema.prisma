@@ -10,12 +10,12 @@ datasource db {
 model user {
   id String @id @default(uuid())
 
-  fullName String
+  fullName String @db.Char(100)
 
   email    String  @unique
   username String  @unique
-  password String
-  country  String
+  password String  @db.Text
+  country  String  @db.Char(100)
   isAdmin  Boolean @default(false)
   pfCode   String? @unique
   kakaoId  String? @unique
@@ -24,6 +24,7 @@ model user {
   buyOrders       buyOrder[]
   address         address[]
   productInvoices productInvoice[]
+  pfOrder         pfOrder[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,7 +32,8 @@ model user {
 
 model country {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @unique @db.Char(100)
+  code      String   @unique @db.Char(3)
   createdAt DateTime @default(now())
 }
 
@@ -40,17 +42,20 @@ model address {
   userId String
   user   user   @relation(fields: [userId], references: [id])
 
-  receiverName String
-  phone        String
-  email        String
-  street       String
-  city         String
-  state        String
-  zipcode      String
-  country      String
+  receiverName String @db.Char(100)
+  phone        String @db.Char(50)
+  email        String @db.Char(100)
+  street       String @db.Char(100)
+  city         String @db.Char(100)
+  state        String @db.Char(100)
+  zipcode      String @db.Char(20)
+  country      String @db.Char(100)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  buyOrder buyOrder[]
+  pfOrder  pfOrder[]
 }
 
 model buyOrder {
@@ -62,8 +67,11 @@ model buyOrder {
 
   shipRightAway Boolean @default(false)
 
-  userMemo  String?
-  staffMemo String?
+  addressId String?
+  address   address? @relation(fields: [addressId], references: [id])
+
+  userMemo  String? @db.Text
+  staffMemo String? @db.Text
 
   orderStatus String @default("Pending Review")
 
@@ -75,44 +83,75 @@ model buyOrder {
   updatedAt DateTime @updatedAt
 }
 
+model pfOrder {
+  id     String @id @default(uuid())
+  userId String
+  user   user   @relation(fields: [userId], references: [id])
+
+  locked Boolean @default(false)
+
+  shipRightAway Boolean @default(false)
+
+  userMemo  String? @db.Text
+  staffMemo String? @db.Text
+
+  orderStatus String @default("Pending Review")
+
+  items item[]
+
+  addressId String?
+  address   address? @relation(fields: [addressId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model item {
   id String @id @default(uuid())
 
   productName String?
 
-  href             String
+  href             String @db.Text
   quantity         Int
   receivedQuantity Int    @default(0)
+  shippedQuantity  Int    @default(0)
+  creditedQuantity Int    @default(0)
 
-  price Int @default(0)
+  price         Int @default(0)
+  creditedPrice Int @default(0)
 
-  option    String?
-  memo      String?
-  staffMemo String?
+  option    String? @db.Text
+  memo      String? @db.Text
+  staffMemo String? @db.Text
 
   productStatus String @default("Pending Review")
 
   unboxingVideoRequested Boolean @default(false)
   unboxingPhotoRequested Boolean @default(false)
-  unboxingVideoUrl       String?
-  unboxingPhotoUrl       String?
+  unboxingVideoUrl       String? @db.Text
+  unboxingPhotoUrl       String? @db.Text
   isInclusion            Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user             user?           @relation(fields: [userId], references: [id])
-  userId           String?
-  buyOrder         buyOrder?       @relation(fields: [buyOrderId], references: [id])
-  buyOrderId       String?
+  user   user?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  buyOrder   buyOrder? @relation(fields: [buyOrderId], references: [id])
+  buyOrderId String?
+
   productInvoice   productInvoice? @relation(fields: [productInvoiceId], references: [id])
   productInvoiceId String?
+
+  pfOrder   pfOrder? @relation(fields: [pfOrderId], references: [id])
+  pfOrderId String?
 }
 
 model productInvoice {
   id String @id @default(uuid())
 
-  invoiceNumber String
+  invoiceNumber String @db.Char(10)
   items         item[]
   invoiceList   Json
   totalPrice    Int

@@ -82,7 +82,7 @@ export const AddressSchema = z.object({
   street: z.string({ required_error: "Street is required" }).trim(),
   city: z.string({ required_error: "City is required" }).trim(),
   state: z.string({ required_error: "State is required" }).trim(),
-  zipCode: z.string({ required_error: "Zip code is required" }).trim(),
+  zipcode: z.string({ required_error: "Zip code is required" }).trim(),
   country: z.string({ required_error: "Country is required" }).trim(),
 });
 
@@ -102,9 +102,25 @@ export const ClientBuyItemSchema = z.object({
   isInclusion: z.boolean().default(false),
 });
 
+export const ClientPFItemSchema = ClientBuyItemSchema.extend({
+  price: z
+    .number({ required_error: "Price is required" })
+    .min(0, { message: "Price must be greater than 0 KRW" }),
+});
+
 export const ClientBuyOrderSchema = z.object({
   shipRightAway: z.boolean().default(false),
   items: z.array(ClientBuyItemSchema).nonempty("Items are required"),
   userMemo: z.string().optional(),
   address: AddressSchema.nullish(),
+});
+
+export const ClientPFOrderSchema = ClientBuyOrderSchema.extend({
+  shipRightAway: z.boolean().default(false),
+  items: z.array(ClientPFItemSchema).nonempty("Items are required"),
+});
+
+export const CountrySchema = z.object({
+  name: z.string().min(1, { message: "Country name is required" }),
+  code: z.string().min(1, { message: "Country code is required" }),
 });
