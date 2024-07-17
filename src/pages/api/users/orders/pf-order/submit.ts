@@ -15,7 +15,7 @@ export async function POST(context: APIContext) {
     }
     const session = await verifySession(context.cookies);
 
-    if (!session) {
+    if (!session || !session.userId) {
       return new Response(
         JSON.stringify({ message: "You are not logged in!" }),
         {
@@ -45,7 +45,16 @@ export async function POST(context: APIContext) {
       address = await prisma.address.create({
         data: {
           ...data.address,
-          userId: session.userId,
+          country: {
+            connect: {
+              id: data.address.country,
+            },
+          },
+          user: {
+            connect: {
+              id: session.userId,
+            },
+          },
         },
       });
     }

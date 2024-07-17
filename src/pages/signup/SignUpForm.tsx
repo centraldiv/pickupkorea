@@ -1,5 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +21,9 @@ import { Input } from "@/components/ui/input";
 import type { z } from "zod";
 import { useState } from "react";
 import { SignUpSchema } from "@/definitions/zod-definitions";
+import type { country } from "@prisma/client";
 
-const SignUpForm = () => {
+const SignUpForm = ({ countries }: { countries: country[] }) => {
   const [message, setMessage] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const form = useForm({
@@ -144,10 +152,20 @@ const SignUpForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem value={country.id} key={country.id}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

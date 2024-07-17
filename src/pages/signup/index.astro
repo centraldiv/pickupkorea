@@ -1,12 +1,15 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import SignUpForm from "./SignUpForm";
-export const prerender = true;
+import { getCountries } from "@/lib/db-funcs/get-functions";
+export const prerender = false;
+
+const countries = await getCountries();
 ---
 
 <MainLayout title="Sign Up | Pickup Korea" currentRoute="/signup">
   <main class="flex flex-col items-center justify-start min-h-screen py-16">
     <h1 class="text-4xl font-bold">Sign Up</h1>
-    <SignUpForm client:load />
+    <SignUpForm client:load countries={countries} />
   </main>
 </MainLayout>

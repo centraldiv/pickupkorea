@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import PFOrderSteps from "./PFOrderSteps";
+import type { country } from "@prisma/client";
 
 const formDefault = {
   shipRightAway: false,
@@ -34,7 +35,7 @@ const formDefault = {
     },
   ],
 };
-const PFOrderForm = () => {
+const PFOrderForm = ({ countries }: { countries: country[] }) => {
   const [nextStep, setNextStep] = useState(false);
 
   const form = useForm<z.infer<typeof ClientPFOrderSchema>>({
@@ -78,7 +79,7 @@ const PFOrderForm = () => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       {nextStep ? (
-        <PFOrderSteps form={form} />
+        <PFOrderSteps form={form} countries={countries} />
       ) : (
         <Form {...form}>
           <p className="max-w-lg mx-auto my-12 text-center border rounded-md shadow-md py-4 px-2 font-medium">

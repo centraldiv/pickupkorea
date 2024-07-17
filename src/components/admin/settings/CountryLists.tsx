@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+
 import {
   Table,
   TableBody,
@@ -7,7 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { useCountries } from "@/lib/react-query/hooks";
+
 import CountryDropdown from "./CountryDropdown";
 
 const CountryLists = () => {
@@ -45,7 +48,7 @@ const CountryLists = () => {
               {country.code}
             </TableCell>
             <TableCell className="text-center w-[50px]">
-              <CountryDropdown countryId={country.id} />
+              <CountryDropdown country={country} />
             </TableCell>
           </TableRow>
         ))}

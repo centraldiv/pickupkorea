@@ -84,7 +84,11 @@ export async function POST(context: APIContext) {
         email: data.email,
         password: hashedPassword,
         fullName: data.fullName,
-        country: data.country,
+        country: {
+          connect: {
+            id: data.country,
+          },
+        },
         kakaoId: typeof data.kakaoId === "string" ? data.kakaoId : null,
       },
     });

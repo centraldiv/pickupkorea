@@ -7,16 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import type { z } from "zod";
+import AddCountryForm from "./AddCountryForm";
 
 const AddCountry = () => {
   return (
@@ -32,7 +23,9 @@ const AddCountry = () => {
               중복된 국가 코드나 이름은 추가할 수 없습니다.
             </DialogDescription>
           </DialogHeader>
-          <div></div>
+          <div>
+            <AddCountryForm />
+          </div>
         </DialogContent>
       </Dialog>
     </aside>

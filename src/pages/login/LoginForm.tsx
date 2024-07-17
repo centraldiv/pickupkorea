@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/definitions/zod-definitions";
 import { Button } from "@/components/ui/button";
+import { LoginSchema } from "@/definitions/zod-definitions";
 import {
   Form,
   FormControl,

@@ -123,4 +123,5 @@ export const ClientPFOrderSchema = ClientBuyOrderSchema.extend({
 export const CountrySchema = z.object({
   name: z.string().min(1, { message: "Country name is required" }),
   code: z.string().min(1, { message: "Country code is required" }),
+  id: z.string().optional(),
 });

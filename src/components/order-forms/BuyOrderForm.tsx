@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import BuyOrderSteps from "./BuyOrderSteps";
+import type { country } from "@prisma/client";
 
 const formDefault = {
   shipRightAway: false,
@@ -33,7 +34,7 @@ const formDefault = {
     },
   ],
 };
-const BuyOrderForm = () => {
+const BuyOrderForm = ({ countries }: { countries: country[] }) => {
   const [nextStep, setNextStep] = useState(false);
 
   const form = useForm<z.infer<typeof ClientBuyOrderSchema>>({
@@ -76,7 +77,7 @@ const BuyOrderForm = () => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       {nextStep ? (
-        <BuyOrderSteps form={form} />
+        <BuyOrderSteps form={form} countries={countries} />
       ) : (
         <Form {...form}>
           <form

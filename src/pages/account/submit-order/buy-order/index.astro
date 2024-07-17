@@ -1,6 +1,11 @@
 ---
+import BuyOrderForm from "@/components/order-forms/BuyOrderForm";
 import MainLayout from "@/layouts/MainLayout.astro";
-import BuyOrderForm from "../../../../components/order-forms/BuyOrderForm";
+
+import { getCountries } from "@/lib/db-funcs/get-functions";
+export const prerender = false;
+
+const countries = await getCountries();
 ---
 
 <MainLayout
@@ -9,6 +14,6 @@ import BuyOrderForm from "../../../../components/order-forms/BuyOrderForm";
 >
   <main class="min-h-screen py-16 px-4 max-w-7xl mx-auto w-full">
     <h1 class="text-4xl font-bold text-center">Buy Order</h1>
-    <BuyOrderForm client:load />
+    <BuyOrderForm client:load countries={countries} />
   </main>
 </MainLayout>

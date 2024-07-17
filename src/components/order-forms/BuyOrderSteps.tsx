@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import {
   Form,
@@ -22,6 +28,7 @@ import {
 import type { UseFormReturn } from "react-hook-form";
 import { ClientBuyOrderSchema } from "@/definitions/zod-definitions";
 import { z } from "zod";
+import type { country } from "@prisma/client";
 
 const addressDefault = {
   receiverName: "",
@@ -36,8 +43,10 @@ const addressDefault = {
 
 const BuyOrderSteps = ({
   form,
+  countries,
 }: {
   form: UseFormReturn<z.infer<typeof ClientBuyOrderSchema>>;
+  countries: country[];
 }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -251,9 +260,23 @@ const BuyOrderSteps = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Country</FormLabel>
-                    <FormControl>
-                      <Input {...field} required />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem value={country.id} key={country.id}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
