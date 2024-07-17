@@ -84,6 +84,9 @@ model buyOrder {
 
   items item[]
 
+  productInvoice   productInvoice? @relation(fields: [productInvoiceId], references: [id])
+  productInvoiceId String?         @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -166,4 +169,6 @@ model productInvoice {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  buyOrder buyOrder?
 }

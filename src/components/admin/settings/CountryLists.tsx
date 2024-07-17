@@ -17,7 +17,8 @@ const CountryLists = () => {
   const { data: countries, isLoading, isError } = useCountries();
 
   if (isError) return <div>Error</div>;
-  if (isLoading) return <Skeleton className="h-[400px] w-full" />;
+  if (isLoading)
+    return <Skeleton className="h-[400px] w-full mx-auto max-w-xl" />;
 
   if (!countries) return <div>No data</div>;
 

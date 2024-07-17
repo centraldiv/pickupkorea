@@ -19,10 +19,16 @@
 : GET , returns a list of available countries.
 
 /api/private/settings/country-list
-: POST , requires country data with name and code. Returns 200 if success, 400 if duplicate name or code or if data is entirely invalid.
+: POST , requires country data with name and code. Returns 200 if success, 400 if duplicate name or code or if data is entirely invalid. ADMIN ONLY
 
 /api/private/settings/country-list
-: PATCH , requires country data with name and code. Returns 200 if success, 400 if duplicate name or code or if data is entirely invalid.
+: PATCH , requires country data with name and code. Returns 200 if success, 400 if duplicate name or code or if data is entirely invalid. ADMIN ONLY
+
+/api/private/settings/country-list
+: DELETE , requires country data with id. Returns 200 if success, 400 if data is entirely invalid. ADMIN ONLY
+
+/api/private/orders/buy-orders
+: GET , returns a list of buy orders for user.
 
 # Todo
 

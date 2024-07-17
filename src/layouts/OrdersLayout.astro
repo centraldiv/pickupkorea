@@ -1,0 +1,65 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import { cn } from "@/lib/utils";
+import type { Href } from "@/types/global";
+
+export const prerender = false;
+
+interface Props {
+  currentRoute: string;
+  title: string;
+}
+
+const orderMenus: { title: string; href: Href }[] = [
+  {
+    title: "Buy Orders",
+    href: "/account/orders/buy-orders",
+  },
+  {
+    title: "Package Forwarding Orders",
+    href: "/account/orders/pf-orders",
+  },
+  {
+    title: "Shipping Request",
+    href: "/account/orders/shipping-request",
+  },
+  {
+    title: "Shipping Request History",
+    href: "/account/orders/shipping-request/history",
+  },
+];
+
+const { currentRoute, title } = Astro.props;
+---
+
+<MainLayout title={title} currentRoute={currentRoute}>
+  <main class="grid main-section h-full">
+    <aside class="px-2 border-r py-4">
+      <ul class="flex flex-col gap-4 px-2">
+        {
+          orderMenus.map((menu) => (
+            <li>
+              <a
+                href={menu.href}
+                class={cn(
+                  currentRoute === menu.href &&
+                    "font-medium underline underline-offset-2"
+                )}
+              >
+                {menu.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+    <section class="px-2 py-4"><slot /></section>
+  </main>
+</MainLayout>
+
+<style>
+  .main-section {
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 100vh;
+  }
+</style>

@@ -1,6 +1,6 @@
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
-
+export const prerender = false;
 export async function GET(context: APIContext) {
   try {
     if (context.request.headers.get("Content-Type") !== "application/json") {

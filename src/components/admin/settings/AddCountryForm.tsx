@@ -34,7 +34,10 @@ const AddCountryForm = () => {
         if (previousCountries) {
         }
         const newCountries = [...previousCountries, newCountry];
-        client.setQueryData(PublicQueryKeys.countries, newCountries);
+        client.setQueryData(
+          PublicQueryKeys.countries,
+          newCountries.sort((a, b) => a.name.localeCompare(b.name))
+        );
         return { previousCountries, newCountries };
       },
       onSuccess: () => {

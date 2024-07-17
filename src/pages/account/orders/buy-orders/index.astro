@@ -1,0 +1,11 @@
+---
+import BuyOrderContainer from "@/components/users/orders/buy-orders/BuyOrderContainer";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/buy-orders"
+  title="Buy Orders | Orders | Pickup Korea"
+>
+  <BuyOrderContainer client:load />
+</OrdersLayout>

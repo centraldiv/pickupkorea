@@ -100,7 +100,7 @@ const EditCountryForm = ({ country }: { country: country }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-6 mr-0 ml-auto flex">
+        <Button type="submit" className="mt-6 mr-0 ml-auto flex w-36">
           수정
         </Button>
       </form>
