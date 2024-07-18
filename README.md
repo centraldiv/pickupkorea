@@ -30,6 +30,15 @@
 /api/private/orders/buy-orders
 : GET , returns a list of buy orders for user.
 
+/api/private/orders/buy-orders/order
+: GET , returns single buy order for user.
+
+/api/private/orders/pf-orders
+: GET , returns a list of pf orders for user.
+
+/api/private/orders/pf-orders/order
+: GET , returns single pf order for user.
+
 # Todo
 
 1. Email verification / reset pw

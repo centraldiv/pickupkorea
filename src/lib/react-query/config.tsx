@@ -7,6 +7,7 @@ export const PublicQueryKeys = {
 
 export const PrivateQueryKeys = {
   buyOrders: ["buy-orders"],
+  pfOrders: ["pf-orders"],
 };
 
 //country fetchers and mutations
@@ -65,6 +66,28 @@ export const fetchBuyOrders = async () => {
 export const fetchBuyOrder = async (orderId: string) => {
   const response = await fetch(
     `/api/private/orders/buy-orders/order?orderId=${orderId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.json();
+};
+
+//pf order fetchers and mutations
+export const fetchPFOrders = async () => {
+  const response = await fetch("/api/private/orders/pf-orders", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.json();
+};
+
+export const fetchPFOrder = async (orderId: string) => {
+  const response = await fetch(
+    `/api/private/orders/pf-orders/order?orderId=${orderId}`,
     {
       headers: {
         "Content-Type": "application/json",

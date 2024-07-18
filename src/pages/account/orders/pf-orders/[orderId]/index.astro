@@ -1,0 +1,18 @@
+---
+import SinglePFOrderContainer from "@/components/users/orders/pf-orders/single/SinglePFOrderContainer";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+
+export const prerender = false;
+const { orderId } = Astro.params;
+
+if (!orderId) {
+  return Astro.redirect("/account/orders/pf-orders");
+}
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/pf-orders"
+  title="Package Forwarding Orders | Orders | Pickup Korea"
+>
+  <SinglePFOrderContainer orderId={orderId} client:load />
+</OrdersLayout>

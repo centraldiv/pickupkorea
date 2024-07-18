@@ -1,0 +1,11 @@
+---
+import PFOrderContainer from "@/components/users/orders/pf-orders/PFOrderContainer";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/pf-orders"
+  title="Package Forwarding Orders | Orders | Pickup Korea"
+>
+  <PFOrderContainer client:load />
+</OrdersLayout>

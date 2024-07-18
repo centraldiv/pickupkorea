@@ -82,6 +82,7 @@ model buyOrder {
   orderStatus String @default("Pending Review")
 
   purchaseDate DateTime?
+  arrivalDate   DateTime?
 
   items item[]
 
@@ -105,6 +106,8 @@ model pfOrder {
   staffMemo String? @db.Text
 
   orderStatus String @default("Pending Review")
+
+  arrivalDate DateTime?
 
   items item[]
 

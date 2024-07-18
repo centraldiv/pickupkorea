@@ -19,7 +19,7 @@ export const GET = async (context: APIContext) => {
         JSON.stringify({ message: "You are not logged in!" }),
         {
           status: 401,
-        }
+        },
       );
     }
 
