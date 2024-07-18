@@ -61,3 +61,15 @@ export const fetchBuyOrders = async () => {
   });
   return response.json();
 };
+
+export const fetchBuyOrder = async (orderId: string) => {
+  const response = await fetch(
+    `/api/private/orders/buy-orders/order?orderId=${orderId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.json();
+};

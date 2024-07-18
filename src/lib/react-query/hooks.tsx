@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   PrivateQueryKeys,
   PublicQueryKeys,
+  fetchBuyOrder,
   fetchBuyOrders,
   fetchCountries,
 } from "./config";
@@ -18,6 +19,9 @@ export type BuyOrderWithItemsAndAddress = buyOrder & {
   items: item[];
   address: address;
   productInvoice?: productInvoice;
+  _count: {
+    items: number;
+  };
 };
 
 export const useCountries = () => {
@@ -35,6 +39,16 @@ export const useBuyOrders = () => {
     {
       queryKey: PrivateQueryKeys.buyOrders,
       queryFn: fetchBuyOrders,
+    },
+    client
+  );
+};
+
+export const useSingleBuyOrder = (orderId: string) => {
+  return useQuery<BuyOrderWithItemsAndAddress>(
+    {
+      queryKey: [...PrivateQueryKeys.buyOrders, orderId],
+      queryFn: async () => await fetchBuyOrder(orderId),
     },
     client
   );

@@ -1,0 +1,18 @@
+---
+import SingleBuyOrderContainer from "@/components/users/orders/buy-orders/single/SingleBuyOrderContainer.tsx";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+
+export const prerender = false;
+const { orderId } = Astro.params;
+
+if (!orderId) {
+  return Astro.redirect("/account/orders/buy-orders");
+}
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/buy-orders"
+  title="Buy Orders | Orders | Pickup Korea"
+>
+  <SingleBuyOrderContainer orderId={orderId} client:load />
+</OrdersLayout>

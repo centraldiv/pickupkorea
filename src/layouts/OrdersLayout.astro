@@ -34,8 +34,8 @@ const { currentRoute, title } = Astro.props;
 
 <MainLayout title={title} currentRoute={currentRoute}>
   <main class="grid main-section h-full">
-    <aside class="px-2 border-r py-4">
-      <ul class="flex flex-col gap-4 px-2">
+    <aside>
+      <ul>
         {
           orderMenus.map((menu) => (
             <li>
@@ -53,13 +53,20 @@ const { currentRoute, title } = Astro.props;
         }
       </ul>
     </aside>
-    <section class="px-2 py-4"><slot /></section>
+    <slot />
   </main>
 </MainLayout>
 
 <style>
+  aside {
+    @apply px-2 xl:border-r py-4 max-w-7xl mx-auto;
+
+    ul {
+      @apply flex xl:flex-col gap-4 flex-wrap;
+    }
+  }
+
   .main-section {
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 100vh;
+    @apply xl:grid-cols-[250px_1fr] xl:grid-rows-[100vh];
   }
 </style>

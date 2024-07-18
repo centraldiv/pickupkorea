@@ -24,6 +24,7 @@ export enum BuyOrderStatus {
   SHIPPING_INVOICED = "Shipping Invoice Issued",
   PARTIALLY_SHIPPED = "Partially Shipped",
   SHIPPED = "Shipped",
+  ATTENTION = "Attention Required",
 }
 
 export enum PFOrderStatus {
@@ -36,4 +37,5 @@ export enum PFOrderStatus {
   SHIPPING_INVOICED = "Shipping Invoice Issued",
   PARTIALLY_SHIPPED = "Partially Shipped",
   SHIPPED = "Shipped",
+  ATTENTION = "Attention Required",
 }

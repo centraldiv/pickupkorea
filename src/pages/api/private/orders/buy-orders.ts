@@ -1,6 +1,7 @@
 import { verifySession } from "@/lib/sessions";
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
+import { BuyOrderStatus, ItemStatus } from "@/definitions/statuses";
 
 export const prerender = false;
 
@@ -26,9 +27,27 @@ export const GET = async (context: APIContext) => {
       where: {
         userId: session.userId,
       },
-      include: {
-        items: true,
-        address: true,
+      select: {
+        id: true,
+        orderStatus: true,
+        shipRightAway: true,
+        createdAt: true,
+        productInvoice: {
+          select: {
+            invoiceNumber: true,
+          },
+        },
+        _count: {
+          select: {
+            items: {
+              where: {
+                productStatus: {
+                  notIn: [ItemStatus.CREDITED, ItemStatus.REMOVED],
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

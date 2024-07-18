@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { useBuyOrders } from "@/lib/react-query/hooks";
 import { format } from "date-fns";
 
@@ -14,34 +15,48 @@ const BuyOrdersTable = () => {
 
   if (data)
     return (
-      <Table className="w-full max-w-2xl mx-auto rounded-md border">
+      <Table className="border w-full">
         <TableHeader className="bg-primary/60">
           <TableRow className="">
-            <TableHead className="text-black font-medium w-[150px]">
+            <TableHead className="text-black font-medium min-w-[150px]">
               Submit Date
             </TableHead>
-            <TableHead className="text-black font-medium text-center w-[200px]">
+            <TableHead className="text-black font-medium min-w-[150px] text-center">
+              Invoice Number
+            </TableHead>
+            <TableHead className="ㅛtext-black font-medium text-center min-w-[170px]">
               Products in Order
             </TableHead>
-            <TableHead className="text-black font-medium text-center">
+            <TableHead className="text-black font-medium text-center min-w-[200px]">
               Status
             </TableHead>
-            <TableHead className="w-[50px]"></TableHead>
+            <TableHead className="text-black font-medium text-center min-w-[150px]">
+              Ship Immediately
+            </TableHead>
+            <TableHead className="min-w-[50px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((order) => (
             <TableRow key={order.id}>
-              <TableCell className="w-[150px]">
+              <TableCell className="">
                 {format(order.createdAt, "yyyy-MM-dd HH:mm")}
               </TableCell>
-              <TableCell className="text-center w-[200px]">
-                {order.items.length}
+              <TableCell className="text-center ">
+                {order.productInvoice?.invoiceNumber ?? "N/A"}
               </TableCell>
-              <TableCell className="text-center">{order.orderStatus}</TableCell>
+              <TableCell className="text-center ">
+                {order._count.items}
+              </TableCell>
+              <TableCell className="text-center ">
+                {order.orderStatus}
+              </TableCell>
+              <TableCell className="text-center">
+                {order.shipRightAway ? "Yes" : "No"}
+              </TableCell>
               <TableCell className="text-center">
                 <a
-                  href={`/orders/${order.id}`}
+                  href={`/account/orders/buy-orders/${order.id}`}
                   className="text-primary font-bold"
                 >
                   View
