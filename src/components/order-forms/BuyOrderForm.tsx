@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import BuyOrderSteps from "./BuyOrderSteps";
-import type { country } from "@prisma/client";
+import type { availableShippingMethods, country } from "@prisma/client";
 
 const formDefault = {
   shipRightAway: false,
@@ -34,7 +34,13 @@ const formDefault = {
     },
   ],
 };
-const BuyOrderForm = ({ countries }: { countries: country[] }) => {
+const BuyOrderForm = ({
+  countries,
+  shippingMethods,
+}: {
+  countries: country[];
+  shippingMethods: availableShippingMethods[];
+}) => {
   const [nextStep, setNextStep] = useState(false);
 
   const form = useForm<z.infer<typeof ClientBuyOrderSchema>>({
@@ -77,7 +83,11 @@ const BuyOrderForm = ({ countries }: { countries: country[] }) => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       {nextStep ? (
-        <BuyOrderSteps form={form} countries={countries} />
+        <BuyOrderSteps
+          form={form}
+          countries={countries}
+          shippingMethods={shippingMethods}
+        />
       ) : (
         <Form {...form}>
           <form
@@ -86,7 +96,7 @@ const BuyOrderForm = ({ countries }: { countries: country[] }) => {
               "py-16 grid gap-8",
               fields.length === 1 && "grid-cols-1",
               fields.length === 2 && "sm:grid-cols-2",
-              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2"
+              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2",
             )}
           >
             <div className="my-6 col-span-full">

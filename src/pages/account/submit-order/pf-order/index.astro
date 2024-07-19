@@ -1,10 +1,11 @@
 ---
 import PFOrderForm from "@/components/order-forms/PFOrderForm";
 import MainLayout from "@/layouts/MainLayout.astro";
-import { getCountries } from "@/lib/db-funcs/get-functions";
+import { getCountries, getShippingMethods } from "@/lib/db-funcs/get-functions";
 export const prerender = false;
 
 const countries = await getCountries();
+const shippingMethods = await getShippingMethods();
 ---
 
 <MainLayout
@@ -13,6 +14,11 @@ const countries = await getCountries();
 >
   <main class="min-h-screen py-16 px-4 max-w-7xl mx-auto w-full">
     <h1 class="text-4xl font-bold text-center">Package Forwarding Order</h1>
-    <PFOrderForm client:load countries={countries} />
+
+    <PFOrderForm
+      client:load
+      countries={countries}
+      shippingMethods={shippingMethods}
+    />
   </main>
 </MainLayout>

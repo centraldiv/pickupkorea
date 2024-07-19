@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["omitApi"]
 }
 
@@ -30,6 +30,16 @@ model user {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model availableShippingMethods {
+  id        String     @id @default(uuid())
+  name      String     @unique @db.Char(100)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  buyOrder  buyOrder[]
+  pfOrder   pfOrder[]
 }
 
 model country {
@@ -69,7 +79,9 @@ model buyOrder {
   userId String
   user   user   @relation(fields: [userId], references: [id])
 
-  locked Boolean @default(false)
+  locked           Boolean                   @default(false)
+  shippingMethod   availableShippingMethods? @relation(fields: [shippingMethodId], references: [id])
+  shippingMethodId String?
 
   shipRightAway Boolean @default(false)
 
@@ -82,7 +94,7 @@ model buyOrder {
   orderStatus String @default("Pending Review")
 
   purchaseDate DateTime?
-  arrivalDate   DateTime?
+  arrivalDate  DateTime?
 
   items item[]
 
@@ -99,6 +111,9 @@ model pfOrder {
   user   user   @relation(fields: [userId], references: [id])
 
   locked Boolean @default(false)
+
+  shippingMethod   availableShippingMethods? @relation(fields: [shippingMethodId], references: [id])
+  shippingMethodId String?
 
   shipRightAway Boolean @default(false)
 

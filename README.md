@@ -27,6 +27,18 @@
 /api/private/settings/country-list
 : DELETE , requires country data with id. Returns 200 if success, 400 if data is entirely invalid. ADMIN ONLY
 
+/api/public/settings/shipping-methods
+: GET , returns a list of available shipping methods.
+
+/api/private/settings/shipping-methods
+: POST , requires shipping method data with name and isActive. Returns 200 if success, 400 if duplicate name or if data is entirely invalid. ADMIN ONLY
+
+/api/private/settings/shipping-methods
+: PATCH , requires shipping method data with name and isActive. Returns 200 if success, 400 if duplicate name or if data is entirely invalid. ADMIN ONLY
+
+/api/private/settings/shipping-methods
+: DELETE , requires shipping method data with id. Returns 200 if success, 400 if data is entirely invalid. ADMIN ONLY
+
 /api/private/orders/buy-orders
 : GET , returns a list of buy orders for user.
 
@@ -38,6 +50,12 @@
 
 /api/private/orders/pf-orders/order
 : GET , returns single pf order for user.
+
+/api/private/orders/admin-buy-orders?orderStatus=
+: GET , returns a list of buy orders for admin. Query params: orderStatus
+
+/api/private/orders/admin-buy-orders/order
+: GET , returns single buy order for admin.
 
 # Todo
 

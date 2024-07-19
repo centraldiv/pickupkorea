@@ -57,7 +57,7 @@ export const SignUpSchema = RawSignUpSchema.refine(
   {
     path: ["confirmPassword"],
     message: "Passwords do not match",
-  }
+  },
 );
 
 export const LoginSchema = RawSignUpSchema.pick({
@@ -113,6 +113,7 @@ export const ClientBuyOrderSchema = z.object({
   items: z.array(ClientBuyItemSchema).nonempty("Items are required"),
   userMemo: z.string().optional(),
   address: AddressSchema.nullish(),
+  shippingMethodId: z.string().optional(),
 });
 
 export const ClientPFOrderSchema = ClientBuyOrderSchema.extend({
@@ -123,5 +124,11 @@ export const ClientPFOrderSchema = ClientBuyOrderSchema.extend({
 export const CountrySchema = z.object({
   name: z.string().min(1, { message: "Country name is required" }),
   code: z.string().min(1, { message: "Country code is required" }),
+  id: z.string().optional(),
+});
+
+export const ShippingMethodSchema = z.object({
+  name: z.string().min(1, { message: "Shipping method name is required" }),
+  isActive: z.boolean().default(true),
   id: z.string().optional(),
 });

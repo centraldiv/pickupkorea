@@ -7,3 +7,11 @@ export const getCountries = async () => {
     },
   });
 };
+
+export const getShippingMethods = async () => {
+  return await prisma.availableShippingMethods.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+};

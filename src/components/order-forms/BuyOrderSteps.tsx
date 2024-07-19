@@ -28,7 +28,7 @@ import {
 import type { UseFormReturn } from "react-hook-form";
 import { ClientBuyOrderSchema } from "@/definitions/zod-definitions";
 import { z } from "zod";
-import type { country } from "@prisma/client";
+import type { availableShippingMethods, country } from "@prisma/client";
 
 const addressDefault = {
   receiverName: "",
@@ -44,21 +44,27 @@ const addressDefault = {
 const BuyOrderSteps = ({
   form,
   countries,
+  shippingMethods,
 }: {
   form: UseFormReturn<z.infer<typeof ClientBuyOrderSchema>>;
   countries: country[];
+  shippingMethods: availableShippingMethods[];
 }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmitAddressOrder = (
-    values: z.infer<typeof ClientBuyOrderSchema>
+    values: z.infer<typeof ClientBuyOrderSchema>,
   ) => {
+    if (!values.shippingMethodId) {
+      alert("Please select a shipping method");
+      return;
+    }
     setStep(2);
   };
 
   const onSubmitFinalStep = async (
-    values: z.infer<typeof ClientBuyOrderSchema>
+    values: z.infer<typeof ClientBuyOrderSchema>,
   ) => {
     try {
       setIsSubmitting(true);
@@ -71,7 +77,7 @@ const BuyOrderSteps = ({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(values),
-        }
+        },
       );
       const { message, orderId }: { message: string; orderId?: string } =
         await response.json();
@@ -281,6 +287,43 @@ const BuyOrderSteps = ({
                   </FormItem>
                 )}
               />
+
+              <h2 className="text-2xl font-medium mt-12 text-center">
+                Shipping Method
+              </h2>
+              <FormField
+                control={form.control}
+                name="shippingMethodId"
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel>
+                      Please select your preferred shipping courier
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {shippingMethods.map((shippingMethod) => (
+                          <SelectItem
+                            value={shippingMethod.id}
+                            key={shippingMethod.id}
+                          >
+                            {shippingMethod.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <Button className="mt-6 w-full" type="submit">
                 Final Step
               </Button>

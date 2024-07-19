@@ -1,0 +1,14 @@
+---
+import AdminBuyOrderContainer from "@/components/admin/orders/buy-orders/AdminBuyOrderContainer";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Settings | Admin | Pickup Korea"
+  currentRoute="/account/admin/settings"
+  isAdmin
+>
+  <main class="w-full max-h-[600px] h-[600px]">
+    <AdminBuyOrderContainer client:load />
+  </main>
+</MainLayout>

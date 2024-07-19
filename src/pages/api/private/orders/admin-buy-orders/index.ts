@@ -1,7 +1,7 @@
 import { verifySession } from "@/lib/sessions";
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
-import { ItemStatus } from "@/definitions/statuses";
+import { BuyOrderStatus, ItemStatus } from "@/definitions/statuses";
 
 export const prerender = false;
 
@@ -14,24 +14,47 @@ export const GET = async (context: APIContext) => {
     }
 
     const session = await verifySession(context.cookies);
-    if (!session) {
+    if (!session || !session.isAdmin) {
+      return new Response(JSON.stringify({ message: "Session not valid" }), {
+        status: 401,
+      });
+    }
+
+    const url = new URL(context.request.url);
+    const searchParams = new URLSearchParams(url.search);
+    const orderStatus = searchParams.get("orderStatus") as BuyOrderStatus;
+
+    if (!orderStatus) {
       return new Response(
-        JSON.stringify({ message: "You are not logged in!" }),
+        JSON.stringify({ message: "Order status is required" }),
         {
-          status: 401,
+          status: 400,
         },
       );
     }
 
-    const buyOrders = await prisma.pfOrder.findMany({
+    const buyOrders = await prisma.buyOrder.findMany({
       where: {
-        userId: session.userId,
+        orderStatus: orderStatus,
       },
       select: {
         id: true,
         orderStatus: true,
         shipRightAway: true,
         createdAt: true,
+        updatedAt: true,
+        shippingMethod: true,
+        address: {
+          include: {
+            country: true,
+          },
+        },
+        productInvoice: {
+          select: {
+            invoiceNumber: true,
+          },
+        },
+
         _count: {
           select: {
             items: {
@@ -43,11 +66,23 @@ export const GET = async (context: APIContext) => {
             },
           },
         },
+        items: {
+          select: {
+            href: true,
+            receivedQuantity: true,
+          },
+        },
+        user: {
+          select: {
+            fullName: true,
+            email: true,
+          },
+        },
       },
+
       orderBy: {
-        createdAt: "desc",
+        updatedAt: "asc",
       },
-      take: 100,
     });
 
     return new Response(JSON.stringify(buyOrders), {

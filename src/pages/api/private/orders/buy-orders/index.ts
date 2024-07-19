@@ -1,7 +1,7 @@
 import { verifySession } from "@/lib/sessions";
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
-import { BuyOrderStatus, ItemStatus } from "@/definitions/statuses";
+import { ItemStatus } from "@/definitions/statuses";
 
 export const prerender = false;
 
@@ -52,6 +52,7 @@ export const GET = async (context: APIContext) => {
       orderBy: {
         createdAt: "desc",
       },
+      take: 100,
     });
 
     return new Response(JSON.stringify(buyOrders), {

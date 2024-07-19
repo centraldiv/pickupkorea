@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { z } from "zod";
 import PFOrderSteps from "./PFOrderSteps";
-import type { country } from "@prisma/client";
+import type { availableShippingMethods, country } from "@prisma/client";
 
 const formDefault = {
   shipRightAway: false,
@@ -35,7 +35,13 @@ const formDefault = {
     },
   ],
 };
-const PFOrderForm = ({ countries }: { countries: country[] }) => {
+const PFOrderForm = ({
+  countries,
+  shippingMethods,
+}: {
+  countries: country[];
+  shippingMethods: availableShippingMethods[];
+}) => {
   const [nextStep, setNextStep] = useState(false);
 
   const form = useForm<z.infer<typeof ClientPFOrderSchema>>({
@@ -79,7 +85,11 @@ const PFOrderForm = ({ countries }: { countries: country[] }) => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       {nextStep ? (
-        <PFOrderSteps form={form} countries={countries} />
+        <PFOrderSteps
+          form={form}
+          countries={countries}
+          shippingMethods={shippingMethods}
+        />
       ) : (
         <Form {...form}>
           <p className="max-w-lg mx-auto my-12 text-center border rounded-md shadow-md py-4 px-2 font-medium">
@@ -95,7 +105,7 @@ const PFOrderForm = ({ countries }: { countries: country[] }) => {
               "grid gap-8",
               fields.length === 1 && "grid-cols-1",
               fields.length === 2 && "sm:grid-cols-2",
-              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2"
+              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2",
             )}
           >
             <div className="my-6 col-span-full">

@@ -7,24 +7,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddCountryForm from "./AddCountryForm";
+import AddShippingMethodForm from "./AddShippingMethodForm";
 
-const AddCountry = () => {
+const AddShippingMethod = () => {
   return (
     <aside className="flex justify-end mb-6 max-w-xl mx-auto w-full">
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="">국가 추가</Button>
+          <Button className="">배송방법 추가</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>국가 추가</DialogTitle>
+            <DialogTitle>배송방법 추가</DialogTitle>
             <DialogDescription>
-              중복된 국가 코드나 이름은 추가할 수 없습니다.
+              중복된 배송방법 이름은 추가할 수 없습니다.
             </DialogDescription>
           </DialogHeader>
           <div>
-            <AddCountryForm />
+            <AddShippingMethodForm />
           </div>
         </DialogContent>
       </Dialog>
@@ -32,4 +32,4 @@ const AddCountry = () => {
   );
 };
 
-export default AddCountry;
+export default AddShippingMethod;
