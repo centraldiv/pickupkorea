@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import type { z } from "zod";
 import { ShippingMethodSchema } from "@/definitions/zod-definitions";
 import { useMutation } from "@tanstack/react-query";
-import { PublicQueryKeys, addShippingMethod } from "@/lib/react-query/config";
+import { PrivateQueryKeys, addShippingMethod } from "@/lib/react-query/config";
 import { client } from "@/stores/admin";
 import type { availableShippingMethods } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,18 +21,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 const AddShippingMethodForm = () => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.shippingMethods,
+      mutationKey: PrivateQueryKeys.shippingMethods,
       mutationFn: async (values: z.infer<typeof ShippingMethodSchema>) => {
         return await addShippingMethod(values);
       },
       onMutate: async (newShippingMethod) => {
         await client.cancelQueries({
-          queryKey: PublicQueryKeys.shippingMethods,
+          queryKey: PrivateQueryKeys.shippingMethods,
         });
 
         const previousShippingMethods = client.getQueryData<
           availableShippingMethods[]
-        >(PublicQueryKeys.shippingMethods)!;
+        >(PrivateQueryKeys.shippingMethods)!;
 
         if (previousShippingMethods) {
         }
@@ -41,7 +41,7 @@ const AddShippingMethodForm = () => {
           newShippingMethod,
         ];
         client.setQueryData(
-          PublicQueryKeys.shippingMethods,
+          PrivateQueryKeys.shippingMethods,
           newShippingMethods.sort((a, b) => a.name.localeCompare(b.name)),
         );
         return { previousShippingMethods, newShippingMethods };
@@ -52,12 +52,14 @@ const AddShippingMethodForm = () => {
       },
       onError: (err, newCountries, context) => {
         client.setQueryData(
-          PublicQueryKeys.shippingMethods,
+          PrivateQueryKeys.shippingMethods,
           context!.previousShippingMethods,
         );
       },
       onSettled: () => {
-        client.invalidateQueries({ queryKey: PublicQueryKeys.shippingMethods });
+        client.invalidateQueries({
+          queryKey: PrivateQueryKeys.shippingMethods,
+        });
       },
     },
     client,
@@ -108,7 +110,11 @@ const AddShippingMethodForm = () => {
           )}
         />
 
-        <Button type="submit" className="mt-6 mr-0 ml-auto flex">
+        <Button
+          type="submit"
+          className="mt-6 mr-0 ml-auto flex"
+          disabled={mutation.isPending}
+        >
           배송방법 추가
         </Button>
       </form>

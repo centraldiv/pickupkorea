@@ -31,6 +31,24 @@ export const onRequest = defineMiddleware(async (context, next) => {
         });
       }
     }
+    if (
+      context.url.pathname.startsWith("/api/private/orders/admin-buy-orders")
+    ) {
+      if (!session?.isAdmin) {
+        return new Response(JSON.stringify({ message: "Unauthorized" }), {
+          status: 401,
+        });
+      }
+    }
+    if (
+      context.url.pathname.startsWith("/api/private/orders/admin-pf-orders")
+    ) {
+      if (!session?.isAdmin) {
+        return new Response(JSON.stringify({ message: "Unauthorized" }), {
+          status: 401,
+        });
+      }
+    }
   }
 
   return next();

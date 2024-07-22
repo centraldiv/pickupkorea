@@ -4,13 +4,18 @@ import {
   PrivateQueryKeys,
   PublicQueryKeys,
   fetchAdminBuyOrder,
+  fetchAdminBuyOrderProductInvoices,
   fetchAdminBuyOrders,
+  fetchAdminPFOrder,
+  fetchAdminPFOrders,
   fetchBuyOrder,
   fetchBuyOrders,
-  fetchCountries,
   fetchPFOrder,
   fetchPFOrders,
-  fetchShippingMethods,
+  fetchPrivateCountries,
+  fetchPrivateShippingMethods,
+  fetchPublicCountries,
+  fetchPublicShippingMethods,
 } from "./config";
 import type {
   address,
@@ -22,10 +27,18 @@ import type {
   productInvoice,
   user,
 } from "@prisma/client";
-import type { BuyOrderStatus } from "@/definitions/statuses";
+import type { BuyOrderStatus, PFOrderStatus } from "@/definitions/statuses";
+
+export type ProductInvoiceWithUser = productInvoice & {
+  user: user;
+};
 
 export type AddressWithCountry = address & {
   country: country;
+};
+
+export type OrderAddressWithCountry = AddressWithCountry & {
+  orderId: string;
 };
 
 export type BuyOrderWithItemsAndAddress = buyOrder & {
@@ -38,29 +51,58 @@ export type BuyOrderWithItemsAndAddress = buyOrder & {
   };
   user: user;
 };
+
 export type PFOrderWithItemsAndAddress = pfOrder & {
   items: item[];
   address: AddressWithCountry;
+  shippingMethod: availableShippingMethods;
   _count: {
     items: number;
   };
+  user: user;
 };
 
-export const useCountries = () => {
+export type AdminBuyOrderWithItemsAndAddress = buyOrder & {
+  items: item[];
+  address: OrderAddressWithCountry;
+  productInvoice?: productInvoice;
+  shippingMethod: availableShippingMethods;
+  user: user;
+};
+
+export const usePublicCountries = () => {
   return useQuery<country[]>(
     {
       queryKey: PublicQueryKeys.countries,
-      queryFn: fetchCountries,
+      queryFn: fetchPublicCountries,
+    },
+    client,
+  );
+};
+export const usePrivateCountries = () => {
+  return useQuery<country[]>(
+    {
+      queryKey: PrivateQueryKeys.countries,
+      queryFn: fetchPrivateCountries,
     },
     client,
   );
 };
 
-export const useShippingMethods = () => {
+export const usePublicShippingMethods = () => {
   return useQuery<availableShippingMethods[]>(
     {
       queryKey: PublicQueryKeys.shippingMethods,
-      queryFn: fetchShippingMethods,
+      queryFn: fetchPublicShippingMethods,
+    },
+    client,
+  );
+};
+export const usePrivateShippingMethods = () => {
+  return useQuery<availableShippingMethods[]>(
+    {
+      queryKey: PrivateQueryKeys.shippingMethods,
+      queryFn: fetchPrivateShippingMethods,
     },
     client,
   );
@@ -117,10 +159,46 @@ export const useAdminBuyOrders = (orderStatus: BuyOrderStatus) => {
 };
 
 export const useSingleAdminBuyOrder = (orderId: string) => {
-  return useQuery<BuyOrderWithItemsAndAddress>(
+  return useQuery<AdminBuyOrderWithItemsAndAddress>(
     {
       queryKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
       queryFn: async () => await fetchAdminBuyOrder(orderId),
+      enabled: !!orderId,
+    },
+    client,
+  );
+};
+
+export const useAdminPFOrders = (orderStatus: PFOrderStatus) => {
+  return useQuery<PFOrderWithItemsAndAddress[]>(
+    {
+      queryKey: [...PrivateQueryKeys.adminPFOrders, orderStatus],
+      queryFn: async () => await fetchAdminPFOrders(orderStatus),
+    },
+    client,
+  );
+};
+
+export const useSingleAdminPFOrder = (orderId: string) => {
+  return useQuery<PFOrderWithItemsAndAddress>(
+    {
+      queryKey: [...PrivateQueryKeys.adminPFOrders, orderId],
+      queryFn: async () => await fetchAdminPFOrder(orderId),
+      enabled: !!orderId,
+    },
+    client,
+  );
+};
+
+export const useSingleAdminBuyOrderProductInvoices = (orderId: string) => {
+  return useQuery<ProductInvoiceWithUser[]>(
+    {
+      queryKey: [
+        ...PrivateQueryKeys.adminBuyOrders,
+        orderId,
+        "product-invoices",
+      ],
+      queryFn: async () => await fetchAdminBuyOrderProductInvoices(orderId),
       enabled: !!orderId,
     },
     client,

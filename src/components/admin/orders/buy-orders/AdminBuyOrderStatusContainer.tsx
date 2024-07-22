@@ -9,6 +9,7 @@ const AdminBuyOrderStatusContainer = ({
   orderStatus: BuyOrderStatus;
 }) => {
   const { data: orders, isLoading, isError } = useAdminBuyOrders(orderStatus);
+  console.log(orders);
   return (
     <div className="min-w-[400px] max-h-full overflow-y-auto border shadow rounded-md">
       <div className="px-4 py-2 bg-primary text-center font-medium sticky top-0 z-10">

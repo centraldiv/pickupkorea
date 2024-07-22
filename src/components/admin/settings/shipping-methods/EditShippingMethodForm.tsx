@@ -15,7 +15,7 @@ import type { z } from "zod";
 import { ShippingMethodSchema } from "@/definitions/zod-definitions";
 import { useMutation } from "@tanstack/react-query";
 import {
-  PublicQueryKeys,
+  PrivateQueryKeys,
   updateShippingMethod,
 } from "@/lib/react-query/config";
 import { client } from "@/stores/admin";
@@ -29,18 +29,18 @@ const EditShippingMethodForm = ({
 }) => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.shippingMethods,
+      mutationKey: PrivateQueryKeys.shippingMethods,
       mutationFn: async (values: z.infer<typeof ShippingMethodSchema>) => {
         return await updateShippingMethod(values);
       },
       onMutate: async (newMethod) => {
         await client.cancelQueries({
-          queryKey: PublicQueryKeys.shippingMethods,
+          queryKey: PrivateQueryKeys.shippingMethods,
         });
 
         const previousMethods = client.getQueryData<
           z.infer<typeof ShippingMethodSchema>[]
-        >(PublicQueryKeys.shippingMethods)!;
+        >(PrivateQueryKeys.shippingMethods)!;
 
         const newMethodList = cloneDeep(previousMethods);
         const index = newMethodList.findIndex(
@@ -49,7 +49,7 @@ const EditShippingMethodForm = ({
         );
         newMethodList[index] = newMethod;
 
-        client.setQueryData(PublicQueryKeys.shippingMethods, newMethodList);
+        client.setQueryData(PrivateQueryKeys.shippingMethods, newMethodList);
         return { previousMethods, newMethodList };
       },
       onSuccess: (data) => {
@@ -58,13 +58,13 @@ const EditShippingMethodForm = ({
       onError: (err, newMethodList, context) => {
         console.log("error", err);
         client.setQueryData(
-          PublicQueryKeys.shippingMethods,
+          PrivateQueryKeys.shippingMethods,
           context!.previousMethods,
         );
       },
       onSettled: () => {
         client.invalidateQueries({
-          queryKey: PublicQueryKeys.shippingMethods,
+          queryKey: PrivateQueryKeys.shippingMethods,
         });
       },
     },
@@ -117,7 +117,11 @@ const EditShippingMethodForm = ({
           )}
         />
 
-        <Button type="submit" className="mt-6 mr-0 ml-auto flex w-36">
+        <Button
+          type="submit"
+          className="mt-6 mr-0 ml-auto flex w-36"
+          disabled={mutation.isPending}
+        >
           수정
         </Button>
       </form>

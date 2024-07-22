@@ -13,30 +13,30 @@ import { Button } from "@/components/ui/button";
 import type { z } from "zod";
 import { CountrySchema } from "@/definitions/zod-definitions";
 import { useMutation } from "@tanstack/react-query";
-import { PublicQueryKeys, addCountry } from "@/lib/react-query/config";
+import { PrivateQueryKeys, addCountry } from "@/lib/react-query/config";
 import { client } from "@/stores/admin";
 import type { country } from "@prisma/client";
 
 const AddCountryForm = () => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.countries,
+      mutationKey: PrivateQueryKeys.countries,
       mutationFn: async (values: z.infer<typeof CountrySchema>) => {
         return await addCountry(values);
       },
       onMutate: async (newCountry) => {
-        await client.cancelQueries({ queryKey: PublicQueryKeys.countries });
+        await client.cancelQueries({ queryKey: PrivateQueryKeys.countries });
 
         const previousCountries = client.getQueryData<country[]>(
-          PublicQueryKeys.countries
+          PrivateQueryKeys.countries,
         )!;
 
         if (previousCountries) {
         }
         const newCountries = [...previousCountries, newCountry];
         client.setQueryData(
-          PublicQueryKeys.countries,
-          newCountries.sort((a, b) => a.name.localeCompare(b.name))
+          PrivateQueryKeys.countries,
+          newCountries.sort((a, b) => a.name.localeCompare(b.name)),
         );
         return { previousCountries, newCountries };
       },
@@ -45,15 +45,15 @@ const AddCountryForm = () => {
       },
       onError: (err, newCountries, context) => {
         client.setQueryData(
-          PublicQueryKeys.countries,
-          context!.previousCountries
+          PrivateQueryKeys.countries,
+          context!.previousCountries,
         );
       },
       onSettled: () => {
-        client.invalidateQueries({ queryKey: PublicQueryKeys.countries });
+        client.invalidateQueries({ queryKey: PrivateQueryKeys.countries });
       },
     },
-    client
+    client,
   );
 
   const form = useForm({
@@ -61,6 +61,7 @@ const AddCountryForm = () => {
     defaultValues: {
       name: "",
       code: "",
+      isActive: true,
     },
   });
 

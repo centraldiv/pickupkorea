@@ -7,9 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import EditCountryForm from "./EditCountryForm";
 import { useMutation } from "@tanstack/react-query";
-import { PublicQueryKeys, deleteCountry } from "@/lib/react-query/config";
+import { PrivateQueryKeys, deleteCountry } from "@/lib/react-query/config";
 import type { CountrySchema } from "@/definitions/zod-definitions";
 import type { z } from "zod";
 import { client } from "@/stores/admin";
@@ -27,22 +26,22 @@ const DeleteCountry = ({
 }) => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.countries,
+      mutationKey: PrivateQueryKeys.countries,
       mutationFn: async (values: z.infer<typeof CountrySchema>) => {
         return await deleteCountry(values);
       },
       onMutate: async (newCountry) => {
-        await client.cancelQueries({ queryKey: PublicQueryKeys.countries });
+        await client.cancelQueries({ queryKey: PrivateQueryKeys.countries });
 
         const previousCountries = client.getQueryData<
           z.infer<typeof CountrySchema>[]
-        >(PublicQueryKeys.countries)!;
+        >(PrivateQueryKeys.countries)!;
 
         const newCountryList = cloneDeep(previousCountries).filter(
-          (country) => country.id !== newCountry.id
+          (country) => country.id !== newCountry.id,
         );
 
-        client.setQueryData(PublicQueryKeys.countries, newCountryList);
+        client.setQueryData(PrivateQueryKeys.countries, newCountryList);
         return { previousCountries, newCountryList };
       },
 
@@ -53,15 +52,15 @@ const DeleteCountry = ({
       onError: (err, newCountryList, context) => {
         console.log("error", err);
         client.setQueryData(
-          PublicQueryKeys.countries,
-          context!.previousCountries
+          PrivateQueryKeys.countries,
+          context!.previousCountries,
         );
       },
       onSettled: () => {
-        client.invalidateQueries({ queryKey: PublicQueryKeys.countries });
+        client.invalidateQueries({ queryKey: PrivateQueryKeys.countries });
       },
     },
-    client
+    client,
   );
   return (
     <Dialog open={open} onOpenChange={close}>
@@ -77,6 +76,7 @@ const DeleteCountry = ({
           <Button
             className="flex mr-0 ml-auto w-36"
             variant="destructive"
+            disabled={mutation.isPending}
             onClick={() => {
               mutation.mutate(country);
             }}

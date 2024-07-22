@@ -28,7 +28,7 @@ const formDefault = {
       quantity: 1,
       option: "",
       memo: "",
-      price: 0,
+
       unboxingPhotoRequested: false,
       unboxingVideoRequested: false,
       isInclusion: false,
@@ -76,6 +76,10 @@ const PFOrderForm = ({
   }, []);
 
   const onSubmit = (values: z.infer<typeof ClientPFOrderSchema>) => {
+    if (values.items.some((item) => !item.price)) {
+      alert("Please enter a price for all items");
+      return;
+    }
     if (!nextStep) {
       setNextStep(true);
       return;
@@ -114,7 +118,6 @@ const PFOrderForm = ({
                   append({
                     href: "",
                     quantity: 1,
-                    price: 0,
                     option: "",
                     memo: "",
                     unboxingPhotoRequested: false,
@@ -182,7 +185,7 @@ const PFOrderForm = ({
                     name={`items.${i}.price`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Price</FormLabel>
+                        <FormLabel>Price in KRW</FormLabel>
                         <FormControl>
                           <Input
                             {...field}

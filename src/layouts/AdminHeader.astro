@@ -26,7 +26,7 @@ const { currentRoute } = Astro.props;
             <a
               href={link.href}
               class={cn(
-                currentRoute === link.href ? "text-black" : "text-white",
+                currentRoute.includes(link.href) ? "text-black" : "text-white",
                 "whitespace-nowrap hover:text-black transition-colors duration-300"
               )}
             >

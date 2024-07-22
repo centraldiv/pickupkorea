@@ -9,11 +9,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useShippingMethods } from "@/lib/react-query/hooks";
+import { usePrivateShippingMethods } from "@/lib/react-query/hooks";
 import ShippingMethodDropdown from "./ShippingMethodDropdown";
 
 const ShippingMethodList = () => {
-  const { data: shippingMethods, isLoading, isError } = useShippingMethods();
+  const {
+    data: shippingMethods,
+    isLoading,
+    isError,
+  } = usePrivateShippingMethods();
 
   if (isError) return <div>Error</div>;
   if (isLoading)

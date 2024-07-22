@@ -27,6 +27,8 @@ export enum BuyOrderStatus {
   ATTENTION = "Attention Required",
 }
 
+export const BuyOrderStatusArray = Object.values(BuyOrderStatus) as string[];
+
 export enum PFOrderStatus {
   PENDING = "Pending Review",
   AWAITING_ARRIVAL = "Awaiting Arrival",
@@ -38,4 +40,11 @@ export enum PFOrderStatus {
   PARTIALLY_SHIPPED = "Partially Shipped",
   SHIPPED = "Shipped",
   ATTENTION = "Attention Required",
+}
+
+export enum ShippingRequestStatus {
+  REQUESTED = "Requested",
+  PROCESSING = "Processing",
+  SHIPPED = "Shipped",
+  REJECTED = "Rejected",
 }

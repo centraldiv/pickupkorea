@@ -7,14 +7,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import EditCountryForm from "./EditCountryForm";
 import { useMutation } from "@tanstack/react-query";
-import { PublicQueryKeys, deleteCountry } from "@/lib/react-query/config";
-import type { CountrySchema } from "@/definitions/zod-definitions";
+import {
+  PrivateQueryKeys,
+  deleteShippingMethod,
+} from "@/lib/react-query/config";
+
 import type { z } from "zod";
 import { client } from "@/stores/admin";
 import { cloneDeep } from "lodash-es";
 import { Button } from "@/components/ui/button";
+import type { ShippingMethodSchema } from "@/definitions/zod-definitions";
 
 const DeleteCountry = ({
   open,
@@ -27,38 +30,38 @@ const DeleteCountry = ({
 }) => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.countries,
-      mutationFn: async (values: z.infer<typeof CountrySchema>) => {
-        return await deleteCountry(values);
+      mutationKey: PrivateQueryKeys.countries,
+      mutationFn: async (values: z.infer<typeof ShippingMethodSchema>) => {
+        return await deleteShippingMethod(values);
       },
       onMutate: async (newCountry) => {
-        await client.cancelQueries({ queryKey: PublicQueryKeys.countries });
+        await client.cancelQueries({ queryKey: PrivateQueryKeys.countries });
 
-        const previousCountries = client.getQueryData<
-          z.infer<typeof CountrySchema>[]
-        >(PublicQueryKeys.countries)!;
+        const previousShippingMethods = client.getQueryData<
+          z.infer<typeof ShippingMethodSchema>[]
+        >(PrivateQueryKeys.countries)!;
 
-        const newCountryList = cloneDeep(previousCountries).filter(
+        const newShippingMethods = cloneDeep(previousShippingMethods).filter(
           (country) => country.id !== newCountry.id,
         );
 
-        client.setQueryData(PublicQueryKeys.countries, newCountryList);
-        return { previousCountries, newCountryList };
+        client.setQueryData(PrivateQueryKeys.countries, newShippingMethods);
+        return { previousShippingMethods, newShippingMethods };
       },
 
       onSuccess: (data) => {
         if (data.message) alert(data?.message);
         close();
       },
-      onError: (err, newCountryList, context) => {
+      onError: (err, newShippingMethods, context) => {
         console.log("error", err);
         client.setQueryData(
-          PublicQueryKeys.countries,
-          context!.previousCountries,
+          PrivateQueryKeys.countries,
+          context!.previousShippingMethods,
         );
       },
       onSettled: () => {
-        client.invalidateQueries({ queryKey: PublicQueryKeys.countries });
+        client.invalidateQueries({ queryKey: PrivateQueryKeys.countries });
       },
     },
     client,
@@ -67,16 +70,16 @@ const DeleteCountry = ({
     <Dialog open={open} onOpenChange={close}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Country</DialogTitle>
+          <DialogTitle>배송방법 삭제</DialogTitle>
           <DialogDescription>
-            주문, 계정 등에 이미 사용된 국가를 삭제할 경우 오류가 발생할 수
-            있습니다.
+            주문, 계정 등에 이미 사용된 배송방법은 삭제할수 없습니다
           </DialogDescription>
         </DialogHeader>
         <div>
           <Button
             className="flex mr-0 ml-auto w-36"
             variant="destructive"
+            disabled={mutation.isPending}
             onClick={() => {
               mutation.mutate(country);
             }}

@@ -9,6 +9,9 @@ export async function GET(context: APIContext) {
       });
     }
     const countries = await prisma.country.findMany({
+      where: {
+        isActive: true,
+      },
       orderBy: {
         name: "asc",
       },

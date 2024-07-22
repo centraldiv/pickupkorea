@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BuyOrderStatus, BuyOrderStatusArray } from "./statuses";
 
 const passwordRegex =
   /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,20}$/;
@@ -49,7 +50,7 @@ export const RawSignUpSchema = z.object({
     .max(20, { message: "Password must be less than 20 characters" })
     .trim(),
   country: z.string().trim(),
-  kakaoId: z.string().nullish(),
+  kakaoId: z.string().trim().nullish(),
 });
 
 export const SignUpSchema = RawSignUpSchema.refine(
@@ -86,13 +87,18 @@ export const AddressSchema = z.object({
   country: z.string({ required_error: "Country is required" }).trim(),
 });
 
+export const OrderAddressSchema = AddressSchema.extend({
+  orderId: z.string({ required_error: "Order ID is required" }),
+  id: z.string({ required_error: "Address ID is required" }),
+});
+
 export const ClientBuyItemSchema = z.object({
   href: z
     .string({ required_error: "Link to product is required" })
     .min(1, { message: "Link to product is required" })
     .trim(),
-  memo: z.string().optional(),
-  option: z.string().optional(),
+  memo: z.string().trim().optional(),
+  option: z.string().trim().optional(),
   quantity: z.coerce
     .number({ required_error: "Quantity is required" })
     .min(1, { message: "Quantity must be at least 1" }),
@@ -103,9 +109,10 @@ export const ClientBuyItemSchema = z.object({
 });
 
 export const ClientPFItemSchema = ClientBuyItemSchema.extend({
-  price: z
+  price: z.coerce
     .number({ required_error: "Price is required" })
-    .min(0, { message: "Price must be greater than 0 KRW" }),
+    .min(0, { message: "Price must be greater than 0 KRW" })
+    .optional(),
 });
 
 export const ClientBuyOrderSchema = z.object({
@@ -122,13 +129,35 @@ export const ClientPFOrderSchema = ClientBuyOrderSchema.extend({
 });
 
 export const CountrySchema = z.object({
-  name: z.string().min(1, { message: "Country name is required" }),
-  code: z.string().min(1, { message: "Country code is required" }),
+  name: z.string().min(1, { message: "Country name is required" }).trim(),
+  code: z.string().min(1, { message: "Country code is required" }).trim(),
   id: z.string().optional(),
+  isActive: z.boolean().default(true),
 });
 
 export const ShippingMethodSchema = z.object({
-  name: z.string().min(1, { message: "Shipping method name is required" }),
+  name: z
+    .string()
+    .min(1, { message: "Shipping method name is required" })
+    .trim(),
   isActive: z.boolean().default(true),
   id: z.string().optional(),
+});
+
+export const AdminBuyOrderInfoSchema = z.object({
+  orderId: z.string({ required_error: "Order ID is required" }),
+  orderStatus: z.enum(BuyOrderStatusArray as [string, ...string[]]),
+  userMemo: z.string().optional(),
+  staffMemo: z.string().optional(),
+  productInvoiceId: z.string().optional(),
+  shipRightAway: z.boolean(),
+  shippingMethod: ShippingMethodSchema.nullish(),
+});
+
+export const ProductInvoiceSchema = z.object({
+  name: z.string({ required_error: "Name is required" }),
+  quantity: z.coerce
+    .number({ required_error: "Quantity is required" })
+    .min(1, { message: "Quantity must be at least 1" }),
+  price: z.coerce.number({ required_error: "Price is required" }),
 });

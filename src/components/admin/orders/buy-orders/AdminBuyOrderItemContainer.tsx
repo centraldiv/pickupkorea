@@ -10,7 +10,7 @@ const AdminBuyOrderItemContainer = ({
 }) => {
   if (order.shipRightAway) {
     return (
-      <a href={`/admin/orders/buy-orders/${order.id}`}>
+      <a href={`/account/admin/buy-orders/${order.id}`}>
         <div key={order.id} className="relative border shadow rounded-md">
           <div className="w-full bg-blue-400 flex items-center justify-center rounded-t py-0.5 font-semibold">
             바로 배송
@@ -61,7 +61,7 @@ const AdminBuyOrderItemContainer = ({
   }
 
   return (
-    <a href={`/admin/orders/buy-orders/${order.id}`}>
+    <a href={`/account/admin/buy-orders/${order.id}`}>
       <div key={order.id} className="relative border shadow rounded-md">
         <div className="w-full bg-pink-400 flex items-center justify-center rounded-t py-0.5 font-semibold text-white">
           창고

@@ -1,0 +1,14 @@
+---
+import AdminPFOrderContainer from "@/components/admin/orders/pf-orders/AdminPFOrderContainer";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="PF Orders | Admin | Pickup Korea"
+  currentRoute="/account/admin/pf-orders"
+  isAdmin
+>
+  <main class="w-full max-h-[600px] h-[600px]">
+    <AdminPFOrderContainer client:load />
+  </main>
+</MainLayout>

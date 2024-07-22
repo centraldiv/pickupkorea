@@ -2,6 +2,8 @@ import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
 import { verifySession } from "@/lib/sessions";
 
+export const prerender = false;
+
 export async function GET(context: APIContext) {
   try {
     if (context.request.headers.get("Content-Type") !== "application/json") {
@@ -16,7 +18,7 @@ export async function GET(context: APIContext) {
         JSON.stringify({ message: "You are not logged in!" }),
         {
           status: 401,
-        }
+        },
       );
     }
     const url = new URL(context.request.url);

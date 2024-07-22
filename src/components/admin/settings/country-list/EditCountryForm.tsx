@@ -14,32 +14,33 @@ import { Button } from "@/components/ui/button";
 import type { z } from "zod";
 import { CountrySchema } from "@/definitions/zod-definitions";
 import { useMutation } from "@tanstack/react-query";
-import { PublicQueryKeys, updateCountry } from "@/lib/react-query/config";
+import { PrivateQueryKeys, updateCountry } from "@/lib/react-query/config";
 import { client } from "@/stores/admin";
 import type { country } from "@prisma/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const EditCountryForm = ({ country }: { country: country }) => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.countries,
+      mutationKey: PrivateQueryKeys.countries,
       mutationFn: async (values: z.infer<typeof CountrySchema>) => {
         return await updateCountry(values);
       },
       onMutate: async (newCountry) => {
-        await client.cancelQueries({ queryKey: PublicQueryKeys.countries });
+        await client.cancelQueries({ queryKey: PrivateQueryKeys.countries });
 
         const previousCountries = client.getQueryData<
           z.infer<typeof CountrySchema>[]
-        >(PublicQueryKeys.countries)!;
+        >(PrivateQueryKeys.countries)!;
 
         const newCountryList = cloneDeep(previousCountries);
         const index = newCountryList.findIndex(
           (country: z.infer<typeof CountrySchema>) =>
-            country.id === newCountry.id
+            country.id === newCountry.id,
         );
         newCountryList[index] = newCountry;
 
-        client.setQueryData(PublicQueryKeys.countries, newCountryList);
+        client.setQueryData(PrivateQueryKeys.countries, newCountryList);
         return { previousCountries, newCountryList };
       },
       onSuccess: (data) => {
@@ -48,15 +49,15 @@ const EditCountryForm = ({ country }: { country: country }) => {
       onError: (err, newCountryList, context) => {
         console.log("error", err);
         client.setQueryData(
-          PublicQueryKeys.countries,
-          context!.previousCountries
+          PrivateQueryKeys.countries,
+          context!.previousCountries,
         );
       },
       onSettled: () => {
-        client.invalidateQueries({ queryKey: PublicQueryKeys.countries });
+        client.invalidateQueries({ queryKey: PrivateQueryKeys.countries });
       },
     },
-    client
+    client,
   );
 
   const form = useForm({
@@ -65,6 +66,7 @@ const EditCountryForm = ({ country }: { country: country }) => {
       name: country.name.trim(),
       code: country.code.trim(),
       id: country.id,
+      isActive: country.isActive,
     },
   });
 
@@ -89,18 +91,25 @@ const EditCountryForm = ({ country }: { country: country }) => {
         />
         <FormField
           control={form.control}
-          name="code"
+          name="isActive"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>국가코드</FormLabel>
+            <FormItem className="flex items-center my-6 gap-2">
               <FormControl>
-                <Input {...field} placeholder="국가코드를 입력해주세요." />
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
+              <FormLabel className="!mt-0 text-base">활성</FormLabel>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-6 mr-0 ml-auto flex w-36">
+        <Button
+          type="submit"
+          className="mt-6 mr-0 ml-auto flex w-36"
+          disabled={mutation.isPending}
+        >
           수정
         </Button>
       </form>

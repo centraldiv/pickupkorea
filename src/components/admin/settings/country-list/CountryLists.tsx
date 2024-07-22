@@ -9,12 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useCountries } from "@/lib/react-query/hooks";
-
 import CountryDropdown from "./CountryDropdown";
+import { usePrivateCountries } from "@/lib/react-query/hooks";
 
 const CountryLists = () => {
-  const { data: countries, isLoading, isError } = useCountries();
+  const { data: countries, isLoading, isError } = usePrivateCountries();
 
   if (isError) return <div>Error</div>;
   if (isLoading)
@@ -30,10 +29,13 @@ const CountryLists = () => {
             No.
           </TableHead>
           <TableHead className="w-[200px] text-black font-medium text-center">
-            Country
+            국가
           </TableHead>
           <TableHead className="min-w-[150px] text-black font-medium text-center ">
-            Country Code
+            국가코드
+          </TableHead>
+          <TableHead className="min-w-[150px] text-black font-medium text-center ">
+            상태
           </TableHead>
           <TableHead className="w-[50px] text-black font-medium text-center"></TableHead>
         </TableRow>
@@ -47,6 +49,9 @@ const CountryLists = () => {
             </TableCell>
             <TableCell className="text-center w-[150px]">
               {country.code}
+            </TableCell>
+            <TableCell className="text-center w-[150px]">
+              {country.isActive ? "활성" : "비활성"}
             </TableCell>
             <TableCell className="text-center w-[50px]">
               <CountryDropdown country={country} />

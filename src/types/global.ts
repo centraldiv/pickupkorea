@@ -30,4 +30,7 @@ export type Href =
   | "/account/admin/users"
   | "/account/admin/settings"
   | "/account/admin/settings/country-list"
+  | "/account/admin/buy-orders/[orderId]"
+  | "/account/admin/buy-orders/[orderId]/product-invoices"
+  | "/account/admin/pf-orders/[orderId]"
   | string;

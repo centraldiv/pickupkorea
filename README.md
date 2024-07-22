@@ -57,6 +57,30 @@
 /api/private/orders/admin-buy-orders/order
 : GET , returns single buy order for admin.
 
+/api/private/orders/admin-buy-orders/order/address
+: PATCH , requires address fields and orderId to update order address and country.
+
+/api/private/orders/admin-buy-orders/order/order-status
+: PATCH , requires orderId and orderStatus (new) to update order status.
+
+/api/private/orders/admin-buy-orders/order/shipping-method
+: PATCH , requires orderId and shippingMethodName as name to update order shipping method.
+
+/api/private/orders/admin-buy-orders/order/staff-memo
+: PATCH , requires orderId and staffMemo to update order staff memo.
+
+/api/private/orders/admin-buy-orders/order/item-fields
+: PATCH , requires orderId, itemId, the name of the field as field and the value as value.
+
+/api/private/orders/admin-buy-orders/order/issue-product-invoice
+: PATCH , requires orderId, invoiceList, totalPrice, userId to update order invoice. invoiceList is an array of objects with quantity, price, and name.
+
+/api/private/orders/admin-pf-orders?orderStatus=
+: GET , returns a list of pf orders for admin. Query params: orderStatus
+
+/api/private/orders/admin-pf-orders/order
+: GET , returns single pf order for admin.
+
 # Todo
 
 1. Email verification / reset pw

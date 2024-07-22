@@ -3,6 +3,7 @@ import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { SignUpSchema } from "@/definitions/zod-definitions";
+import { generatePFCode } from "@/lib/utils";
 export const prerender = false;
 
 export async function POST(context: APIContext) {
@@ -56,7 +57,7 @@ export async function POST(context: APIContext) {
         JSON.stringify({ message: "Username already exists" }),
         {
           status: 400,
-        }
+        },
       );
     }
 
@@ -71,12 +72,11 @@ export async function POST(context: APIContext) {
         JSON.stringify({ message: "Kakao ID already exists" }),
         {
           status: 4000,
-        }
+        },
       );
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    console.log(hashedPassword, data.password);
 
     const user = await prisma.user.create({
       data: {
@@ -91,15 +91,66 @@ export async function POST(context: APIContext) {
         },
         kakaoId: typeof data.kakaoId === "string" ? data.kakaoId : null,
       },
+      include: {
+        country: true,
+      },
     });
 
     if (user) {
+      console.log(user);
+      const created = await prisma.$transaction(async (tx) => {
+        const countriesCount = await tx.pfCodeCount.findUnique({
+          where: {
+            countryCode: user.country!.code,
+          },
+        });
+
+        if (!countriesCount) {
+          throw new Error("Country Code not found");
+        }
+
+        const updatedUser = await tx.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            pfCode: generatePFCode(
+              user.country!.code,
+              countriesCount?.count || 0,
+            ),
+          },
+        });
+
+        if (updatedUser.pfCode) {
+          await tx.pfCodeCount.update({
+            where: {
+              countryCode: user.country!.code,
+            },
+            data: {
+              count: {
+                increment: 1,
+              },
+            },
+          });
+          return true;
+        } else throw new Error("Unable to create PF CODE");
+      });
+      if (!created) {
+        return new Response(
+          JSON.stringify({
+            message: "Something went wrong creating unique code",
+          }),
+          {
+            status: 500,
+          },
+        );
+      }
       return new Response(
-        JSON.stringify({ message: "Thank you for signing up!" })
+        JSON.stringify({ message: "Thank you for signing up!" }),
       );
     } else
       throw new Error(
-        "Something went wrong during sign up. Please contact staff."
+        "Something went wrong during sign up. Please contact staff.",
       );
   } catch (error) {
     console.error(error);

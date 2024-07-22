@@ -8,10 +8,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model pfCodeCount {
+  id          String @id @default(uuid())
+  countryCode String @unique
+  count       Int    @default(0)
+}
+
 model user {
   id String @id @default(uuid())
 
-  fullName String @db.Char(100)
+  fullName String @db.Text
 
   email     String   @unique
   username  String   @unique
@@ -28,13 +34,17 @@ model user {
   productInvoices productInvoice[]
   pfOrder         pfOrder[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  creditAmount Int @default(0)
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  shippingInvoice shippingInvoice[]
+  shippingRequest shippingRequest[]
 }
 
 model availableShippingMethods {
   id        String     @id @default(uuid())
-  name      String     @unique @db.Char(100)
+  name      String     @unique @db.Text
   isActive  Boolean    @default(true)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -44,9 +54,10 @@ model availableShippingMethods {
 
 model country {
   id        String   @id @default(uuid())
-  name      String   @unique @db.Char(100)
-  code      String   @unique @db.Char(3)
+  name      String   @unique @db.Text
+  code      String   @unique @db.Text
   createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
 
   address address[]
   user    user[]
@@ -57,13 +68,13 @@ model address {
   userId String
   user   user   @relation(fields: [userId], references: [id])
 
-  receiverName String   @db.Char(100)
-  phone        String   @db.Char(50)
-  email        String   @db.Char(100)
-  street       String   @db.Char(100)
-  city         String   @db.Char(100)
-  state        String   @db.Char(100)
-  zipcode      String   @db.Char(20)
+  receiverName String   @db.Text
+  phone        String   @db.Text
+  email        String   @db.Text
+  street       String   @db.Text
+  city         String   @db.Text
+  state        String   @db.Text
+  zipcode      String   @db.Text
   country      country? @relation(fields: [countryId], references: [id], onDelete: SetNull)
   countryId    String?
 
@@ -101,8 +112,10 @@ model buyOrder {
   productInvoice   productInvoice? @relation(fields: [productInvoiceId], references: [id])
   productInvoiceId String?         @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  shippingInvoice shippingInvoice[]
+  shippingRequest shippingRequest[]
 }
 
 model pfOrder {
@@ -129,8 +142,10 @@ model pfOrder {
   addressId String?
   address   address? @relation(fields: [addressId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  shippingInvoice shippingInvoice[]
+  shippingRequest shippingRequest[]
 }
 
 model item {
@@ -168,20 +183,20 @@ model item {
   buyOrder   buyOrder? @relation(fields: [buyOrderId], references: [id])
   buyOrderId String?
 
-  productInvoice   productInvoice? @relation(fields: [productInvoiceId], references: [id])
-  productInvoiceId String?
-
   pfOrder   pfOrder? @relation(fields: [pfOrderId], references: [id])
   pfOrderId String?
+
+  shippingRequest shippingRequest[]
 }
 
 model productInvoice {
   id String @id @default(uuid())
 
-  invoiceNumber String @db.Char(10)
-  items         item[]
+  invoiceNumber String @db.Text
   invoiceList   Json
   totalPrice    Int
+
+  paid Boolean @default(false)
 
   userId String
   user   user   @relation(fields: [userId], references: [id])
@@ -190,4 +205,53 @@ model productInvoice {
   updatedAt DateTime @updatedAt
 
   buyOrder buyOrder?
+}
+
+model productInvoiceCount {
+  id    String @id @default(uuid())
+  count Int    @default(0)
+}
+
+model shippingInvoice {
+  id String @id @default(uuid())
+
+  invoiceNumber String @db.Text
+  invoiceList   Json
+  totalPrice    Int
+
+  paid Boolean @default(false)
+
+  userId String
+  user   user   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyOrder buyOrder? @relation(fields: [buyOrderId], references: [id])
+  pfOrder  pfOrder?  @relation(fields: [pfOrderId], references: [id])
+
+  buyOrderId String?
+  pfOrderId  String?
+}
+
+model shippingInvoiceCount {
+  id    String @id @default(uuid())
+  count Int    @default(0)
+}
+
+model shippingRequest {
+  id String @id @default(uuid())
+
+  userId String
+  user   user   @relation(fields: [userId], references: [id])
+
+  requestStatus String @default("Requested")
+
+  items item[]
+
+  buyOrder buyOrder[]
+  pfOrder  pfOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

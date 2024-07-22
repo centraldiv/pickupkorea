@@ -7,23 +7,24 @@ export const prerender = false;
 ---
 
 <MainLayout
-  title="Buy Order Success | Pickup Korea"
-  currentRoute="/account/submit-order/buy-order/success"
+  title="Package Forwarding Order Success | Pickup Korea"
+  currentRoute="/account/submit-order/pf-order/success"
 >
   <main
     class="max-w-7xl w-full px-4 py-16 gap-4 mx-auto min-h-screen flex flex-col justify-start items-center"
   >
-    <h1 class="text-2xl font-bold">Buy Order Submitted</h1>
+    <h1 class="text-2xl font-bold">Package Forwarding Order Submitted</h1>
     <p class="text-gray-500">Your order has been submitted successfully.</p>
 
     <p>Your Unique Order ID is: <span class="font-bold">{orderId}</span></p>
 
     <p>
       Please make sure to have added your own unique Package Forwarding Code in
-      the address of the package you ordered. It is the only way we can identify
-      that the package we received is yours.
+      the address of the package you ordered.
     </p>
-
+    <p>
+      It is the only way we can identify that the package we received is yours.
+    </p>
     <p>
       You can check your order status by going to the
       <a href="/account/orders" class="text-blue-500 hover:underline">Orders</a>

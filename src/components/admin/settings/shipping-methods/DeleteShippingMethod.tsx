@@ -9,14 +9,10 @@ import {
 
 import { useMutation } from "@tanstack/react-query";
 import {
-  PublicQueryKeys,
-  deleteCountry,
+  PrivateQueryKeys,
   deleteShippingMethod,
 } from "@/lib/react-query/config";
-import type {
-  CountrySchema,
-  ShippingMethodSchema,
-} from "@/definitions/zod-definitions";
+import type { ShippingMethodSchema } from "@/definitions/zod-definitions";
 import type { z } from "zod";
 import { client } from "@/stores/admin";
 import { cloneDeep } from "lodash-es";
@@ -33,24 +29,24 @@ const DeleteShippingMethod = ({
 }) => {
   const mutation = useMutation(
     {
-      mutationKey: PublicQueryKeys.shippingMethods,
+      mutationKey: PrivateQueryKeys.shippingMethods,
       mutationFn: async (values: z.infer<typeof ShippingMethodSchema>) => {
         return await deleteShippingMethod(values);
       },
       onMutate: async (newMethod) => {
         await client.cancelQueries({
-          queryKey: PublicQueryKeys.shippingMethods,
+          queryKey: PrivateQueryKeys.shippingMethods,
         });
 
         const previousMethods = client.getQueryData<
           z.infer<typeof ShippingMethodSchema>[]
-        >(PublicQueryKeys.shippingMethods)!;
+        >(PrivateQueryKeys.shippingMethods)!;
 
         const newMethodList = cloneDeep(previousMethods).filter(
           (method) => method.id !== newMethod.id,
         );
 
-        client.setQueryData(PublicQueryKeys.shippingMethods, newMethodList);
+        client.setQueryData(PrivateQueryKeys.shippingMethods, newMethodList);
         return { previousMethods, newMethodList };
       },
 
@@ -61,13 +57,13 @@ const DeleteShippingMethod = ({
       onError: (err, newMethodList, context) => {
         console.log("error", err);
         client.setQueryData(
-          PublicQueryKeys.shippingMethods,
+          PrivateQueryKeys.shippingMethods,
           context!.previousMethods,
         );
       },
       onSettled: () => {
         client.invalidateQueries({
-          queryKey: PublicQueryKeys.shippingMethods,
+          queryKey: PrivateQueryKeys.shippingMethods,
         });
       },
     },
@@ -87,6 +83,7 @@ const DeleteShippingMethod = ({
           <Button
             className="flex mr-0 ml-auto w-36"
             variant="destructive"
+            disabled={mutation.isPending}
             onClick={() => {
               mutation.mutate(shippingMethod);
             }}

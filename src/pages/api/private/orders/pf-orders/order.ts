@@ -1,6 +1,7 @@
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
 import { verifySession } from "@/lib/sessions";
+export const prerender = false;
 
 export async function GET(context: APIContext) {
   try {

@@ -9,6 +9,9 @@ export async function GET(context: APIContext) {
       });
     }
     const shippingMethods = await prisma.availableShippingMethods.findMany({
+      where: {
+        isActive: true,
+      },
       orderBy: {
         name: "asc",
       },
