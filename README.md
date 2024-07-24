@@ -81,6 +81,13 @@
 /api/private/orders/admin-pf-orders/order
 : GET , returns single pf order for admin.
 
+/api/private/orders/admin-shipping-invoices/issue
+: POST , requires orderId, invoiceList, totalPrice, userId and orderType (buyOrder or pfOrder) to issue new shipping invoice. invoiceList is an array of objects with quantity, price, and name.
+
+
+/api/private/orders/admin-shipping-invoices
+: GET , returns a list of shipping invoices for admin. Query params: orderId and orderType (buyOrder or pfOrder)
+
 # Todo
 
 1. Email verification / reset pw

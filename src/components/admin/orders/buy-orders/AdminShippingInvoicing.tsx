@@ -1,5 +1,5 @@
 import {
-  useSingleAdminBuyOrder,
+  useSingleAdminOrder,
   type AdminBuyOrderWithItemsAndAddress,
 } from "@/lib/react-query/hooks";
 
@@ -21,55 +21,37 @@ import {
 } from "@/components/ui/dialog";
 import Big from "big.js";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InvoiceSchema } from "@/definitions/zod-definitions";
 import type { z } from "zod";
-import { getWebsiteQuantities } from "@/lib/utils";
+
 import {
   PrivateQueryKeys,
-  issueProductInvoice,
+  issueShippingInvoice,
 } from "@/lib/react-query/config";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "@/stores/admin";
 import { cloneDeep } from "lodash-es";
-import { BuyOrderStatus } from "@/definitions/statuses";
+import { BuyOrderStatus, ItemStatus } from "@/definitions/statuses";
 
-const AdminSingleBuyOrderProductInvoicing = ({
+const AdminShippingInvoicing = ({
   orderId,
+  orderType,
+  shipRightAway,
 }: {
   orderId: string;
+  orderType: "buyOrder" | "pfOrder";
+  shipRightAway?: boolean;
 }) => {
-  const { data } = useSingleAdminBuyOrder(orderId);
+  const { data } = useSingleAdminOrder(orderType, orderId);
   const [open, setOpen] = useState(false);
+
   const [costs, setCosts] = useState<
     { name: string; price: number; quantity: number }[]
-  >(
-    data?.items.map((item) => ({
-      name: item.productName ?? "",
-      price: item.price ?? 0,
-      quantity: item.quantity ?? 0,
-    })) || []
-  );
-  const [secondaryCosts, setSecondaryCosts] = useState<
-    { name: string; price: number; quantity: number }[]
   >([]);
-
-  useEffect(() => {
-    if (!data || !data.items || !data.items.length) return;
-
-    if (data) {
-      setCosts(
-        data.items.map((item) => ({
-          name: item.productName ?? "",
-          price: item.price ?? 0,
-          quantity: item.quantity ?? 0,
-        }))
-      );
-    }
-  }, [data]);
 
   const form = useForm<z.infer<typeof InvoiceSchema>>({
     resolver: zodResolver(InvoiceSchema),
@@ -81,29 +63,38 @@ const AdminSingleBuyOrderProductInvoicing = ({
   });
 
   const onSubmit = (values: z.infer<typeof InvoiceSchema>) => {
-    setSecondaryCosts((prev) => [...prev, values]);
+    setCosts((prev) => [...prev, values]);
     form.reset();
   };
 
   const invoiceMutation = useMutation(
     {
-      mutationKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+      mutationKey:
+        orderType === "buyOrder"
+          ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+          : [...PrivateQueryKeys.adminPFOrders, orderId],
       mutationFn: async ({
         invoiceList,
         totalPrice,
         orderId,
         userId,
+        orderType,
+        shipRightAway,
       }: {
         invoiceList: { name: string; price: number; quantity: number }[];
         totalPrice: number;
         orderId: string;
         userId: string;
+        orderType: "buyOrder" | "pfOrder";
+        shipRightAway?: boolean;
       }) => {
-        return await issueProductInvoice({
+        return await issueShippingInvoice({
+          orderType,
           invoiceList,
           totalPrice,
           orderId,
           userId,
+          shipRightAway,
         });
       },
       onMutate: async ({
@@ -111,28 +102,46 @@ const AdminSingleBuyOrderProductInvoicing = ({
         totalPrice,
         orderId,
         userId,
+        orderType,
+        shipRightAway,
       }: {
         invoiceList: { name: string; price: number; quantity: number }[];
         totalPrice: number;
         orderId: string;
         userId: string;
+        orderType: "buyOrder" | "pfOrder";
+        shipRightAway?: boolean;
       }) => {
         await client.cancelQueries({
-          queryKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+          queryKey:
+            orderType === "buyOrder"
+              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+              : [...PrivateQueryKeys.adminPFOrders, orderId],
         });
 
         const previousOrderData =
-          client.getQueryData<AdminBuyOrderWithItemsAndAddress>([
-            ...PrivateQueryKeys.adminBuyOrders,
-            orderId,
-          ])!;
+          client.getQueryData<AdminBuyOrderWithItemsAndAddress>(
+            orderType === "buyOrder"
+              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+              : [...PrivateQueryKeys.adminPFOrders, orderId]
+          )!;
 
         const newOrderData = cloneDeep(previousOrderData);
 
-        newOrderData.orderStatus = BuyOrderStatus.PRODUCT_INVOICED;
+        newOrderData.orderStatus = BuyOrderStatus.SHIPPING_INVOICED;
+
+        if (shipRightAway) {
+          newOrderData.items.forEach((item) => {
+            if (item.productStatus === ItemStatus.RECEIVED) {
+              item.productStatus = ItemStatus.SHIPPING_INVOICED;
+            }
+          });
+        }
 
         client.setQueryData(
-          [...PrivateQueryKeys.adminBuyOrders, orderId],
+          orderType === "buyOrder"
+            ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+            : [...PrivateQueryKeys.adminPFOrders, orderId],
           newOrderData
         );
         return { previousOrderData, newOrderData };
@@ -140,7 +149,9 @@ const AdminSingleBuyOrderProductInvoicing = ({
       onError: (error, newOrderData, context) => {
         alert("청구서 발행 실패");
         client.setQueryData(
-          [...PrivateQueryKeys.adminBuyOrders, orderId],
+          orderType === "buyOrder"
+            ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+            : [...PrivateQueryKeys.adminPFOrders, orderId],
           context!.previousOrderData
         );
       },
@@ -154,7 +165,10 @@ const AdminSingleBuyOrderProductInvoicing = ({
       },
       onSettled: () => {
         client.invalidateQueries({
-          queryKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+          queryKey:
+            orderType === "buyOrder"
+              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
+              : [...PrivateQueryKeys.adminPFOrders, orderId],
         });
       },
     },
@@ -164,12 +178,6 @@ const AdminSingleBuyOrderProductInvoicing = ({
   const issueInvoice = async () => {
     if (!data) return;
 
-    if (data.productInvoiceId) {
-      return alert(
-        "이미 청구된 주문입니다. 기존 청구서를 지우고 다시 청구해주세요."
-      );
-    }
-
     const total = new Big(
       costs.reduce((acc, curr) => {
         const accum = new Big(acc);
@@ -178,25 +186,17 @@ const AdminSingleBuyOrderProductInvoicing = ({
 
         return accum.add(price.times(quantity)).toNumber();
       }, 0)
-    )
-      .add(
-        secondaryCosts.reduce((acc, curr) => {
-          const accum = new Big(acc);
-          const price = new Big(curr.price);
-          const quantity = new Big(curr.quantity);
+    );
 
-          return accum.add(price.times(quantity)).toNumber();
-        }, 0)
-      )
-      .toNumber();
-
-    const invoiceList = [...costs, ...secondaryCosts];
+    const invoiceList = [...costs];
 
     invoiceMutation.mutate({
       invoiceList,
-      totalPrice: total,
+      totalPrice: total.toNumber(),
       orderId,
       userId: data.userId,
+      orderType,
+      shipRightAway,
     });
   };
 
@@ -209,14 +209,12 @@ const AdminSingleBuyOrderProductInvoicing = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-primary/80 text-black">제품 청구</Button>
+        <Button className="bg-primary/80 text-black">배송 청구</Button>
       </DialogTrigger>
       <DialogContent className="max-w-7xl w-full mx-auto h-[70dvh] flex flex-col">
         <DialogHeader className="">
-          <DialogTitle>Product Invoicing</DialogTitle>
-          <DialogDescription>
-            제품 및 서비스 요금을 청구하세요
-          </DialogDescription>
+          <DialogTitle>Shipping Invoicing</DialogTitle>
+          <DialogDescription>배송 요금을 청구하세요</DialogDescription>
         </DialogHeader>
         <div className="overflow-y-auto flex-1">
           {costs.map((cost, index) => (
@@ -247,41 +245,8 @@ const AdminSingleBuyOrderProductInvoicing = ({
               </button>
             </div>
           ))}
-          {secondaryCosts.map((cost, index) => (
-            <div
-              key={cost.name}
-              className="grid grid-cols-[1fr_1fr_50px_1fr_20px] border-b py-1"
-            >
-              <div className="text-left">{cost.name}</div>
-              <div className="text-center">
-                {cost.price.toLocaleString()} 원
-              </div>
-              <div className="text-center">{cost.quantity}</div>
-              <div className="text-right">
-                {new Big(cost.price)
-                  .times(cost.quantity)
-                  .toNumber()
-                  .toLocaleString()}{" "}
-                원
-              </div>
-              <button
-                type="button"
-                className="text-red-500"
-                onClick={() =>
-                  setSecondaryCosts((prev) =>
-                    prev.filter((_, i) => i !== index)
-                  )
-                }
-              >
-                X
-              </button>
-            </div>
-          ))}
         </div>
         <div className="flex">
-          <div className="flex-1 overflow-x-scroll">
-            {getWebsiteQuantities(data.items.map((item) => item.href))}
-          </div>
           <div className="mr-0 ml-auto">
             총 금액:{" "}
             {new Big(
@@ -293,15 +258,6 @@ const AdminSingleBuyOrderProductInvoicing = ({
                 return accum.add(price.times(quantity)).toNumber();
               }, 0)
             )
-              .add(
-                secondaryCosts.reduce((acc, curr) => {
-                  const accum = new Big(acc);
-                  const price = new Big(curr.price);
-                  const quantity = new Big(curr.quantity);
-
-                  return accum.add(price.times(quantity)).toNumber();
-                }, 0)
-              )
               .toNumber()
               .toLocaleString()}{" "}
             원
@@ -376,4 +332,4 @@ const AdminSingleBuyOrderProductInvoicing = ({
   );
 };
 
-export default AdminSingleBuyOrderProductInvoicing;
+export default AdminShippingInvoicing;

@@ -58,7 +58,7 @@ export const SignUpSchema = RawSignUpSchema.refine(
   {
     path: ["confirmPassword"],
     message: "Passwords do not match",
-  },
+  }
 );
 
 export const LoginSchema = RawSignUpSchema.pick({
@@ -154,7 +154,7 @@ export const AdminBuyOrderInfoSchema = z.object({
   shippingMethod: ShippingMethodSchema.nullish(),
 });
 
-export const ProductInvoiceSchema = z.object({
+export const InvoiceSchema = z.object({
   name: z.string({ required_error: "Name is required" }),
   quantity: z.coerce
     .number({ required_error: "Quantity is required" })

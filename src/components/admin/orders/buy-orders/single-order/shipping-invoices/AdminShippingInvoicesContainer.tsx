@@ -1,10 +1,18 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSingleAdminBuyOrderProductInvoices } from "@/lib/react-query/hooks";
-import AdminSingleBuyOrderProductInvoiceCard from "./AdminSingleBuyOrderProductInvoiceCard";
+import { useSingleAdminShippingInvoices } from "@/lib/react-query/hooks";
+import AdminShippingInvoiceCard from "./AdminShippingInvoiceCard";
 
-const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
-  const { data, isLoading, isError } =
-    useSingleAdminBuyOrderProductInvoices(orderId);
+const AdminShippingInvoicesContainer = ({
+  orderId,
+  orderType,
+}: {
+  orderId: string;
+  orderType: "buyOrder" | "pfOrder";
+}) => {
+  const { data, isLoading, isError } = useSingleAdminShippingInvoices({
+    orderId,
+    orderType,
+  });
 
   if (isLoading)
     return (
@@ -27,9 +35,10 @@ const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
     return (
       <section className="mx-auto max-w-7xl w-full justify-center items-center grid grid-cols-3 gap-4 py-12 px-4">
         {data.map((invoice) => (
-          <AdminSingleBuyOrderProductInvoiceCard
+          <AdminShippingInvoiceCard
             key={invoice.id}
             invoice={invoice}
+            orderType={orderType}
           />
         ))}
         {!data.length && (
@@ -41,4 +50,4 @@ const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
     );
 };
 
-export default AdminSingleBuyOrderContainer;
+export default AdminShippingInvoicesContainer;

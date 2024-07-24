@@ -8,6 +8,7 @@ import AdminBuyOrderStaffMemo from "./AdminSingleBuyOrderStaffMemo";
 import AdminSingleBuyOrderProducts from "./AdminSingleBuyOrderProducts";
 import AdminSingleBuyOrderProductInvoicing from "./AdminSingleBuyOrderProductInvoicing";
 import { Button } from "@/components/ui/button";
+import AdminShippingInvoicing from "../AdminShippingInvoicing";
 
 const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
   const { data, isLoading, isError } = useSingleAdminBuyOrder(orderId);
@@ -37,11 +38,21 @@ const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
       <>
         <aside className="mx-auto max-w-7xl w-full flex mt-6 gap-4">
           <AdminSingleBuyOrderProductInvoicing orderId={orderId} />
+          <AdminShippingInvoicing
+            orderType="buyOrder"
+            orderId={orderId}
+            shipRightAway
+          />
         </aside>
         <aside className="mx-auto max-w-7xl w-full flex mt-6 gap-4">
           <Button asChild variant={"outline"}>
             <a href={`/account/admin/buy-orders/${orderId}/product-invoices`}>
               제품 청구서 보기
+            </a>
+          </Button>
+          <Button asChild variant={"outline"}>
+            <a href={`/account/admin/buy-orders/${orderId}/shipping-invoices`}>
+              배송 청구서 보기
             </a>
           </Button>
         </aside>

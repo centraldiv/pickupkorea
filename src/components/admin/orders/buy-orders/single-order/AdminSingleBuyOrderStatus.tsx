@@ -5,7 +5,7 @@ import {
   type AdminBuyOrderWithItemsAndAddress,
 } from "@/lib/react-query/hooks";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+
 import {
   Select,
   SelectContent,
@@ -24,9 +24,6 @@ import { cloneDeep } from "lodash-es";
 
 const AdminSingleBuyOrderStatus = ({ orderId }: { orderId: string }) => {
   const { data } = useSingleAdminBuyOrder(orderId);
-  const [status, setStatus] = useState<BuyOrderStatus>(
-    data?.orderStatus as BuyOrderStatus,
-  );
 
   const mutation = useMutation(
     {
@@ -63,7 +60,7 @@ const AdminSingleBuyOrderStatus = ({ orderId }: { orderId: string }) => {
 
         client.setQueryData(
           [...PrivateQueryKeys.adminBuyOrders, orderId],
-          newOrderState,
+          newOrderState
         );
         return { previousOrderState, newOrderState };
       },
@@ -74,19 +71,18 @@ const AdminSingleBuyOrderStatus = ({ orderId }: { orderId: string }) => {
         alert("주문 상태 변경에 실패했습니다.");
         client.setQueryData(
           [...PrivateQueryKeys.adminBuyOrders, orderId],
-          context!.previousOrderState,
+          context!.previousOrderState
         );
       },
     },
-    client,
+    client
   );
   return (
     <>
       <Label className=" font-medium">주문 상태:</Label>
       <Select
-        value={status}
+        value={data?.orderStatus}
         onValueChange={(value: BuyOrderStatus) => {
-          setStatus(value);
           mutation.mutate({ value, orderId });
         }}
       >

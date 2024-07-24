@@ -1,4 +1,7 @@
-import type { ProductInvoiceWithUser } from "@/lib/react-query/hooks";
+import type {
+  ProductInvoiceWithUser,
+  ShippingInvoiceWithUser,
+} from "@/lib/react-query/hooks";
 import {
   Card,
   CardContent,
@@ -10,10 +13,12 @@ import {
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-const AdminSingleBuyOrderProductInvoiceCard = ({
+const AdminShippingInvoiceCard = ({
   invoice,
+  orderType,
 }: {
-  invoice: ProductInvoiceWithUser;
+  invoice: ShippingInvoiceWithUser;
+  orderType: "buyOrder" | "pfOrder";
 }) => {
   return (
     <a href={`/admin/payments/product-invoices/${invoice.id}`}>
@@ -27,8 +32,16 @@ const AdminSingleBuyOrderProductInvoiceCard = ({
         <CardContent className="space-y-2">
           <div className="border p-2">
             <div className="font-semibold">제품 수령인:</div>
-            <div>{invoice.buyOrder?.address?.receiverName}</div>
-            <div>{invoice.buyOrder?.address?.email}</div>
+            <div>
+              {orderType === "buyOrder"
+                ? invoice.buyOrder?.address?.receiverName
+                : invoice.pfOrder?.address?.receiverName}
+            </div>
+            <div>
+              {orderType === "buyOrder"
+                ? invoice.buyOrder?.address?.email
+                : invoice.pfOrder?.address?.email}
+            </div>
           </div>
           <div className="border p-2">
             <div className="font-semibold">계정 정보:</div>
@@ -54,4 +67,4 @@ const AdminSingleBuyOrderProductInvoiceCard = ({
   );
 };
 
-export default AdminSingleBuyOrderProductInvoiceCard;
+export default AdminShippingInvoiceCard;

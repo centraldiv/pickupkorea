@@ -40,7 +40,7 @@ export const fetchPrivateShippingMethods = async () => {
 };
 
 export const addShippingMethod = async (
-  values: z.infer<typeof ShippingMethodSchema>,
+  values: z.infer<typeof ShippingMethodSchema>
 ) => {
   const response = await fetch("/api/private/settings/shipping-methods", {
     method: "POST",
@@ -53,7 +53,7 @@ export const addShippingMethod = async (
 };
 
 export const updateShippingMethod = async (
-  values: z.infer<typeof ShippingMethodSchema>,
+  values: z.infer<typeof ShippingMethodSchema>
 ) => {
   const response = await fetch("/api/private/settings/shipping-methods", {
     method: "PATCH",
@@ -66,7 +66,7 @@ export const updateShippingMethod = async (
 };
 
 export const deleteShippingMethod = async (
-  values: z.infer<typeof ShippingMethodSchema>,
+  values: z.infer<typeof ShippingMethodSchema>
 ) => {
   const response = await fetch("/api/private/settings/shipping-methods", {
     method: "DELETE",
@@ -146,7 +146,7 @@ export const fetchBuyOrder = async (orderId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -168,7 +168,7 @@ export const fetchPFOrder = async (orderId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -181,7 +181,7 @@ export const fetchAdminBuyOrders = async (orderStatus: BuyOrderStatus) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -193,13 +193,13 @@ export const fetchAdminBuyOrder = async (orderId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
 
 export const updateAdminBuyOrderAddress = async (
-  values: z.infer<typeof OrderAddressSchema>,
+  values: z.infer<typeof OrderAddressSchema>
 ) => {
   if (!values.id || !values.orderId) {
     throw new Error("Order ID and Address ID are required");
@@ -212,14 +212,14 @@ export const updateAdminBuyOrderAddress = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
-    },
+    }
   );
   return response.json();
 };
 
 export const updateAdminBuyOrderStatus = async (
   orderStatus: BuyOrderStatus,
-  orderId: string,
+  orderId: string
 ) => {
   const response = await fetch(
     `/api/private/orders/admin-buy-orders/order/order-status`,
@@ -229,7 +229,7 @@ export const updateAdminBuyOrderStatus = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ orderStatus, orderId }),
-    },
+    }
   );
   return response.json();
 };
@@ -248,14 +248,14 @@ export const updateAdminBuyOrderShippingMethod = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, orderId }),
-    },
+    }
   );
   return response.json();
 };
 
 export const updateAdminBuyOrderStaffMemo = async (
   orderId: string,
-  staffMemo: string,
+  staffMemo: string
 ) => {
   const response = await fetch(
     `/api/private/orders/admin-buy-orders/order/staff-memo`,
@@ -265,7 +265,7 @@ export const updateAdminBuyOrderStaffMemo = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ orderId, staffMemo }),
-    },
+    }
   );
   return response.json();
 };
@@ -289,7 +289,7 @@ export const updateAdminBuyOrderItemFields = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ orderId, itemId, field, value }),
-    },
+    }
   );
   return response.json();
 };
@@ -302,7 +302,7 @@ export const fetchAdminPFOrders = async (orderStatus: PFOrderStatus) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -314,7 +314,7 @@ export const fetchAdminPFOrder = async (orderId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -328,7 +328,7 @@ export const fetchAdminBuyOrderProductInvoices = async (orderId: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
+    }
   );
   return response.json();
 };
@@ -352,7 +352,60 @@ export const issueProductInvoice = async ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ orderId, invoiceList, totalPrice, userId }),
-    },
+    }
+  );
+  return response.json();
+};
+
+export const issueShippingInvoice = async ({
+  orderId,
+  invoiceList,
+  totalPrice,
+  userId,
+  orderType,
+  shipRightAway,
+}: {
+  orderId: string;
+  invoiceList: { name: string; quantity: number; price: number }[];
+  totalPrice: number;
+  userId: string;
+  orderType: "buyOrder" | "pfOrder";
+  shipRightAway?: boolean;
+}) => {
+  const response = await fetch(
+    `/api/private/orders/admin-shipping-invoices/issue`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId,
+        invoiceList,
+        totalPrice,
+        userId,
+        orderType,
+        shipRightAway,
+      }),
+    }
+  );
+  return response.json();
+};
+
+export const fetchAdminShippingInvoices = async ({
+  orderId,
+  orderType,
+}: {
+  orderId: string;
+  orderType: "buyOrder" | "pfOrder";
+}) => {
+  const response = await fetch(
+    `/api/private/orders/admin-shipping-invoices?orderId=${orderId}&orderType=${orderType}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
   return response.json();
 };

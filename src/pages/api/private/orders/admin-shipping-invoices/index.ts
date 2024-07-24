@@ -14,19 +14,41 @@ export const GET = async (context: APIContext) => {
     const url = new URL(context.request.url);
     const searchParams = new URLSearchParams(url.search);
     const orderId = searchParams.get("orderId") as string;
+    const orderType = searchParams.get("orderType") as string;
 
-    if (!orderId) {
-      return new Response(JSON.stringify({ message: "Order id is required" }), {
-        status: 400,
-      });
+    if (!orderId || !orderType) {
+      return new Response(
+        JSON.stringify({ message: "Order id and order type are required" }),
+        {
+          status: 400,
+        }
+      );
     }
 
-    const productInvoices = await prisma.productInvoice.findMany({
-      where: {
-        buyOrder: {
-          id: orderId,
-        },
-      },
+    if (orderType !== "buyOrder" && orderType !== "pfOrder") {
+      return new Response(
+        JSON.stringify({ message: "Order type is invalid" }),
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const where =
+      orderType === "buyOrder"
+        ? {
+            buyOrder: {
+              id: orderId,
+            },
+          }
+        : {
+            pfOrder: {
+              id: orderId,
+            },
+          };
+
+    const shippingInvoices = await prisma.shippingInvoice.findMany({
+      where: where,
       include: {
         user: {
           select: {
@@ -39,13 +61,18 @@ export const GET = async (context: APIContext) => {
             address: true,
           },
         },
+        pfOrder: {
+          include: {
+            address: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return new Response(JSON.stringify(productInvoices), {
+    return new Response(JSON.stringify(shippingInvoices), {
       status: 200,
     });
   } catch (error) {

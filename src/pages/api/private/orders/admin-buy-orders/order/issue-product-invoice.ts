@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
 import { generateProductInvoiceNumber } from "@/lib/utils";
-import { BuyOrderStatus } from "@/definitions/statuses";
+import { BuyOrderStatus, ItemStatus } from "@/definitions/statuses";
 
 export const prerender = false;
 
@@ -52,6 +52,16 @@ export async function POST(context: APIContext) {
           },
         },
         orderStatus: BuyOrderStatus.PRODUCT_INVOICED,
+        items: {
+          updateMany: {
+            where: {
+              productStatus: ItemStatus.PENDING,
+            },
+            data: {
+              productStatus: ItemStatus.PRODUCT_INVOICED,
+            },
+          },
+        },
         updatedAt: new Date(),
       },
     });
@@ -65,7 +75,7 @@ export async function POST(context: APIContext) {
         }),
         {
           status: 200,
-        },
+        }
       );
     } else {
       return new Response(JSON.stringify({ message: "청구서 발급 실패" }), {

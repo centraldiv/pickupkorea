@@ -33,6 +33,7 @@ import { cloneDeep } from "lodash-es";
 import type { item } from "@prisma/client";
 import { ItemStatus } from "@/definitions/statuses";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useEffect } from "react";
 
 const AdminSingleBuyOrderItem = ({
   index,
@@ -96,7 +97,7 @@ const AdminSingleBuyOrderItem = ({
         (item as any)[field] = value;
         client.setQueryData(
           [...PrivateQueryKeys.adminBuyOrders, orderId],
-          newOrderData,
+          newOrderData
         );
 
         form.setValue(field, value);
@@ -114,7 +115,7 @@ const AdminSingleBuyOrderItem = ({
         window.location.reload();
       },
     },
-    client,
+    client
   );
 
   const form = useForm({
@@ -140,6 +141,13 @@ const AdminSingleBuyOrderItem = ({
     });
   };
 
+  useEffect(() => {
+    if (!currentData) return;
+
+    form.setValue("shippedQuantity", currentData?.shippedQuantity);
+    form.setValue("productStatus", currentData?.productStatus);
+  }, [currentData?.shippedQuantity, currentData?.productStatus, currentData]);
+
   const handleCredit = () => {
     if (!orderId || !currentData?.id) return;
     const quantity = form.getValues("quantity");
@@ -159,7 +167,7 @@ const AdminSingleBuyOrderItem = ({
   };
 
   const handleQuantityChange = (
-    field: "receivedQuantity" | "shippedQuantity" | "creditedQuantity",
+    field: "receivedQuantity" | "shippedQuantity" | "creditedQuantity"
   ) => {
     const quantity = form.getValues("quantity");
     const receivedQuantity = form.getValues("receivedQuantity");
@@ -387,8 +395,8 @@ const AdminSingleBuyOrderItem = ({
                       value: value,
                     });
                   }}
-                  defaultValue={field.value}
-                  value={field.value}
+                  defaultValue={currentData?.productStatus}
+                  value={currentData?.productStatus}
                 >
                   <FormControl>
                     <SelectTrigger>
