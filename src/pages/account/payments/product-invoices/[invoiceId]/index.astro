@@ -1,0 +1,66 @@
+---
+import ProductInvoiceContainer from "@/components/users/payments/ProductInvoiceContainer";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getClientSingleProductInvoice } from "@/lib/db-funcs/get-functions";
+import { verifySession } from "@/lib/sessions";
+
+import { format } from "date-fns";
+
+const session = await verifySession(Astro.cookies);
+
+if (!session || !session.userId) {
+  return Astro.redirect("/login");
+}
+
+const invoiceId = Astro.params.invoiceId;
+
+if (!invoiceId) {
+  return Astro.redirect("/account/payments");
+}
+const productInvoice = await getClientSingleProductInvoice({
+  userId: session.userId,
+  invoiceId,
+});
+
+if (!productInvoice) {
+  return Astro.redirect("/account/payments");
+}
+
+const items = productInvoice.invoiceList as {
+  name: string;
+  price: number;
+  quantity: number;
+}[];
+---
+
+<MainLayout title="Payments | Pickup Korea" currentRoute="/account/payments">
+  <main class="min-h-screen py-16 max-w-7xl w-full mx-auto text-center">
+    <h1 class="text-4xl font-bold">
+      Product Invoice {productInvoice.invoiceNumber}
+    </h1>
+    <h2 class="text-center font-bold text-lg mt-6">
+      {productInvoice.paid ? "Paid" : "Awaiting Payment"}
+    </h2>
+    <aside class="items-center flex justify-end mt-6 gap-2">
+      <a href="/how-to-pay">How to Pay</a>
+      {
+        productInvoice.buyOrder && (
+          <a href={`/account/orders/buy-orders/${productInvoice.buyOrder.id}`}>
+            View Order
+          </a>
+        )
+      }
+    </aside>
+    <aside class="mt-6 flex flex-col justify-start items-start">
+      <p>Issued On: {format(productInvoice.createdAt, "yyyy-MM-dd")}</p>
+      <p>Total Amount: {productInvoice.totalPrice.toLocaleString()} KRW</p>
+    </aside>
+    <ProductInvoiceContainer items={items} client:load />
+  </main>
+</MainLayout>
+
+<style>
+  a {
+    @apply font-medium hover:bg-primary/80 transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md;
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import AdminSingleBuyOrderProductInvoiceContainer from "@/components/admin/orders/buy-orders/single-order/product-invoices/AdminSingleBuyOrderProductInvoiceContainer";
+
+const { orderId } = Astro.params;
+
+if (!orderId) {
+  return Astro.redirect("/account/admin/buy-orders");
+}
+---
+
+<MainLayout
+  title="Product Invoices | Order | PF Orders | Admin | Pickup Korea"
+  currentRoute={`/account/admin/pf-orders/${orderId}/product-invoices`}
+  isAdmin
+>
+  <main class="w-full px-4">
+    <AdminSingleBuyOrderProductInvoiceContainer
+      orderId={orderId}
+      orderType="PFOrder"
+      client:load
+    />
+  </main>
+</MainLayout>

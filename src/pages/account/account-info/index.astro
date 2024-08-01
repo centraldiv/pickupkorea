@@ -1,0 +1,75 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getAccountInfo } from "@/lib/db-funcs/get-functions";
+import { verifySession } from "@/lib/sessions";
+import AccountInfoForm from "@/components/users/account-info/AccountInfoForm.tsx";
+import type { UserWithCounts } from "@/lib/react-query/hooks";
+
+const session = await verifySession(Astro.cookies);
+
+if (!session || !session.userId) {
+  return Astro.redirect("/login");
+}
+
+const accountInfo = await getAccountInfo(session.userId);
+
+if (!accountInfo) {
+  return Astro.redirect("/login");
+}
+
+const {
+  items,
+  productInvoices,
+  shippingInvoice,
+  shippingRequest,
+  buyOrders,
+  pfOrder,
+} = accountInfo._count;
+---
+
+<MainLayout
+  title="Account Info | Pickup Korea"
+  currentRoute="/account/account-info"
+>
+  <main class="min-h-screen py-16 max-w-7xl w-full mx-auto px-4">
+    <h1 class="text-4xl font-bold text-center">Account Info</h1>
+    <section class="my-6">
+      <div class="text-2xl font-semibold">Account Stats</div>
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 border rounded-md shadow-md text-center"
+      >
+        <div>
+          <div class="bg-secondary p-2">Items</div>
+          <div class="p-2">{items}</div>
+        </div>
+        <div>
+          <div class="bg-secondary p-2">Product Invoices</div>
+          <div class="p-2">{productInvoices}</div>
+        </div>
+        <div>
+          <div class="bg-secondary p-2">Shipping Invoice</div>
+          <div class="p-2">{shippingInvoice}</div>
+        </div>
+        <div>
+          <div class="bg-secondary p-2">Shipping Request</div>
+          <div class="p-2">{shippingRequest}</div>
+        </div>
+        <div>
+          <div class="bg-secondary p-2">Buy Orders</div>
+          <div class="p-2">{buyOrders}</div>
+        </div>
+        <div>
+          <div class="bg-secondary p-2">PF Order</div>
+          <div class="p-2">{pfOrder}</div>
+        </div>
+      </div>
+    </section>
+    <AccountInfoForm accountInfo={accountInfo as UserWithCounts} client:load />
+  </main>
+
+  <style>
+    a {
+      @apply font-medium hover:bg-primary/80 transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md;
+    }
+  </style>
+</MainLayout>

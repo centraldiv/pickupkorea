@@ -47,7 +47,12 @@ async function main() {
   await prisma.productInvoiceCount.create({
     data: {},
   });
+
   await prisma.shippingInvoiceCount.create({
+    data: {},
+  });
+
+  await prisma.shippingRequestCount.create({
     data: {},
   });
 }

@@ -18,7 +18,7 @@ export async function GET(context: APIContext) {
         JSON.stringify({ message: "You are not logged in!" }),
         {
           status: 401,
-        },
+        }
       );
     }
     const url = new URL(context.request.url);
@@ -36,6 +36,18 @@ export async function GET(context: APIContext) {
         userId: session.userId,
       },
       include: {
+        productInvoice: {
+          select: {
+            id: true,
+            invoiceNumber: true,
+          },
+        },
+        shippingInvoice: {
+          select: {
+            id: true,
+            invoiceNumber: true,
+          },
+        },
         items: true,
         address: {
           include: {

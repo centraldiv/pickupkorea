@@ -1,0 +1,44 @@
+---
+import ShippingRequestForm from "@/components/order-forms/ShippingRequestForm";
+import type { ShippingRequestItemSchema } from "@/definitions/zod-definitions";
+
+import MainLayout from "@/layouts/MainLayout.astro";
+
+import {
+  getCountries,
+  getShippingMethods,
+  getShippableItems,
+} from "@/lib/db-funcs/get-functions";
+
+import { verifySession } from "@/lib/sessions";
+import type { z } from "zod";
+
+export const prerender = false;
+
+const session = await verifySession(Astro.cookies);
+
+if (!session) {
+  return Astro.redirect("/account/login");
+}
+const countries = await getCountries();
+const shippingMethods = await getShippingMethods();
+const shippableItems = await getShippableItems(session.userId);
+---
+
+<MainLayout
+  title="Shipping Request | Pickup Korea"
+  currentRoute="/account/submit-order/shipping-request"
+>
+  <main class="min-h-screen py-16 px-4 max-w-7xl mx-auto w-full">
+    <h1 class="text-4xl font-bold text-center">Shipping Request</h1>
+    
+    <ShippingRequestForm
+      client:load
+      countries={countries}
+      shippingMethods={shippingMethods}
+      shippableItems={shippableItems as z.infer<
+        typeof ShippingRequestItemSchema
+      >[]}
+    />
+  </main>
+</MainLayout>

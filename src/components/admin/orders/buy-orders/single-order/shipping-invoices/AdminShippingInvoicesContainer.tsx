@@ -1,13 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSingleAdminShippingInvoices } from "@/lib/react-query/hooks";
 import AdminShippingInvoiceCard from "./AdminShippingInvoiceCard";
+import type { OrderType } from "@/lib/react-query/config";
 
 const AdminShippingInvoicesContainer = ({
   orderId,
   orderType,
 }: {
   orderId: string;
-  orderType: "buyOrder" | "pfOrder";
+  orderType: OrderType;
 }) => {
   const { data, isLoading, isError } = useSingleAdminShippingInvoices({
     orderId,
@@ -42,7 +43,7 @@ const AdminShippingInvoicesContainer = ({
           />
         ))}
         {!data.length && (
-          <div className="w-full h-[500px] flex justify-center items-center">
+          <div className="w-full h-[500px] flex justify-center items-center col-span-3">
             <p className="text-gray-500">청구서가 존재하지 않습니다.</p>
           </div>
         )}

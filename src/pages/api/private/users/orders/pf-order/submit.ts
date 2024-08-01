@@ -20,7 +20,7 @@ export async function POST(context: APIContext) {
         JSON.stringify({ message: "You are not logged in!" }),
         {
           status: 401,
-        },
+        }
       );
     }
 
@@ -35,7 +35,7 @@ export async function POST(context: APIContext) {
         }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -75,6 +75,8 @@ export async function POST(context: APIContext) {
               isInclusion: item.isInclusion,
               memo: item.memo,
               option: item.option,
+              price: item.price,
+              userId: session.userId,
             })),
           },
         },
@@ -83,17 +85,20 @@ export async function POST(context: APIContext) {
 
     if (!buyOrder) {
       return new Response(
-        JSON.stringify({ message: "Failed to submit buy order" }),
+        JSON.stringify({ message: "Failed to submit forwarding order" }),
         {
           status: 500,
-        },
+        }
       );
     }
     return new Response(
-      JSON.stringify({ message: "Buy order submitted!", orderId: buyOrder.id }),
+      JSON.stringify({
+        message: "Forwarding order submitted!",
+        orderId: buyOrder.id,
+      }),
       {
         status: 200,
-      },
+      }
     );
   } catch (error) {
     console.error(error);

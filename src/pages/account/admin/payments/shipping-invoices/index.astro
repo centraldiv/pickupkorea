@@ -1,0 +1,39 @@
+---
+import ProductInvoicesContainer from "@/components/admin/payments/ProductInvoicesContainer";
+import ShippingInvoicesContainer from "@/components/admin/payments/ShippinginvoicesContainer";
+import MainContainer from "@/layouts/MainContainer.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+
+const paidStatus = Astro.url.searchParams.get("paid");
+
+if (!paidStatus) {
+  return Astro.redirect("/account/admin/payments/shipping-invoices?paid=false");
+}
+---
+
+<MainLayout
+  title="Shipping Invoices | Payments | Admin | Pickup Korea"
+  currentRoute="/account/admin/payments/shipping-invoices"
+  isAdmin
+>
+  <MainContainer>
+    <h1 class="text-2xl font-bold text-center">Shipping Invoices</h1>
+    <aside class="flex justify-center gap-4 my-6">
+      <a
+        class:list={[
+          "border px-4 rounded-md py-0.5 hover:bg-primary/80 transition-colors duration-300",
+          paidStatus === "false" && "bg-primary text-white",
+        ]}
+        href="/account/admin/payments/shipping-invoices?paid=false">Unpaid</a
+      >
+      <a
+        class:list={[
+          "border px-4 rounded-md py-0.5 hover:bg-primary/80 transition-colors duration-300",
+          paidStatus === "true" && "bg-primary text-white",
+        ]}
+        href="/account/admin/payments/shipping-invoices?paid=true">Paid</a
+      >
+    </aside>
+    <ShippingInvoicesContainer client:load paidStatus={paidStatus} />
+  </MainContainer>
+</MainLayout>

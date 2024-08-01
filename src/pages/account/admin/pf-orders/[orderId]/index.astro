@@ -1,0 +1,24 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import AdminSingleOrderContainer from "@/components/admin/orders/common/AdminSingleOrderContainer";
+
+const { orderId } = Astro.params;
+
+if (!orderId) {
+  return Astro.redirect("/account/admin/buy-orders");
+}
+---
+
+<MainLayout
+  title="Order | PF Orders | Admin | Pickup Korea"
+  currentRoute="/account/admin/pf-orders"
+  isAdmin
+>
+  <main class="w-full px-4">
+    <AdminSingleOrderContainer
+      orderId={orderId}
+      orderType="PFOrder"
+      client:load
+    />
+  </main>
+</MainLayout>

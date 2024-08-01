@@ -57,9 +57,6 @@
 /api/private/orders/admin-buy-orders/order
 : GET , returns single buy order for admin.
 
-/api/private/orders/admin-buy-orders/order/address
-: PATCH , requires address fields and orderId to update order address and country.
-
 /api/private/orders/admin-buy-orders/order/order-status
 : PATCH , requires orderId and orderStatus (new) to update order status.
 
@@ -68,9 +65,6 @@
 
 /api/private/orders/admin-buy-orders/order/staff-memo
 : PATCH , requires orderId and staffMemo to update order staff memo.
-
-/api/private/orders/admin-buy-orders/order/item-fields
-: PATCH , requires orderId, itemId, the name of the field as field and the value as value.
 
 /api/private/orders/admin-buy-orders/order/issue-product-invoice
 : PATCH , requires orderId, invoiceList, totalPrice, userId to update order invoice. invoiceList is an array of objects with quantity, price, and name.
@@ -84,9 +78,17 @@
 /api/private/orders/admin-shipping-invoices/issue
 : POST , requires orderId, invoiceList, totalPrice, userId and orderType (buyOrder or pfOrder) to issue new shipping invoice. invoiceList is an array of objects with quantity, price, and name.
 
-
 /api/private/orders/admin-shipping-invoices
 : GET , returns a list of shipping invoices for admin. Query params: orderId and orderType (buyOrder or pfOrder)
+
+/api/private/orders/admin-orders/order/staff-memo
+: PATCH , requires orderId, memo, orderType to update order staff memo.
+
+/api/private/orders/admin-orders/order/address
+: PATCH , requires address fields and orderType to update order address and country.
+
+/api/private/orders/admin-orders/order/item-fields
+: PATCH , requires orderId, itemId, the name of the field as field and the value as value.
 
 # Todo
 

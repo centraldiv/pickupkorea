@@ -109,7 +109,7 @@ const PFOrderForm = ({
               "grid gap-8",
               fields.length === 1 && "grid-cols-1",
               fields.length === 2 && "sm:grid-cols-2",
-              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2",
+              fields.length >= 3 && "lg:grid-cols-3 sm:grid-cols-2"
             )}
           >
             <div className="my-6 col-span-full">

@@ -29,7 +29,7 @@ export const GET = async (context: APIContext) => {
         JSON.stringify({ message: "Order status is required" }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -83,6 +83,13 @@ export const GET = async (context: APIContext) => {
       orderBy: {
         updatedAt: "asc",
       },
+
+      take:
+        orderStatus === BuyOrderStatus.SHIPPED
+          ? 1000
+          : orderStatus === BuyOrderStatus.CANCELLED
+          ? 200
+          : undefined,
     });
 
     return new Response(JSON.stringify(buyOrders), {

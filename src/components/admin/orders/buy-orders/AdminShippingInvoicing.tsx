@@ -2,7 +2,6 @@ import {
   useSingleAdminOrder,
   type AdminBuyOrderWithItemsAndAddress,
 } from "@/lib/react-query/hooks";
-
 import {
   Form,
   FormControl,
@@ -21,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import Big from "big.js";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,8 +28,9 @@ import { InvoiceSchema } from "@/definitions/zod-definitions";
 import type { z } from "zod";
 
 import {
-  PrivateQueryKeys,
+  getPrivateQueryKeys,
   issueShippingInvoice,
+  type OrderType,
 } from "@/lib/react-query/config";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "@/stores/admin";
@@ -43,10 +43,10 @@ const AdminShippingInvoicing = ({
   shipRightAway,
 }: {
   orderId: string;
-  orderType: "buyOrder" | "pfOrder";
+  orderType: OrderType;
   shipRightAway?: boolean;
 }) => {
-  const { data } = useSingleAdminOrder(orderType, orderId);
+  const { data } = useSingleAdminOrder({ orderId, orderType });
   const [open, setOpen] = useState(false);
 
   const [costs, setCosts] = useState<
@@ -69,10 +69,11 @@ const AdminShippingInvoicing = ({
 
   const invoiceMutation = useMutation(
     {
-      mutationKey:
-        orderType === "buyOrder"
-          ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-          : [...PrivateQueryKeys.adminPFOrders, orderId],
+      mutationKey: getPrivateQueryKeys({
+        admin: true,
+        orderType,
+        keys: [orderId, "shipping-invoices"],
+      }),
       mutationFn: async ({
         invoiceList,
         totalPrice,
@@ -85,7 +86,7 @@ const AdminShippingInvoicing = ({
         totalPrice: number;
         orderId: string;
         userId: string;
-        orderType: "buyOrder" | "pfOrder";
+        orderType: OrderType;
         shipRightAway?: boolean;
       }) => {
         return await issueShippingInvoice({
@@ -109,49 +110,58 @@ const AdminShippingInvoicing = ({
         totalPrice: number;
         orderId: string;
         userId: string;
-        orderType: "buyOrder" | "pfOrder";
+        orderType: OrderType;
         shipRightAway?: boolean;
       }) => {
         await client.cancelQueries({
-          queryKey:
-            orderType === "buyOrder"
-              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-              : [...PrivateQueryKeys.adminPFOrders, orderId],
+          queryKey: getPrivateQueryKeys({
+            admin: true,
+            orderType,
+            keys: [orderId],
+          }),
         });
+        if (orderType !== "ShippingRequest") {
+          const previousOrderData =
+            client.getQueryData<AdminBuyOrderWithItemsAndAddress>(
+              getPrivateQueryKeys({
+                admin: true,
+                orderType,
+                keys: [orderId],
+              })
+            )!;
 
-        const previousOrderData =
-          client.getQueryData<AdminBuyOrderWithItemsAndAddress>(
-            orderType === "buyOrder"
-              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-              : [...PrivateQueryKeys.adminPFOrders, orderId]
-          )!;
+          const newOrderData = cloneDeep(previousOrderData);
 
-        const newOrderData = cloneDeep(previousOrderData);
+          newOrderData.orderStatus = BuyOrderStatus.SHIPPING_INVOICED;
 
-        newOrderData.orderStatus = BuyOrderStatus.SHIPPING_INVOICED;
+          if (shipRightAway) {
+            newOrderData.items.forEach((item) => {
+              if (item.productStatus === ItemStatus.RECEIVED) {
+                item.productStatus = ItemStatus.SHIPPING_INVOICED;
+              }
+            });
+          }
 
-        if (shipRightAway) {
-          newOrderData.items.forEach((item) => {
-            if (item.productStatus === ItemStatus.RECEIVED) {
-              item.productStatus = ItemStatus.SHIPPING_INVOICED;
-            }
-          });
+          client.setQueryData(
+            getPrivateQueryKeys({
+              admin: true,
+              orderType,
+              keys: [orderId],
+            }),
+            newOrderData
+          );
+          return { previousOrderData, newOrderData };
         }
-
-        client.setQueryData(
-          orderType === "buyOrder"
-            ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-            : [...PrivateQueryKeys.adminPFOrders, orderId],
-          newOrderData
-        );
-        return { previousOrderData, newOrderData };
       },
       onError: (error, newOrderData, context) => {
+        console.log(error);
         alert("청구서 발행 실패");
         client.setQueryData(
-          orderType === "buyOrder"
-            ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-            : [...PrivateQueryKeys.adminPFOrders, orderId],
+          getPrivateQueryKeys({
+            admin: true,
+            orderType,
+            keys: [orderId],
+          }),
           context!.previousOrderData
         );
       },
@@ -165,18 +175,54 @@ const AdminShippingInvoicing = ({
       },
       onSettled: () => {
         client.invalidateQueries({
-          queryKey:
-            orderType === "buyOrder"
-              ? [...PrivateQueryKeys.adminBuyOrders, orderId]
-              : [...PrivateQueryKeys.adminPFOrders, orderId],
+          queryKey: getPrivateQueryKeys({
+            admin: true,
+            orderType,
+            keys: [orderId],
+          }),
         });
       },
     },
     client
   );
 
+  const inclusionNumber = useMemo(() => {
+    if (!data) return 0;
+    if (orderType !== "ShippingRequest") {
+      const inclusionItems = data.items.filter((item) => item.isInclusion);
+      const totalQuantity = inclusionItems.reduce((acc, curr) => {
+        const accum = new Big(acc);
+        const quantity = new Big(curr.quantity);
+
+        return accum.add(quantity).toNumber();
+      }, 0);
+
+      return totalQuantity;
+    }
+
+    if (orderType === "ShippingRequest" && "toShipItems" in data) {
+      const toShipItems = data.toShipItems;
+      const inclusionItems = toShipItems.filter(
+        (toShipItem) => toShipItem.item.isInclusion
+      );
+
+      const totalQuantity = inclusionItems.reduce((acc, curr) => {
+        const accum = new Big(acc);
+        const quantity = new Big(curr.item.quantity);
+
+        return accum.add(quantity).toNumber();
+      }, 0);
+
+      return totalQuantity;
+    }
+  }, [data, orderType]);
+
   const issueInvoice = async () => {
     if (!data) return;
+    if (costs.length === 0) {
+      alert("청구 항목을 먼저 추가해주세요");
+      return;
+    }
 
     const total = new Big(
       costs.reduce((acc, curr) => {
@@ -201,10 +247,11 @@ const AdminShippingInvoicing = ({
   };
 
   if (!data) return null;
-
   const { items } = data;
 
-  if (!items || items.length === 0) return null;
+  if (orderType !== "ShippingRequest" && !items) {
+    return null;
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -246,23 +293,80 @@ const AdminShippingInvoicing = ({
             </div>
           ))}
         </div>
-        <div className="flex">
-          <div className="mr-0 ml-auto">
-            총 금액:{" "}
-            {new Big(
-              costs.reduce((acc, curr) => {
-                const accum = new Big(acc);
-                const price = new Big(curr.price);
-                const quantity = new Big(curr.quantity);
+        {orderType !== "ShippingRequest" && (
+          <div className="flex">
+            <div className="flex-1 overflow-x-scroll grid grid-cols-3 gap-2">
+              <div>
+                Video:{" "}
+                {
+                  data?.items.filter((item) => item.unboxingVideoRequested)
+                    .length
+                }
+              </div>
+              <div>
+                Photo:{" "}
+                {
+                  data?.items.filter((item) => item.unboxingPhotoRequested)
+                    .length
+                }
+              </div>
+              <div>Inclusion: {inclusionNumber}</div>
+            </div>
+            <div className="mr-0 ml-auto">
+              총 금액:{" "}
+              {new Big(
+                costs.reduce((acc, curr) => {
+                  const accum = new Big(acc);
+                  const price = new Big(curr.price);
+                  const quantity = new Big(curr.quantity);
 
-                return accum.add(price.times(quantity)).toNumber();
-              }, 0)
-            )
-              .toNumber()
-              .toLocaleString()}{" "}
-            원
+                  return accum.add(price.times(quantity)).toNumber();
+                }, 0)
+              )
+                .toNumber()
+                .toLocaleString()}{" "}
+              원
+            </div>
           </div>
-        </div>
+        )}
+        {orderType === "ShippingRequest" && "toShipItems" in data && (
+          <div className="flex">
+            <div className="flex-1 overflow-x-scroll grid grid-cols-3 gap-2">
+              <div>
+                Video:{" "}
+                {
+                  data?.toShipItems.filter(
+                    (toShipItem) => toShipItem.item.unboxingVideoRequested
+                  ).length
+                }
+              </div>
+              <div>
+                Photo:{" "}
+                {
+                  data?.toShipItems.filter(
+                    (toShipItem) => toShipItem.item.unboxingPhotoRequested
+                  ).length
+                }
+              </div>
+              <div>Inclusion: {inclusionNumber}</div>
+            </div>
+            <div className="mr-0 ml-auto">
+              총 금액:{" "}
+              {new Big(
+                costs.reduce((acc, curr) => {
+                  const accum = new Big(acc);
+                  const price = new Big(curr.price);
+                  const quantity = new Big(curr.quantity);
+
+                  return accum.add(price.times(quantity)).toNumber();
+                }, 0)
+              )
+                .toNumber()
+                .toLocaleString()}{" "}
+              원
+            </div>
+          </div>
+        )}
 
         <Form {...form}>
           <form

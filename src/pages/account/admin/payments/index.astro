@@ -1,0 +1,108 @@
+---
+import MainContainer from "@/layouts/MainContainer.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import {
+  getAdminProductInvoicesFromDB,
+  getAdminShippingInvoicesFromDB,
+} from "@/lib/db-funcs/get-functions";
+
+import { format } from "date-fns";
+export const prerender = false;
+const productInvoices = await getAdminProductInvoicesFromDB(100);
+const shippingInvoices = await getAdminShippingInvoicesFromDB(100);
+---
+
+<MainLayout
+  title="Payments | Admin | Pickup Korea"
+  currentRoute="/account/admin/payments"
+  isAdmin
+>
+  <MainContainer>
+    <aside class="flex items-center justify-center gap-4">
+      <a
+        class="bg-primary p-2 rounded-md hover:bg-primary/80 transition-colors duration-300"
+        href="/account/admin/payments/product-invoices">Product Invoices</a
+      >
+      <a
+        class="bg-primary p-2 rounded-md hover:bg-primary/80 transition-colors duration-300"
+        href="/account/admin/payments/shipping-invoices">Shipping Invoices</a
+      >
+    </aside>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <section class="relative border my-16 flex flex-col">
+        <div
+          class="flex items-center justify-center gap-2 bg-secondary text-black sticky top-0 py-2"
+        >
+          <span>Product Invoices</span>
+        </div>
+        <div
+          class="flex flex-col gap-2 overflow-y-scroll p-4 h-[700px] max-h-[700px]"
+        >
+          {
+            productInvoices.map((invoice) => (
+              <a
+                href={`/account/admin/payments/product-invoices/${invoice.id}`}
+              >
+                <div class="p-2 border rounded shadow-md">
+                  <div class="text-center font-bold">
+                    {invoice.invoiceNumber}
+                  </div>
+                  <div class="grid grid-cols-2">
+                    <div class="truncate">{invoice.user.fullName}</div>
+                    <div class="text-right">{invoice.user.email}</div>
+                  </div>
+                  <div class="grid grid-cols-2">
+                    <div>{format(invoice.createdAt, "yyyy-MM-dd HH:mm")}</div>
+                    <div class="text-right">
+                      {invoice.totalPrice.toLocaleString()} 원
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    {invoice.paid ? "결제 완료" : "결제 대기"}
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+      <section class="relative border my-16 flex flex-col">
+        <div
+          class="flex items-center justify-center gap-2 bg-secondary text-black sticky top-0 py-2"
+        >
+          <span>Shipping Invoices</span>
+        </div>
+        <div
+          class="flex flex-col gap-2 overflow-y-scroll p-4 h-[700px] max-h-[700px]"
+        >
+          {
+            shippingInvoices.map((invoice) => (
+              <a
+                href={`/account/admin/payments/shipping-invoices/${invoice.id}`}
+              >
+                <div class="p-2 border rounded shadow-md">
+                  <div class="text-center font-bold">
+                    {invoice.invoiceNumber}
+                  </div>
+                  <div class="grid grid-cols-2">
+                    <div class="truncate">{invoice.user.fullName}</div>
+                    <div class="text-right">{invoice.user.email}</div>
+                  </div>
+                  <div class="grid grid-cols-2">
+                    <div>{format(invoice.createdAt, "yyyy-MM-dd HH:mm")}</div>
+                    <div class="text-right">
+                      {invoice.totalPrice.toLocaleString()} 원
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    {invoice.paid ? "결제 완료" : "결제 대기"}
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </MainContainer>
+</MainLayout>

@@ -1,5 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { OrderType } from "./react-query/config";
+import Big from "big.js";
+import type { user } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -46,7 +49,7 @@ export function getWebsiteQuantities(websites: string[]) {
   });
 
   const sitesWithQuantities = Object.entries(object).map(
-    ([key, value]) => `${key}: ${value}`,
+    ([key, value]) => `${key}: ${value}`
   );
   return [
     `[사이트 갯수: ${Object.keys(object).length}]`,
@@ -87,3 +90,31 @@ export const generateProductInvoiceNumber = (count: number) => {
       return Number(count.toString().slice(-4)).toString();
   }
 };
+
+export const parseOrderTypeURL = (orderType: OrderType) => {
+  switch (orderType) {
+    case "BuyOrder":
+      return "buy-orders";
+    case "PFOrder":
+      return "pf-orders";
+    case "ShippingRequest":
+      return "shipping-requests";
+  }
+};
+
+export const bigReduce = (array: { price: number; quantity: number }[]) => {
+  return array.reduce((acc, curr) => {
+    const accum = new Big(acc);
+    const price = new Big(curr.price);
+    const quantity = new Big(curr.quantity);
+
+    return accum.add(price.times(quantity)).toNumber();
+  }, 0);
+};
+
+export const omitKey = (object: Record<string, any>, key: string) => {
+  const { [key]: omitted, ...rest } = object;
+  return rest;
+};
+
+export const parseAccountInfo = (key: keyof user) => {};

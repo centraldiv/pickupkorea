@@ -1,10 +1,20 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSingleAdminBuyOrderProductInvoices } from "@/lib/react-query/hooks";
-import AdminSingleBuyOrderProductInvoiceCard from "./AdminSingleBuyOrderProductInvoiceCard";
 
-const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
-  const { data, isLoading, isError } =
-    useSingleAdminBuyOrderProductInvoices(orderId);
+import AdminSingleBuyOrderProductInvoiceCard from "./AdminSingleBuyOrderProductInvoiceCard";
+import type { OrderType } from "@/lib/react-query/config";
+import { useSingleAdminProductInvoices } from "@/lib/react-query/hooks";
+
+const AdminSingleBuyOrderContainer = ({
+  orderId,
+  orderType,
+}: {
+  orderId: string;
+  orderType: OrderType;
+}) => {
+  const { data, isLoading, isError } = useSingleAdminProductInvoices({
+    orderId,
+    orderType,
+  });
 
   if (isLoading)
     return (
@@ -33,7 +43,7 @@ const AdminSingleBuyOrderContainer = ({ orderId }: { orderId: string }) => {
           />
         ))}
         {!data.length && (
-          <div className="w-full h-[500px] flex justify-center items-center">
+          <div className="w-full h-[500px] flex justify-center items-center col-span-3">
             <p className="text-gray-500">청구서가 존재하지 않습니다.</p>
           </div>
         )}

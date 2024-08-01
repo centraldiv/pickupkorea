@@ -1,0 +1,18 @@
+---
+import SingleShippingRequestOrderContainer from "@/components/users/orders/shipping-requests/single/SingleShippingRequestOrderContainer";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+
+export const prerender = false;
+const { requestId } = Astro.params;
+
+if (!requestId) {
+  return Astro.redirect("/account/orders/shipping-requests");
+}
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/shipping-requests"
+  title="Shipping Requests | Orders | Pickup Korea"
+>
+  <SingleShippingRequestOrderContainer requestId={requestId} client:load />
+</OrdersLayout>

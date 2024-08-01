@@ -16,7 +16,7 @@ const AdminSingleBuyOrderProductInvoiceCard = ({
   invoice: ProductInvoiceWithUser;
 }) => {
   return (
-    <a href={`/admin/payments/product-invoices/${invoice.id}`}>
+    <a href={`/account/admin/payments/product-invoices/${invoice.id}`}>
       <Card className="hover:scale-105 transition-all duration-30 cursor-pointer">
         <CardHeader>
           <CardTitle>Invoice No. {invoice.invoiceNumber}</CardTitle>

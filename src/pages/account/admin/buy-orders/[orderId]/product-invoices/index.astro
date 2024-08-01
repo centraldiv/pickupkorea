@@ -15,6 +15,10 @@ if (!orderId) {
   isAdmin
 >
   <main class="w-full px-4">
-    <AdminSingleBuyOrderProductInvoiceContainer orderId={orderId} client:load />
+    <AdminSingleBuyOrderProductInvoiceContainer
+      orderId={orderId}
+      orderType="BuyOrder"
+      client:load
+    />
   </main>
 </MainLayout>

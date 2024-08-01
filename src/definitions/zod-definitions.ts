@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BuyOrderStatus, BuyOrderStatusArray } from "./statuses";
+import { BuyOrderStatusArray } from "./statuses";
 
 const passwordRegex =
   /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,20}$/;
@@ -53,6 +53,46 @@ export const RawSignUpSchema = z.object({
   kakaoId: z.string().trim().nullish(),
 });
 
+export const KakaoSchema = RawSignUpSchema.pick({
+  kakaoId: true,
+});
+
+export const ChangePasswordSchema = z
+  .object({
+    id: z.string(),
+    oldPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .max(20, { message: "Password must be less than 20 characters" })
+      .regex(passwordRegex, {
+        message:
+          "Password must contain at least 8 characters, 1 letter and 1 number",
+      })
+      .trim(),
+    newPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .max(20, { message: "Password must be less than 20 characters" })
+      .regex(passwordRegex, {
+        message:
+          "Password must contain at least 8 characters, 1 letter and 1 number",
+      })
+      .trim(),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .max(20, { message: "Password must be less than 20 characters" })
+      .regex(passwordRegex, {
+        message:
+          "Password must contain at least 8 characters, 1 letter and 1 number",
+      })
+      .trim(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
 export const SignUpSchema = RawSignUpSchema.refine(
   (data) => data.password === data.confirmPassword,
   {
@@ -87,9 +127,18 @@ export const AddressSchema = z.object({
   country: z.string({ required_error: "Country is required" }).trim(),
 });
 
+export const DefaultAddressSchema = AddressSchema.extend({
+  shippingMethodId: z.string().nullish(),
+});
+
 export const OrderAddressSchema = AddressSchema.extend({
   orderId: z.string({ required_error: "Order ID is required" }),
   id: z.string({ required_error: "Address ID is required" }),
+});
+
+export const MemoSchema = z.object({
+  userMemo: z.string().trim().optional(),
+  staffMemo: z.string().trim().optional(),
 });
 
 export const ClientBuyItemSchema = z.object({
@@ -108,11 +157,32 @@ export const ClientBuyItemSchema = z.object({
   isInclusion: z.boolean().default(false),
 });
 
+export const ShippingRequestItemSchema = ClientBuyItemSchema.extend({
+  id: z.string(),
+  availableQuantity: z.coerce
+    .number()
+    .min(1, { message: "Available quantity is required" }),
+  toShipQuantity: z.coerce
+    .number()
+    .min(0, { message: "To ship quantity must be greater than or equal to 0" }),
+  buyOrderId: z.string().nullish(),
+  pfOrderId: z.string().nullish(),
+}).refine((data) => data.toShipQuantity <= data.availableQuantity, {
+  path: ["toShipQuantity"],
+});
+
 export const ClientPFItemSchema = ClientBuyItemSchema.extend({
   price: z.coerce
     .number({ required_error: "Price is required" })
     .min(0, { message: "Price must be greater than 0 KRW" })
     .optional(),
+});
+
+export const ShippingRequestSchema = z.object({
+  items: z.array(ShippingRequestItemSchema).nonempty("Items are required"),
+  userMemo: z.string().optional(),
+  address: AddressSchema.nullish(),
+  shippingMethodId: z.string().optional(),
 });
 
 export const ClientBuyOrderSchema = z.object({
@@ -160,4 +230,9 @@ export const InvoiceSchema = z.object({
     .number({ required_error: "Quantity is required" })
     .min(1, { message: "Quantity must be at least 1" }),
   price: z.coerce.number({ required_error: "Price is required" }),
+});
+
+export const UnboxSchema = z.object({
+  unboxingVideoUrl: z.string().optional(),
+  unboxingPhotoUrl: z.string().optional(),
 });

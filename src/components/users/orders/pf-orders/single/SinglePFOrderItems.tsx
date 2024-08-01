@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSinglePFOrder } from "@/lib/react-query/hooks";
+import { cn } from "@/lib/utils";
 
 const SinglePFOrderItems = ({ orderId }: { orderId: string }) => {
   const { data } = useSinglePFOrder(orderId);
@@ -83,12 +84,46 @@ const SinglePFOrderItems = ({ orderId }: { orderId: string }) => {
             </div>
           </div>
           {item.unboxingPhotoUrl || item.unboxingVideoUrl ? (
-            <div className="flex items-center gap-2 justify-end py-2">
-              {item.unboxingVideoUrl && (
-                <Button variant="outline">View Unboxed Video</Button>
+            <div className="grid grid-cols-2 gap-2 py-2">
+              {item.unboxingVideoRequested && (
+                <div
+                  className={cn(
+                    "grid",
+                    !item.unboxingPhotoRequested && "col-span-2"
+                  )}
+                >
+                  <div className="bg-secondary w-full text-center">
+                    Unboxing Video
+                  </div>
+                  <div className="px-2 py-1">
+                    {item.unboxingVideoUrl ? (
+                      <a href={item.unboxingVideoUrl} target="_blank">
+                        {item.unboxingVideoUrl}
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </div>
+                </div>
               )}
-              {item.unboxingPhotoUrl && (
-                <Button variant="outline">View Unboxed Photo</Button>
+              {item.unboxingPhotoRequested && (
+                <div
+                  className={cn(
+                    "grid",
+                    !item.unboxingVideoRequested && "col-span-2"
+                  )}
+                >
+                  <div className="bg-secondary text-center">Unboxing Photo</div>
+                  <div className="px-2 py-1 text-cente">
+                    {item.unboxingPhotoUrl ? (
+                      <a href={item.unboxingPhotoUrl} target="_blank">
+                        {item.unboxingPhotoUrl}
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           ) : null}

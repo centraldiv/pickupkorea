@@ -1,14 +1,15 @@
 ---
 import { cn } from "@/lib/utils";
 import type { Href } from "@/types/global";
+import MobileMenu from "./MobileMenu";
 
 const links: { label: string; href: Href }[] = [
   { label: "Home", href: "/" },
-  { label: "Service Rate", href: "/service-rate" },
-  { label: "Shipping Rate", href: "/shipping-rate" },
-  { label: "Order", href: "/order" },
+  { label: "Service rate", href: "/service-rate" },
+  { label: "Shipping rate", href: "/shipping-rate" },
+  { label: "How to pay", href: "/how-to-pay" },
+  { label: "Shopping recommendations", href: "/shopping-recommendations" },
   { label: "Q/A", href: "/faq" },
-  { label: "Contact", href: "/contact" },
 ];
 
 interface Props {
@@ -20,22 +21,80 @@ const { currentRoute } = Astro.props;
 
 {
   currentRoute && (
-    <nav class="bg-primary">
-      <ul class="flex justify-between items-center w-7xl w-full overflow-x-scroll scrollbar-hide h-16 mx-auto text-2xl font-semibold gap-24 px-12">
-        {links.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class={cn(
-                currentRoute === link.href ? "text-black" : "text-white",
-                "whitespace-nowrap hover:text-black transition-colors duration-300"
-              )}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
+    <nav class="bg-primary py-2 flex justify-center lg:block">
+      <MobileMenu client:load links={links} />
+      <ul class="lg:flex justify-between items-center w-full scrollbar-hide h-16 mx-auto text-lg sm:text-2xl font-semibold px-4 hidden gap-4 xl:px-12">
+        {links.map((link) => {
+          if (link.href === "/shipping-rate") {
+            return (
+              <li class="group relative h-full flex flex-col items-center justify-center">
+                <span
+                  id="shipping-rate-label"
+                  class={cn(
+                    currentRoute === link.href ? "text-black" : "text-white",
+                    "whitespace-nowrap hover:text-black transition-colors duration-300 flex items-center gap-1 "
+                  )}
+                >
+                  {link.label}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="3"
+                    stroke="currentColor"
+                    class="size-6 translate-y-0.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+                <div
+                  id="shipping-rate-dropdown"
+                  class="hidden absolute -bottom-[7.5rem] left-1/2 w-[15rem] -translate-x-1/2 bg-secondaryOrange text-white z-20 group-hover:flex flex-col gap-4 h-[8rem] px-4 py-8 items-start justify-center"
+                >
+                  <a class="hover:text-black" href="/shipping-rate/ems-kpacket">
+                    EMS & K-packet
+                  </a>
+                  <a class="hover:text-black" href="/shipping-rate/express">
+                    Express
+                  </a>
+                </div>
+              </li>
+            );
+          }
+          return (
+            <li class="h-full flex flex-col items-center justify-center">
+              <a
+                href={link.href}
+                class={cn(
+                  currentRoute === link.href ? "text-black" : "text-white",
+                  "whitespace-nowrap hover:text-black transition-colors duration-300"
+                )}
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   )
 }
+
+<script>
+  const shippingRateLabel = document.getElementById("shipping-rate-label");
+  const shippingRateDropdown = document.getElementById(
+    "shipping-rate-dropdown"
+  );
+
+  shippingRateLabel!.addEventListener("click", () => {
+    shippingRateDropdown!.classList.toggle("flex");
+  });
+
+  shippingRateDropdown!.addEventListener("mouseleave", () => {
+    shippingRateDropdown!.classList.toggle("flex");
+  });
+</script>

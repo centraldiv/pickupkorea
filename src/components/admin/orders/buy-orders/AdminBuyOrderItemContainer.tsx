@@ -16,6 +16,9 @@ const AdminBuyOrderItemContainer = ({
             바로 배송
           </div>
           <div className="text-center py-1 font-medium tracking-tighter">
+            {order.productInvoice?.invoiceNumber}
+          </div>
+          <div className="text-center py-1 font-medium tracking-tighter">
             {order.user.email}
           </div>
           <div className="text-center py-1 font-medium tracking-tighter">
@@ -67,6 +70,9 @@ const AdminBuyOrderItemContainer = ({
           창고
         </div>
         <div className="text-center py-1 font-medium tracking-tighter">
+          {order.productInvoice?.invoiceNumber}
+        </div>
+        <div className="text-center py-1 font-medium tracking-tighter">
           {order.user.email}
         </div>
         <div className="text-center py-1 font-medium tracking-tighter">
@@ -82,7 +88,7 @@ const AdminBuyOrderItemContainer = ({
             <div className="py-1 text-sm">
               {order.items.reduce(
                 (acc, item) => acc + item.receivedQuantity,
-                0,
+                0
               )}
             </div>
           </div>

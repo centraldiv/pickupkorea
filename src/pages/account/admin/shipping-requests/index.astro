@@ -1,0 +1,14 @@
+---
+import AdminShippingRequestContainer from "@/components/admin/orders/common/AdminShippingRequestContainer";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Shipping Requests | Admin | Pickup Korea"
+  currentRoute="/account/admin/shipping-requests"
+  isAdmin
+>
+  <main class="w-full max-h-[600px] h-[600px] mx-auto">
+    <AdminShippingRequestContainer client:load />
+  </main>
+</MainLayout>

@@ -1,0 +1,36 @@
+---
+import MainContainer from "@/layouts/MainContainer.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import AdminSingleProductInvoice from "@/components/admin/payments/AdminSingleProductInvoice";
+import AdminProductInvoiceControlButtons from "@/components/admin/payments/AdminProductInvoiceControlButtons";
+import { getInvoiceNumber } from "@/lib/db-funcs/get-functions";
+export const prerender = false;
+const invoiceId = Astro.params.invoiceId;
+
+if (!invoiceId) {
+  return Astro.redirect("/account/admin/payments/product-invoices");
+}
+
+const invoice = await getInvoiceNumber({
+  invoiceId: invoiceId as string,
+  invoiceType: "ProductInvoice",
+});
+
+if (!invoice || !invoice.invoiceNumber) {
+  return Astro.redirect("/account/admin/payments/product-invoices");
+}
+---
+
+<MainLayout
+  title={`${invoice.invoiceNumber} | Product Invoices | Payments | Admin | Pickup Korea`}
+  currentRoute="/account/admin/payments/product-invoices/"
+  isAdmin
+>
+  <MainContainer>
+    <h1 class="text-2xl font-bold text-center">{invoice.invoiceNumber}</h1>
+    <aside class="max-w-7xl w-full mx-auto mt-12">
+      <AdminProductInvoiceControlButtons invoiceId={invoiceId} client:load />
+    </aside>
+    <AdminSingleProductInvoice invoiceId={invoiceId} client:load />
+  </MainContainer>
+</MainLayout>

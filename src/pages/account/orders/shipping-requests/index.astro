@@ -1,0 +1,11 @@
+---
+import ShippingRequestOrderContainer from "@/components/users/orders/shipping-requests/ShippingRequestOrderContainer";
+import OrdersLayout from "@/layouts/OrdersLayout.astro";
+---
+
+<OrdersLayout
+  currentRoute="/account/orders/shipping-requests"
+  title="Shipping Requests | Orders | Pickup Korea"
+>
+  <ShippingRequestOrderContainer client:load />
+</OrdersLayout>

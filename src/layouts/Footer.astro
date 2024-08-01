@@ -1,0 +1,27 @@
+---
+const data = [
+  { title: "Company", value: "Shaon" },
+  { title: "Chief Privacy Officer", value: "Jihye Park" },
+  { title: "Business Registration No.", value: "781-86-03401" },
+  { title: "Email", value: "sendingforyou@yahoo.com" },
+];
+---
+
+<footer>
+  <dl>
+    {
+      data.map((item) => (
+        <div class="flex gap-1">
+          <dt>{item.title}:</dt>
+          <dd>{item.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</footer>
+
+<style>
+  footer {
+    @apply lg:px-[4.375rem] lg:py-[4.625rem] px-4 sm:px-8 py-6 sm:py-12 bg-black text-white lg:text-2xl text-lg;
+  }
+</style>

@@ -1,0 +1,202 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+
+const details = [
+  { label: "Korean Address ", value: "Free" },
+  { label: "Storage (30 days ) ", value: "Free" },
+  { label: "Ext. Storage", value: "Free" },
+];
+
+const purchaseDetails = [
+  { label: "Online Purchase ", value: "2,000KRW" },
+  { label: "Online Purchase (Seoul) ", value: "40,000KRW/1hr" },
+  { label: "+15,000KRW/Extra hr", value: "" },
+];
+
+const optionalDetails = [
+  { label: "Unboxing with Video ", value: "2,000KRW/Package" },
+  { label: "Unboxing with Photo ", value: "1,000KRW/Package" },
+  { label: "Inclusion Only", value: "1,500KRW/album" },
+];
+const forwardingDetails = [
+  { label: "Consolidation ", value: "Free" },
+  { label: "Forwarding ", value: "Free*" },
+  { label: "Pick up ", value: "3,000KRW/Package" },
+  {
+    label: "* please refer to the shipping rate as shipping charge",
+    value: "",
+  },
+];
+
+export const prerender = true;
+---
+
+<MainLayout title="Service Rate | Pickup Korea" currentRoute="/service-rate">
+  <main>
+    <section class="py-12 sm:py-24 w-full">
+      <div class="max-w-[1000px] mx-auto px-4 xl:px-0">
+        <h1
+          class="text-[1.5rem] leading-[2rem] sm:text-[2.5rem] sm:leading-[3.405rem] font-bold text-center mb-8 sm:mb-[3.4375rem]"
+        >
+          Warehouse
+        </h1>
+        <article
+          class="text-lg sm:text-2xl text-left max-w-[90%] sm:max-w-[62.5rem] mx-auto"
+        >
+          <p>
+            For members only, we will give you an address to ship your order.<br
+            />
+            The address can be found on <strong>MY menu</strong> after signing up.<br
+            />
+            Product can be stored for free up to 30 days from the date of confirmation
+            after delivery.<br />
+            At the end of the free storage period, if you pay an extension storage
+            fee, you can keep it for up to 90 days and it may be discarded after
+            that.
+          </p>
+        </article>
+
+        <article
+          class="bg-primaryBeige p-4 sm:p-16 rounded-3xl w-full max-w-[51.875rem] mx-auto flex flex-col justify-start my-12 sm:my-24"
+        >
+          {
+            details.map((item, index) => (
+              <dl class="flex mb-4 w-full gap-2">
+                <dt class="font-bold text-base sm:text-2xl">{item.label}</dt>
+                <span class="flex-1 border-b-2 sm:border-b-4 border-dotted border-black" />
+                <dd class="font-bold text-base sm:text-2xl">{item.value}</dd>
+              </dl>
+            ))
+          }
+        </article>
+      </div>
+    </section>
+    <section class="w-full bg-primaryGray">
+      <section
+        class="py-12 sm:py-24 w-full max-w-[1000px] mx-auto flex flex-col justify-center items-center px-4"
+      >
+        <h1
+          class="text-[1.5rem] sm:text-[2.5rem] leading-[2rem] sm:leading-[3.405rem] font-bold text-center mb-8 sm:mb-[5.5625rem]"
+        >
+          Purchase
+        </h1>
+        <article
+          class="text-lg sm:text-2xl text-left max-w-[90%] sm:max-w-[62.5rem] mx-auto"
+        >
+          <p>
+            We can help to purchase the items you want by the Korean online or
+            offline shop.
+          </p>
+        </article>
+        <section
+          class="bg-primaryBeige py-8 sm:py-16 px-4 sm:px-8 rounded-3xl w-full max-w-[51.875rem] flex flex-col justify-start mt-8 sm:mt-[5.5625rem] mb-12 sm:mb-24 mx-4 sm:mx-[5.3125rem]"
+        >
+          {
+            purchaseDetails.map((item, index) => (
+              <dl
+                class:list={[
+                  "flex gap-4 flex-col sm:flex-row mb-4 w-full items-center sm:items-baseline",
+                  item.value ? "justify-between" : "justify-end",
+                ]}
+              >
+                <dt class="font-bold text-base sm:text-2xl">{item.label}</dt>
+                {index !== purchaseDetails.length - 1 && (
+                  <span class="dotted-span hidden sm:block" />
+                )}
+                {item.value && (
+                  <dd class="font-bold text-base sm:text-2xl">{item.value}</dd>
+                )}
+              </dl>
+            ))
+          }
+        </section>
+      </section>
+    </section>
+    <section
+      class="py-12 sm:py-24 w-full max-w-[1000px] mx-auto flex flex-col justify-center items-center px-4"
+    >
+      <h1
+        class="text-[1.5rem] sm:text-[2.5rem] leading-[2rem] sm:leading-[3.405rem] font-bold text-center mb-8 sm:mb-[3.4375rem]"
+      >
+        Optional
+      </h1>
+      <article
+        class="text-lg sm:text-2xl text-left max-w-[90%] sm:max-w-[62.5rem] mx-auto"
+      >
+        <p>
+          If you want to check your package inside, please use the unboxing
+          service.<br />
+          We can help you check the status and quantity.<br />
+          If you only want inclusion in your albums, please use the inclusion only
+          service.<br />
+          You can save shipping costs by drastically reducing the volume and weight.
+        </p>
+      </article>
+      <section
+        class="bg-primaryBeige p-8 sm:p-16 rounded-3xl w-full max-w-[51.875rem] flex flex-col justify-start my-12 sm:my-24 mx-4"
+      >
+        {
+          optionalDetails.map((item, index) => (
+            <dl class="flex flex-col gap-4 md:flex-row justify-between mb-4 w-full items-center md:items-baseline">
+              <dt class="font-bold text-base sm:text-2xl">{item.label}</dt>
+              <span class="flex-1 border-b-2 sm:border-b-4 border-dotted border-black hidden md:block" />
+              <dd class="font-bold text-base sm:text-2xl">{item.value}</dd>
+            </dl>
+          ))
+        }
+      </section>
+    </section>
+    <section class="w-full bg-primaryGray">
+      <section
+        class="py-12 sm:py-24 w-full max-w-[1000px] mx-auto flex flex-col justify-center items-center px-4"
+      >
+        <h1
+          class="text-2xl sm:text-[2.5rem] leading-[2rem] sm:leading-[3.405rem] font-bold text-center mb-8 sm:mb-24"
+        >
+          Forwarding & Pickup
+        </h1>
+        <article
+          class="text-lg sm:text-2xl text-left w-full max-w-[90%] sm:max-w-[62.5rem] mx-auto"
+        >
+          <p>
+            If you would like to receive your packages, please use forwarding
+            service. <br />
+            We could combine multiple packages into one box (consolidation) and ship
+            via EMS, K-packet, and other express carriers.<br />
+            If you have a plan to visit Korea within the storage period, you can
+            also pick up the delivered items in person from Pickup Korea office with
+            advance notice 7 days prior to the visit date.
+          </p>
+        </article>
+        <section
+          class="bg-primaryBeige py-8 sm:py-16 px-4 sm:px-8 rounded-3xl w-full max-w-[51.875rem] flex flex-col justify-start mt-8 sm:mt-24 mb-12 sm:mb-24"
+        >
+          {
+            forwardingDetails.map((item, index) => (
+              <dl
+                class:list={[
+                  "flex  gap-4 justify-between mb-4 w-full",
+                  item.value ? "justify-between" : "justify-end",
+                ]}
+              >
+                <dt class="font-bold text-base sm:text-2xl">{item.label}</dt>
+                {index !== forwardingDetails.length - 1 && (
+                  <span class="flex-1 border-b-2 sm:border-b-4 border-dotted border-black" />
+                )}
+                {item.value && (
+                  <dd class="font-bold text-base sm:text-2xl">{item.value}</dd>
+                )}
+              </dl>
+            ))
+          }
+        </section>
+      </section>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .dotted-span {
+    @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black;
+  }
+</style>

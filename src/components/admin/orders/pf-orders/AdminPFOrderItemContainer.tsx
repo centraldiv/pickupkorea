@@ -1,7 +1,4 @@
-import type {
-  BuyOrderWithItemsAndAddress,
-  PFOrderWithItemsAndAddress,
-} from "@/lib/react-query/hooks";
+import type { PFOrderWithItemsAndAddress } from "@/lib/react-query/hooks";
 import { getWebsiteNames } from "@/lib/utils";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale/ko";
@@ -15,7 +12,7 @@ const AdminPFOrderItemContainer = ({
     return (
       <a href={`/account/admin/pf-orders/${order.id}`}>
         <div key={order.id} className="relative border shadow rounded-md">
-          <div className="w-full bg-blue-4000 flex items-center justify-center rounded-t py-0.5 font-semibold">
+          <div className="w-full bg-blue-400 flex items-center justify-center rounded-t py-0.5 font-semibold">
             바로 배송
           </div>
           <div className="text-center py-1 font-medium tracking-tighter">
@@ -91,7 +88,7 @@ const AdminPFOrderItemContainer = ({
             <div className="py-1 text-sm">
               {order.items.reduce(
                 (acc, item) => acc + item.receivedQuantity,
-                0,
+                0
               )}
             </div>
           </div>

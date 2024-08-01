@@ -29,6 +29,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { ClientPFOrderSchema } from "@/definitions/zod-definitions";
 import { z } from "zod";
 import type { availableShippingMethods, country } from "@prisma/client";
+import { useDefaultAddress } from "@/lib/react-query/hooks";
 
 const addressDefault = {
   receiverName: "",
@@ -52,9 +53,10 @@ const PFOrderSteps = ({
 }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: defaultAddress, isLoading } = useDefaultAddress();
 
   const onSubmitAddressOrder = (
-    values: z.infer<typeof ClientPFOrderSchema>,
+    values: z.infer<typeof ClientPFOrderSchema>
   ) => {
     if (!values.shippingMethodId) {
       alert("Please select a shipping method");
@@ -64,7 +66,7 @@ const PFOrderSteps = ({
   };
 
   const onSubmitFinalStep = async (
-    values: z.infer<typeof ClientPFOrderSchema>,
+    values: z.infer<typeof ClientPFOrderSchema>
   ) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -77,7 +79,7 @@ const PFOrderSteps = ({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(values),
-        },
+        }
       );
       const { message, orderId }: { message: string; orderId?: string } =
         await response.json();
@@ -160,6 +162,34 @@ const PFOrderSteps = ({
           <h1 className="text-2xl font-medium mt-12 text-center">
             Shipping Address
           </h1>
+          <aside className="max-w-md w-full mx-auto mt-12">
+            <Button
+              className="w-full"
+              type="button"
+              disabled={isLoading}
+              onClick={() => {
+                if (!defaultAddress) {
+                  return alert("You haven't saved a default address yet!");
+                }
+                form.setValue("address", {
+                  receiverName: defaultAddress?.receiverName,
+                  phone: defaultAddress?.phone,
+                  email: defaultAddress?.email,
+                  street: defaultAddress?.street,
+                  city: defaultAddress?.city,
+                  state: defaultAddress?.state,
+                  zipcode: defaultAddress?.zipcode,
+                  country: defaultAddress?.country.id,
+                });
+                form.setValue(
+                  "shippingMethodId",
+                  defaultAddress?.shippingMethodId as string
+                );
+              }}
+            >
+              {isLoading ? "Loading..." : "Load Default"}
+            </Button>
+          </aside>
           <Form {...form}>
             <form
               className="max-w-md mx-auto w-full py-12"
@@ -266,10 +296,7 @@ const PFOrderSteps = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Country</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="" />
@@ -298,10 +325,7 @@ const PFOrderSteps = ({
                     <FormLabel>
                       Please select your preferred shipping courier
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="" />

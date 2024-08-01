@@ -1,5 +1,6 @@
 import {
   useSingleAdminBuyOrder,
+  useSingleAdminOrder,
   type AdminBuyOrderWithItemsAndAddress,
 } from "@/lib/react-query/hooks";
 
@@ -30,6 +31,7 @@ import type { z } from "zod";
 import { getWebsiteQuantities } from "@/lib/utils";
 import {
   PrivateQueryKeys,
+  getPrivateQueryKeys,
   issueProductInvoice,
 } from "@/lib/react-query/config";
 import { useMutation } from "@tanstack/react-query";
@@ -42,7 +44,7 @@ const AdminSingleBuyOrderProductInvoicing = ({
 }: {
   orderId: string;
 }) => {
-  const { data } = useSingleAdminBuyOrder(orderId);
+  const { data } = useSingleAdminOrder({ orderId, orderType: "BuyOrder" });
   const [open, setOpen] = useState(false);
   const [costs, setCosts] = useState<
     { name: string; price: number; quantity: number }[]
@@ -87,7 +89,11 @@ const AdminSingleBuyOrderProductInvoicing = ({
 
   const invoiceMutation = useMutation(
     {
-      mutationKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+      mutationKey: getPrivateQueryKeys({
+        admin: true,
+        orderType: "BuyOrder",
+        keys: [orderId],
+      }),
       mutationFn: async ({
         invoiceList,
         totalPrice,
@@ -118,21 +124,32 @@ const AdminSingleBuyOrderProductInvoicing = ({
         userId: string;
       }) => {
         await client.cancelQueries({
-          queryKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+          queryKey: getPrivateQueryKeys({
+            admin: true,
+            orderType: "BuyOrder",
+            keys: [orderId],
+          }),
         });
 
         const previousOrderData =
-          client.getQueryData<AdminBuyOrderWithItemsAndAddress>([
-            ...PrivateQueryKeys.adminBuyOrders,
-            orderId,
-          ])!;
+          client.getQueryData<AdminBuyOrderWithItemsAndAddress>(
+            getPrivateQueryKeys({
+              admin: true,
+              orderType: "BuyOrder",
+              keys: [orderId],
+            })
+          )!;
 
         const newOrderData = cloneDeep(previousOrderData);
 
         newOrderData.orderStatus = BuyOrderStatus.PRODUCT_INVOICED;
 
         client.setQueryData(
-          [...PrivateQueryKeys.adminBuyOrders, orderId],
+          getPrivateQueryKeys({
+            admin: true,
+            orderType: "BuyOrder",
+            keys: [orderId],
+          }),
           newOrderData
         );
         return { previousOrderData, newOrderData };
@@ -140,7 +157,11 @@ const AdminSingleBuyOrderProductInvoicing = ({
       onError: (error, newOrderData, context) => {
         alert("청구서 발행 실패");
         client.setQueryData(
-          [...PrivateQueryKeys.adminBuyOrders, orderId],
+          getPrivateQueryKeys({
+            admin: true,
+            orderType: "BuyOrder",
+            keys: [orderId],
+          }),
           context!.previousOrderData
         );
       },
@@ -154,7 +175,11 @@ const AdminSingleBuyOrderProductInvoicing = ({
       },
       onSettled: () => {
         client.invalidateQueries({
-          queryKey: [...PrivateQueryKeys.adminBuyOrders, orderId],
+          queryKey: getPrivateQueryKeys({
+            admin: true,
+            orderType: "BuyOrder",
+            keys: [orderId],
+          }),
         });
       },
     },
@@ -164,10 +189,18 @@ const AdminSingleBuyOrderProductInvoicing = ({
   const issueInvoice = async () => {
     if (!data) return;
 
-    if (data.productInvoiceId) {
+    if (data && "productInvoiceId" in data && data.productInvoiceId) {
       return alert(
         "이미 청구된 주문입니다. 기존 청구서를 지우고 다시 청구해주세요."
       );
+    }
+
+    const passCheck = data.items.every(
+      (item) => item.productName && item.price && item.quantity
+    );
+
+    if (!passCheck) {
+      return alert("모든 제품 정보를 입력해주세요.");
     }
 
     const total = new Big(

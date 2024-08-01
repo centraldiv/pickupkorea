@@ -1,0 +1,15 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import AdminUsersTable from "@/components/admin/users/AdminUsersTable.tsx";
+---
+
+<MainLayout
+  title="Users | Pickup Korea"
+  currentRoute="/account/admin/users"
+  isAdmin
+>
+  <main class="max-w-7xl mx-auto w-full py-16">
+    <h1 class="text-2xl font-bold text-center">Users</h1>
+    <AdminUsersTable client:load />
+  </main>
+</MainLayout>

@@ -1,0 +1,24 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import AdminShippingInvoicesContainer from "@/components/admin/orders/buy-orders/single-order/shipping-invoices/AdminShippingInvoicesContainer";
+
+const { requestId } = Astro.params;
+
+if (!requestId) {
+  return Astro.redirect("/account/admin/shipping-requests");
+}
+---
+
+<MainLayout
+  title="Shipping Invoices | Shipping Request | Admin | Pickup Korea"
+  currentRoute={`/account/admin/shipping-requests/${requestId}/shipping-invoices`}
+  isAdmin
+>
+  <main class="w-full px-4">
+    <AdminShippingInvoicesContainer
+      orderId={requestId}
+      orderType="ShippingRequest"
+      client:load
+    />
+  </main>
+</MainLayout>

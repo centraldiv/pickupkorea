@@ -1,0 +1,46 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import DefaultAddressForm from "@/components/users/default-address/DefaultAddressForm";
+import { getDefaultAddress } from "@/lib/db-funcs/get-functions";
+import { verifySession } from "@/lib/sessions";
+import type { DefaultAddressWithShippingMethod } from "@/lib/react-query/hooks";
+
+const session = await verifySession(Astro.cookies);
+
+if (!session || !session.userId) {
+  return Astro.redirect("/login");
+}
+
+const defaultAddress = await getDefaultAddress(session.userId);
+const defaults = {
+  receiverName: "",
+  email: "",
+  phone: "",
+  street: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  country: "",
+  shippingMethodId: "",
+};
+---
+
+<MainLayout title="Payments | Pickup Korea" currentRoute="/account/payments">
+  <main class="min-h-screen py-16 max-w-7xl w-full mx-auto">
+    <h1 class="text-4xl font-bold text-center">Address Book</h1>
+    <p class="text-gray-500 mt-12 text-center">
+      This is your default address for your convenience..
+    </p>
+    <DefaultAddressForm
+      client:load
+      defaultAddress={(defaultAddress as DefaultAddressWithShippingMethod) ??
+        defaults}
+    />
+  </main>
+</MainLayout>
+
+<style>
+  a {
+    @apply font-medium hover:bg-primary/80 transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md;
+  }
+</style>

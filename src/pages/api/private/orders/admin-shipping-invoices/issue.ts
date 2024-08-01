@@ -6,7 +6,9 @@ import {
   BuyOrderStatus,
   ItemStatus,
   PFOrderStatus,
+  ShippingRequestStatus,
 } from "@/definitions/statuses";
+import type { OrderType } from "@/lib/react-query/config";
 
 export const prerender = false;
 
@@ -38,7 +40,7 @@ export const POST = async (context: APIContext) => {
       invoiceList: { quantity: number; price: number; name: string }[];
       totalPrice: number;
       userId: string;
-      orderType: "buyOrder" | "pfOrder";
+      orderType: OrderType;
       shipRightAway?: boolean;
     } = await context.request.json();
 
@@ -50,6 +52,7 @@ export const POST = async (context: APIContext) => {
         }
       );
     }
+    let created;
 
     const invoiceCountObj = await prisma.shippingInvoiceCount.findFirst({});
 
@@ -62,23 +65,44 @@ export const POST = async (context: APIContext) => {
       },
     });
 
-    const created = await prisma.shippingInvoice.create({
-      data: {
-        invoiceList,
-        totalPrice,
-        user: {
-          connect: {
-            id: userId,
+    if (orderType !== "ShippingRequest") {
+      created = await prisma.shippingInvoice.create({
+        data: {
+          invoiceList,
+          totalPrice,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          invoiceNumber: generateProductInvoiceNumber(count),
+          buyOrder:
+            orderType === "BuyOrder" ? { connect: { id: orderId } } : undefined,
+          pfOrder:
+            orderType === "PFOrder" ? { connect: { id: orderId } } : undefined,
+        },
+      });
+    }
+
+    if (orderType === "ShippingRequest") {
+      created = await prisma.shippingInvoice.create({
+        data: {
+          invoiceList,
+          totalPrice,
+          invoiceNumber: generateProductInvoiceNumber(count),
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          shippingRequest: {
+            connect: {
+              id: orderId,
+            },
           },
         },
-        invoiceNumber: generateProductInvoiceNumber(count),
-        buyOrder:
-          orderType === "buyOrder" ? { connect: { id: orderId } } : undefined,
-        pfOrder:
-          orderType === "pfOrder" ? { connect: { id: orderId } } : undefined,
-      },
-    });
-
+      });
+    }
     if (!created) {
       return new Response(
         JSON.stringify({ message: "Invoice not created", success: false }),
@@ -88,7 +112,7 @@ export const POST = async (context: APIContext) => {
       );
     }
 
-    if (orderType === "buyOrder" && shipRightAway) {
+    if (orderType === "BuyOrder" && shipRightAway) {
       await prisma.$transaction(async (tx) => {
         const order = await tx.buyOrder.update({
           where: { id: orderId },
@@ -97,7 +121,9 @@ export const POST = async (context: APIContext) => {
             items: {
               updateMany: {
                 where: {
-                  productStatus: ItemStatus.PREPARING_SHIPPING,
+                  productStatus: {
+                    in: [ItemStatus.PREPARING_SHIPPING, ItemStatus.RECEIVED],
+                  },
                 },
                 data: {
                   productStatus: ItemStatus.SHIPPING_INVOICED,
@@ -123,7 +149,7 @@ export const POST = async (context: APIContext) => {
       });
     }
 
-    if (orderType === "buyOrder" && !shipRightAway) {
+    if (orderType === "BuyOrder" && !shipRightAway) {
       await prisma.buyOrder.update({
         where: { id: orderId },
         data: {
@@ -132,7 +158,7 @@ export const POST = async (context: APIContext) => {
       });
     }
 
-    if (orderType === "pfOrder" && shipRightAway) {
+    if (orderType === "PFOrder" && shipRightAway) {
       await prisma.$transaction(async (tx) => {
         const order = await tx.pfOrder.update({
           where: { id: orderId },
@@ -167,12 +193,43 @@ export const POST = async (context: APIContext) => {
       });
     }
 
-    if (orderType === "pfOrder" && !shipRightAway) {
+    if (orderType === "PFOrder" && !shipRightAway) {
       await prisma.pfOrder.update({
         where: { id: orderId },
         data: {
           orderStatus: PFOrderStatus.SHIPPING_INVOICED,
         },
+      });
+    }
+
+    if (orderType === "ShippingRequest" && created) {
+      await prisma.$transaction(async (tx) => {
+        const order = await tx.shippingRequest.update({
+          where: { id: orderId },
+          data: {
+            requestStatus: ShippingRequestStatus.PROCESSING,
+          },
+          include: {
+            buyOrders: true,
+            pfOrders: true,
+          },
+        });
+
+        const buyOrdersIds = order.buyOrders.map((order) => order.id);
+        const pfOrdersIds = order.pfOrders.map((order) => order.id);
+
+        await tx.buyOrder.updateMany({
+          where: { id: { in: buyOrdersIds }, shipRightAway: false },
+          data: {
+            orderStatus: BuyOrderStatus.SHIPPING_INVOICED,
+          },
+        });
+        await tx.pfOrder.updateMany({
+          where: { id: { in: pfOrdersIds }, shipRightAway: false },
+          data: {
+            orderStatus: PFOrderStatus.SHIPPING_INVOICED,
+          },
+        });
       });
     }
 

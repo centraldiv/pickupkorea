@@ -54,6 +54,22 @@ const SinglePFOrderContainer = ({ orderId }: { orderId: string }) => {
             <dd className="text-sm bg-slate-100 py-2">{data.items.length}</dd>
           </dl>
         </div>
+        <div className="grid grid-cols-1 text-center divide-x-2 rounded-md shadow">
+          <dl className="">
+            <dt className="py-2 font-medium bg-primary">Shipping Invoice</dt>
+            <dd className="text-sm bg-slate-100 py-2">
+              {data.shippingInvoice?.invoiceNumber ? (
+                <a
+                  href={`/account/payments/shipping-invoices/${data.shippingInvoice.id}`}
+                >
+                  {data.shippingInvoice.invoiceNumber}
+                </a>
+              ) : (
+                "N/A"
+              )}
+            </dd>
+          </dl>
+        </div>
         <div className="border rounded py-2 px-4 shadow">
           Website List: {getWebsiteNames(data.items.map((item) => item.href))}
         </div>

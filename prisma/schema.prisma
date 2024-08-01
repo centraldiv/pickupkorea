@@ -28,9 +28,10 @@ model user {
   pfCode    String?  @unique
   kakaoId   String?  @unique
 
-  items           item[]
-  buyOrders       buyOrder[]
-  address         address[]
+  items     item[]
+  buyOrders buyOrder[]
+  address   address[]
+
   productInvoices productInvoice[]
   pfOrder         pfOrder[]
 
@@ -40,16 +41,35 @@ model user {
   updatedAt       DateTime          @updatedAt
   shippingInvoice shippingInvoice[]
   shippingRequest shippingRequest[]
+  toShipItem      toShipItem[]
+
+  defaultAddress defaultAddress?
+  creditHistory  creditHistory[]
+}
+
+model creditHistory {
+  id String @id @default(uuid())
+  userId String
+
+  user   user   @relation(fields: [userId], references: [id])
+
+  creditAmount Int
+  
+  content      String @db.Text
+  createdAt DateTime @default(now())
 }
 
 model availableShippingMethods {
-  id        String     @id @default(uuid())
-  name      String     @unique @db.Text
-  isActive  Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  buyOrder  buyOrder[]
-  pfOrder   pfOrder[]
+  id        String   @id @default(uuid())
+  name      String   @unique @db.Text
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyOrder        buyOrder[]
+  pfOrder         pfOrder[]
+  shippingRequest shippingRequest[]
+  defaultAddress  defaultAddress[]
 }
 
 model country {
@@ -59,8 +79,9 @@ model country {
   createdAt DateTime @default(now())
   isActive  Boolean  @default(true)
 
-  address address[]
-  user    user[]
+  address        address[]
+  user           user[]
+  defaultAddress defaultAddress[]
 }
 
 model address {
@@ -81,8 +102,33 @@ model address {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  buyOrder buyOrder[]
-  pfOrder  pfOrder[]
+  buyOrder        buyOrder[]
+  pfOrder         pfOrder[]
+  shippingRequest shippingRequest[]
+}
+
+model defaultAddress {
+  id String @id @default(uuid())
+
+  receiverName String @db.Text
+  phone        String @db.Text
+  email        String @db.Text
+  street       String @db.Text
+  city         String @db.Text
+  state        String @db.Text
+  zipcode      String @db.Text
+
+  country   country? @relation(fields: [countryId], references: [id], onDelete: SetNull)
+  countryId String?
+
+  shippingMethod   availableShippingMethods? @relation(fields: [shippingMethodId], references: [id])
+  shippingMethodId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   user   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model buyOrder {
@@ -187,6 +233,26 @@ model item {
   pfOrderId String?
 
   shippingRequest shippingRequest[]
+  toShipItem      toShipItem[]
+}
+
+model toShipItem {
+  id String @id @default(uuid())
+
+  availableQuantity Int
+  toShipQuantity    Int
+
+  shippingRequest   shippingRequest @relation(fields: [shippingRequestId], references: [id])
+  shippingRequestId String
+
+  item   item   @relation(fields: [itemId], references: [id])
+  itemId String
+
+  userId String
+  user   user   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model productInvoice {
@@ -232,9 +298,16 @@ model shippingInvoice {
 
   buyOrderId String?
   pfOrderId  String?
+
+  shippingRequest shippingRequest?
 }
 
 model shippingInvoiceCount {
+  id    String @id @default(uuid())
+  count Int    @default(0)
+}
+
+model shippingRequestCount {
   id    String @id @default(uuid())
   count Int    @default(0)
 }
@@ -245,12 +318,27 @@ model shippingRequest {
   userId String
   user   user   @relation(fields: [userId], references: [id])
 
+  requestNumber String @unique @db.Text
+
   requestStatus String @default("Requested")
 
-  items item[]
+  userMemo  String? @db.Text
+  staffMemo String? @db.Text
 
-  buyOrder buyOrder[]
-  pfOrder  pfOrder[]
+  addressId String
+  address   address @relation(fields: [addressId], references: [id])
+
+  shippingMethod   availableShippingMethods? @relation(fields: [shippingMethodId], references: [id])
+  shippingMethodId String?
+
+  items       item[]
+  toShipItems toShipItem[]
+
+  buyOrders buyOrder[]
+  pfOrders  pfOrder[]
+
+  shippingInvoice   shippingInvoice? @relation(fields: [shippingInvoiceId], references: [id], onDelete: SetNull)
+  shippingInvoiceId String?          @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

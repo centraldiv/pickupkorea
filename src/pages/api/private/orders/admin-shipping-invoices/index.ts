@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import prisma from "@/lib/prisma";
-
-export const prerender = false;
+import type { OrderType } from "@/lib/react-query/config";
+import { verifySession } from "@/lib/sessions";
 
 export const GET = async (context: APIContext) => {
   try {
@@ -11,10 +11,20 @@ export const GET = async (context: APIContext) => {
       });
     }
 
+    const session = await verifySession(context.cookies);
+    if (!session || !session.isAdmin) {
+      return new Response(
+        JSON.stringify({ message: "You are not logged in!" }),
+        {
+          status: 401,
+        }
+      );
+    }
+
     const url = new URL(context.request.url);
     const searchParams = new URLSearchParams(url.search);
     const orderId = searchParams.get("orderId") as string;
-    const orderType = searchParams.get("orderType") as string;
+    const orderType = searchParams.get("orderType") as OrderType;
 
     if (!orderId || !orderType) {
       return new Response(
@@ -25,7 +35,11 @@ export const GET = async (context: APIContext) => {
       );
     }
 
-    if (orderType !== "buyOrder" && orderType !== "pfOrder") {
+    if (
+      orderType !== "BuyOrder" &&
+      orderType !== "PFOrder" &&
+      orderType !== "ShippingRequest"
+    ) {
       return new Response(
         JSON.stringify({ message: "Order type is invalid" }),
         {
@@ -35,14 +49,20 @@ export const GET = async (context: APIContext) => {
     }
 
     const where =
-      orderType === "buyOrder"
+      orderType === "BuyOrder"
         ? {
             buyOrder: {
               id: orderId,
             },
           }
-        : {
+        : orderType === "PFOrder"
+        ? {
             pfOrder: {
+              id: orderId,
+            },
+          }
+        : {
+            shippingRequest: {
               id: orderId,
             },
           };
@@ -62,6 +82,11 @@ export const GET = async (context: APIContext) => {
           },
         },
         pfOrder: {
+          include: {
+            address: true,
+          },
+        },
+        shippingRequest: {
           include: {
             address: true,
           },

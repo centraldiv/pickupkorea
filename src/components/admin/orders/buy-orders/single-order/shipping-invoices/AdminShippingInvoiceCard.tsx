@@ -1,7 +1,4 @@
-import type {
-  ProductInvoiceWithUser,
-  ShippingInvoiceWithUser,
-} from "@/lib/react-query/hooks";
+import type { ShippingInvoiceWithUser } from "@/lib/react-query/hooks";
 import {
   Card,
   CardContent,
@@ -12,16 +9,17 @@ import {
 } from "@/components/ui/card";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import type { OrderType } from "@/lib/react-query/config";
 
 const AdminShippingInvoiceCard = ({
   invoice,
   orderType,
 }: {
   invoice: ShippingInvoiceWithUser;
-  orderType: "buyOrder" | "pfOrder";
+  orderType: OrderType;
 }) => {
   return (
-    <a href={`/admin/payments/product-invoices/${invoice.id}`}>
+    <a href={`/account/admin/payments/shipping-invoices/${invoice.id}`}>
       <Card className="hover:scale-105 transition-all duration-30 cursor-pointer">
         <CardHeader>
           <CardTitle>Invoice No. {invoice.invoiceNumber}</CardTitle>
@@ -33,14 +31,18 @@ const AdminShippingInvoiceCard = ({
           <div className="border p-2">
             <div className="font-semibold">제품 수령인:</div>
             <div>
-              {orderType === "buyOrder"
+              {orderType === "BuyOrder"
                 ? invoice.buyOrder?.address?.receiverName
-                : invoice.pfOrder?.address?.receiverName}
+                : orderType === "PFOrder"
+                ? invoice.pfOrder?.address?.receiverName
+                : invoice.shippingRequest?.address?.receiverName}
             </div>
             <div>
-              {orderType === "buyOrder"
+              {orderType === "BuyOrder"
                 ? invoice.buyOrder?.address?.email
-                : invoice.pfOrder?.address?.email}
+                : orderType === "PFOrder"
+                ? invoice.pfOrder?.address?.email
+                : invoice.shippingRequest?.address?.email}
             </div>
           </div>
           <div className="border p-2">

@@ -25,6 +25,7 @@ export enum BuyOrderStatus {
   PARTIALLY_SHIPPED = "Partially Shipped",
   SHIPPED = "Shipped",
   ATTENTION = "Attention Required",
+  CANCELLED = "Cancelled",
 }
 
 export const BuyOrderStatusArray = Object.values(BuyOrderStatus) as string[];
@@ -40,6 +41,7 @@ export enum PFOrderStatus {
   PARTIALLY_SHIPPED = "Partially Shipped",
   SHIPPED = "Shipped",
   ATTENTION = "Attention Required",
+  CANCELLED = "Cancelled",
 }
 
 export enum ShippingRequestStatus {
@@ -48,3 +50,8 @@ export enum ShippingRequestStatus {
   SHIPPED = "Shipped",
   REJECTED = "Rejected",
 }
+
+
+export const ShippingRequestStatusArray = Object.values(
+  ShippingRequestStatus
+) as ShippingRequestStatus[];
