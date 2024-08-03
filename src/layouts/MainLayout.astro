@@ -37,7 +37,8 @@ const { title, currentRoute, isAdmin } = Astro.props;
     {!isAdmin && <SecondaryHeader currentRoute={currentRoute} />}
     {isAdmin && <AdminHeader currentRoute={currentRoute} />}
     <slot />
-    <Footer />
+    {!isAdmin && <Footer />}
+
     {import.meta.env.DEV && <RQDevTools client:load />}
   </body>
   <style is:global>

@@ -8,6 +8,8 @@ const fullnameRegex = /^[A-Za-z]+( [A-Za-z]+)+$/;
 
 const usernameRegex = /^[A-Za-z0-9]{4,15}$/;
 
+const kakaoRegex = /^[a-zA-Z0-9]+$/;
+
 export const RawSignUpSchema = z.object({
   email: z
     .string({
@@ -50,11 +52,19 @@ export const RawSignUpSchema = z.object({
     .max(20, { message: "Password must be less than 20 characters" })
     .trim(),
   country: z.string().trim(),
-  kakaoId: z.string().trim().nullish(),
+  kakaoId: z
+    .string()
+    .regex(kakaoRegex, { message: "Invalid Kakao ID" })
+    .trim()
+    .nullish(),
 });
 
 export const KakaoSchema = RawSignUpSchema.pick({
   kakaoId: true,
+});
+
+export const AdminKakaoSchema = KakaoSchema.extend({
+  userId: z.string(),
 });
 
 export const ChangePasswordSchema = z
@@ -235,4 +245,10 @@ export const InvoiceSchema = z.object({
 export const UnboxSchema = z.object({
   unboxingVideoUrl: z.string().optional(),
   unboxingPhotoUrl: z.string().optional(),
+});
+
+export const AdminCreditSchema = z.object({
+  userId: z.string({ required_error: "User ID is required" }),
+  creditAmount: z.coerce.number({ required_error: "Credit is required" }),
+  content: z.string({ required_error: "Content is required" }),
 });

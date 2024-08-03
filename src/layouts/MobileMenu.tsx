@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 
 import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 import { cn } from "@/lib/utils";
@@ -17,7 +17,13 @@ const MobileMenu = ({
   links: { href: string; label: string }[];
 }) => {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    setVisible(true);
+  }, []);
+
+  if (!visible) return <div className="h-[2rem] lg:hidden" />;
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger className="mx-auto lg:hidden" aria-label="모바일 메뉴">

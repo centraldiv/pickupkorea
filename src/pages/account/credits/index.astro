@@ -1,4 +1,5 @@
 ---
+import UserCreditTable from "@/components/users/account-info/UserCreditTable";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 import { getUserCreditInfo } from "@/lib/db-funcs/get-functions";
@@ -22,8 +23,15 @@ const creditInfo = await getUserCreditInfo(session.userId);
       {creditInfo?.creditAmount.toLocaleString()}
       KRW
     </h2>
-    <p class="text-gray-500 mt-12 text-center">
-      Below shows the credits given and used.
-    </p>
+    {
+      creditInfo?.creditHistory && creditInfo?.creditHistory.length > 0 ? (
+        <UserCreditTable
+          client:load
+          creditHistory={creditInfo?.creditHistory}
+        />
+      ) : (
+        <p class="text-gray-500 mt-12 text-center">No credit history</p>
+      )
+    }
   </main>
 </MainLayout>
