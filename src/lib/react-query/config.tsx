@@ -730,3 +730,25 @@ export const fetchAdminUserAccountInfo = async (userId: string) => {
   );
   return response.json();
 };
+
+export const adminAddCreditToUser = async ({
+  userId,
+  creditAmount,
+  content,
+}: {
+  userId: string;
+  creditAmount: number;
+  content: string;
+}) => {
+  const response = await fetch(
+    `/api/private/users/admin-users/account-info/credit`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, creditAmount, content }),
+    }
+  );
+  return response.json();
+};
