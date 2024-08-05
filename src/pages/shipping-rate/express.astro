@@ -11,6 +11,7 @@ export const prerender = true;
   currentRoute="/shipping-rate/express"
 >
   <main>
+<<<<<<< Updated upstream
     <section
       class="w-full max-w-[80rem] h-auto py-12 px-4 sm:py-24 sm:px-8 md:px-16 lg:px-32 gap-8 mx-auto"
     >
@@ -78,12 +79,59 @@ export const prerender = true;
         Express Rate Table (Unit: KRW)
       </h2>
       <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem]">
+=======
+     <section class="w-full max-w-[80rem] h-auto py-12 px-4 sm:py-24 sm:px-8 md:px-16 lg:px-32 gap-8 mx-auto">
+    <h2 class="font-sans text-3xl sm:text-4xl md:text-4xl lg:text-[40px] font-bold leading-tight text-left">
+      Express Rate Table
+    </h2>
+    <p class="w-full text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold leading-tight text-left mb-8 sm:mb-16">
+      (UPS/Fedex/DHL/TXT - cannot choose carrier)
+    </p>
+    <article class="w-full h-auto px-4 sm:px-8 gap-8 sm:gap-[3.5rem]">
+      <ul class="list-disc pl-4 mt-4 sm:pl-6 sm:mt-[3.5rem]">
+        <li class="text-base leading-relaxed text-left mt-4 sm:text-lg md:text-xl lg:text-2xl">
+          The postage is applied to the higher of the actual weight and volume weight of the mail.
+        </li>
+        <li class="list-none text-base leading-relaxed text-left mt-4 ml-4 sm:text-lg sm:ml-8 md:text-xl lg:text-2xl">
+          Volume weight (kg): Width (cm) X Length (cm) X Height (cm) / 6,000
+        </li>
+        <li class="text-base leading-relaxed text-left mt-4 sm:text-lg md:text-xl lg:text-2xl">
+          The delivery date will take about 3-7 days.
+        </li>
+        <li class="text-base leading-relaxed text-left mt-4 sm:text-lg md:text-xl lg:text-2xl">
+          Please check the ZONE containing your country first and then check the rate.
+        </li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="w-full bg-primaryBeige">
+    <div class="w-full max-w-[76rem] h-auto py-12 px-4 sm:py-24 sm:px-8 md:px-16 lg:px-32 gap-0 mx-auto">
+      <h2 class="text-left text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight mb-11">
+        Service Country
+      </h2>
+      <div class="relative overflow-x-scroll">
+>>>>>>> Stashed changes
         <Image
-          src={expressTable}
-          alt="Express Rate Table (Unit : KRW)"
-          class="block min-w-[30rem]"
+          src={serviceCountry}
+          alt="Service Country Table"
+          class="block min-w-[62.5rem]"
         />
       </div>
-    </article>
-  </main>
+    </div>
+  </section>
+
+  <section class="relative flex flex-col items-center py-24 px-8 sm:px-16 md:px-32 gap-[3.375rem] w-full">
+    <h2 class="text-left text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight mb-11">
+      Express Rate Table (Unit: KRW)
+    </h2>
+    <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem]">
+      <Image
+        src={expressTable}
+        alt="Express Rate Table (Unit: KRW)"
+        class="block min-w-[30rem]"
+      />
+    </div>
+  </section>
+</main>
 </MainLayout>
