@@ -12,63 +12,42 @@ export const prerender = true;
   currentRoute="/shipping-rate/ems-kpacket"
 >
   <main>
-    <section
-      class="max-w-[80rem] h-auto top-[13.75rem] px-4 sm:p-24 py-12 gap-8 mx-auto"
-    >
-      <h1
-        class="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-[40px] font-bold leading-tight text-left"
-      >
-        EMS & K-packet Official Rate Table
-      </h1>
-      <article class="w-full max-w-[76rem] h-auto p-2 sm:p-8 gap-14">
-        <p
-          class="w-full max-w-[72rem] mt-4 text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold leading-tight text-left"
-        >
+    <section class="section-container">
+      <h1 class="font-sans text-[2.25rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[3.75rem] lg:text-[1.875rem]">
+      EMS & K-packet Official Rate Table</h1>
+      <article class="w-full max-w-[76rem] p-1.5 px-6 gap-[2.625rem]">
+        <p class="w-full max-w-[72rem] mt-3 text-[0.75rem] font-bold leading-[1.25] text-left sm:text-[1.5rem] md:text-[2.25rem] lg:text-[1.5rem]">
           ※ The international mail fee below includes additional transportation
           fees and additional handling fees.
         </p>
-        <ul class="list-disc pl-4 sm:pl-6 mt-4 sm:mt-14">
-          <li
-            class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4"
-          >
+        <ul class="list-disc pl-3 sm:pl-4.5 mt-3 sm:mt-10.5">
+          <li class="text-list">
             The postage is applied to the higher of the actual weight and volume
             weight of the mail.
           </li>
-          <li
-            class="list-none text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4 ml-4 sm:ml-8"
-          >
+          <li class="text-list list-none ml-3 sm:ml-6">
             Volume weight (kg): Width (cm) X Length (cm) X Height (cm) / 6,000
           </li>
-          <li
-            class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4"
-          >
+          <li class="text-list">
             The delivery date will take about 3-7 days.
           </li>
-          <li
-            class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4"
-          >
+          <li class="text-list">
             The EMS delivery limit is 30kg mostly, but we handle up to about
             20KG for the safety of the delivery man.
           </li>
-          <li
-            class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4"
-          >
+          <li class="text-list">
             If you want to send small package under 2kg, you can choose
             K-packets. However, the delivery can take about 2-4 weeks.
           </li>
-          <li
-            class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left mt-4"
-          >
-            If you cant find your country in the table below, you can check the
+          <li class="text-list">
+            If you can't find your country in the table below, you can check the
             Rate by clicking the link:
           </li>
         </ul>
-        <span
-          class="text-base sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed text-left inline-block mt-4 ml-1"
-        >
+        <span class="text-[0.75rem] leading-[1.5] text-left inline-block mt-3 ml-[0.1875rem] sm:text-[1.125rem] md:text-[1.5rem]">
           <a
             href="https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en"
-            class="text-blue-500 underline text-wrap break-all"
+            class="text-[#3b82f6] underline break-words"
           >
             https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en
           </a>
@@ -76,38 +55,42 @@ export const prerender = true;
       </article>
     </section>
     <div class="w-full bg-primaryBeige">
-      <section
-        class="w-full max-w-[76rem] h-auto py-12 px-4 sm:py-24 sm:px-8 md:px-16 lg:px-32 gap-0 mx-auto"
-      >
-        <h2
-          class="text-left text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight mb-11"
-        >
-          EMS Rate Table (Unit : KRW)
-        </h2>
+      <section class="section-container">
+        <h2 class="title-medium">EMS Rate Table (Unit : KRW)</h2>
         <figure class="relative overflow-x-scroll">
           <Image
             src={EMSRateTable}
             alt="Service Country Table"
-            class="block mx-auto min-w-[62.5rem] min-h-[35rem]"
+            class="block mx-auto min-w-[46.875rem] min-h-[26.25rem]"
           />
         </figure>
       </section>
     </div>
-    <section
-      class="w-full max-w-[80rem] h-auto py-12 px-4 sm:py-24 sm:px-8 md:px-16 lg:px-32 gap-8 mx-auto"
-    >
-      <h2
-        class="text-left text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight mb-11"
-      >
-        K-packet Rate Table (Unit: KRW)
-      </h2>
+    <section class="section-container">
+      <h2 class="title-medium">K-packet Rate Table (Unit: KRW)</h2>
       <figure class="relative overflow-x-scroll">
         <Image
           src={KPacketRateTable}
           alt="K-packet Rate Table"
-          class="block mx-auto min-w-[62.5rem] min-h-[20rem]"
+          class="block mx-auto min-w-[46.875rem] min-h-[15rem]"
         />
       </figure>
     </section>
   </main>
 </MainLayout>
+
+<style>
+  .section-container {
+    @apply max-w-[80rem] p-9 pt-[4.5rem] px-6 pb-[4.5rem] mx-auto gap-6 sm:pt-[4.5rem] sm:px-12 sm:pb-[4.5rem] md:px-24 lg:px-24;
+  }
+  
+  .title-medium {
+    @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-2xl md:text-[3rem] lg:text-[1.875rem];
+  }
+
+  .text-list {
+    @apply text-[0.75rem] leading-[1.5] text-left mt-3 font-normal sm:text-[1.125rem] md:text-[1.5rem];
+  }
+
+
+</style>
