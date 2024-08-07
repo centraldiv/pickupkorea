@@ -42,133 +42,136 @@ const shippingData = [
 
 export const prerender = true;
 ---
-
 <MainLayout title="Pickup Korea" currentRoute="/">
- <main>
-  <section class="flex flex-col lg:flex-row items-start py-12 px-4 md:px-8 max-w-7xl mx-auto gap-6 md:gap-10 justify-center">
-    <div class="w-full h-auto flex flex-col gap-6 md:gap-12 text-center lg:text-left">
-      <h1 class="titles leading-tight md:leading-[normal]">
-        Shop in Korea,
-        <br />
-        Pick it up at your door.
-      </h1>
-      <p class="sub-texts">Korean Free address & Shopping helper.</p>
-    </div>
-    <Image
-      src={ShoppingBanner}
-      alt="Shopping banner"
-      class="w-full h-full flex-1 max-w-[25rem] mx-auto"
-      loading="eager"
-    />
-  </section>
+  <main>
+    <section class="flex flex-col lg:flex-row items-start py-9 px-3 md:px-6 max-w-5xl mx-auto gap-4 md:gap-7 justify-center">
+      <div class="w-full h-auto flex flex-col gap-4 md:gap-9 text-center lg:text-left">
+        <h1 class="titles leading-tight md:leading-[normal]">
+          Shop in Korea,
+          <br />
+          Pick it up at your door.
+        </h1>
+        <p class="sub-texts-2">Korean Free address & Shopping helper.</p>
+      </div>
+      <Image
+        src={ShoppingBanner}
+        alt="Shopping banner"
+        class="w-full h-full flex-1 max-w-[18.75rem] mx-auto"
+        loading="eager"
+      />
+    </section>
+    <section class="flex justify-center py-6">
+      <button class="bg-[#F8B62D] sub-texts font-bold rounded-[20px] flex items-center justify-center w-[170px] h-[33px]">
+        Start ordering
+      </button>
+    </section>
+    <section class="bg-white py-12 px-3 flex flex-col items-center max-w-5xl w-full mx-auto">
+      <h2 class="text-center titles font-bold mb-12 text-black">How It Works</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-15">
+        {data.map((item, index) => (
+          <div class:list={[
+            "flex flex-col items-center gap-6 max-w-[16.875rem] mx-auto",
+            index === 2 && "sm:col-span-2 flex justify-center lg:col-span-1",
+          ]}>
+            <Image
+              src={item.image}
+              alt={item.title}
+              height={60}
+              width={60}
+              class={cn(
+                index === 0 && "w-[2.8875rem] h-15",
+                index === 1 && "size-15",
+                index === 2 && "w-[3.35175rem] h-15"
+              )}
+            />
+            <dl class="flex flex-col gap-3 sm:gap-6 sub-texts text-center">
+              <dt class="font-bold bg-black text-white flex items-center justify-center rounded-[1.6875rem] h-[3.75rem] sm:h-[5.4375rem] px-3">
+                <span set:html={item.title} />
+              </dt>
+              <dd class="">{item.description}</dd>
+            </dl>
+          </div>
+        ))}
+      </div>
+    </section>
 
-  <section class="bg-white py-16 px-4 flex flex-col items-center max-w-7xl w-full mx-auto">
-    <h2 class="text-center titles font-bold mb-16 text-black">How It Works</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20">
-      {data.map((item, index) => (
-        <div class:list={[
-          "flex flex-col items-center gap-8 max-w-[22.5rem] mx-auto",
-          index === 2 && "sm:col-span-2 flex justify-center lg:col-span-1",
-        ]}>
-          <Image
-            src={item.image}
-            alt={item.title}
-            height={80}
-            width={80}
-            class={cn(
-              index === 0 && "w-[3.85rem] h-20",
-              index === 1 && "size-20",
-              index === 2 && "w-[4.469rem] h-20"
-            )}
-          />
-          <dl class="flex flex-col gap-4 sm:gap-8 sub-texts text-center">
-            <dt class="font-bold bg-black text-white flex items-center justify-center rounded-[2.25rem] h-[5rem] sm:h-[7.25rem] px-4">
-              <span set:html={item.title} />
-            </dt>
-            <dd class="">{item.description}</dd>
+    <section class="py-9 md:py-18">
+      <h2 class="titles font-bold text-center mb-6 md:mb-12">Why Pickup Korea?</h2>
+      <article class="space-y-9 md:space-y-[2.58rem]">
+        <div class="bg-primary py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col md:flex-row gap-6 md:gap-15 justify-center items-center">
+          <Image src={Clock} alt="Clock" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
+          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+            <dt class="sub-large-texts font-bold">Quick response</dt>
+            <dd class="sub-texts-2 max-w-full md:max-w-[36rem] leading-[100%]">
+              We work from 9 to 5 p.m. in Korean time during weekdays, but the KakaoTalk chat is always open to respond to your urgent request.
+              <br />
+              Please understand that it may be difficult to respond immediately.
+            </dd>
+            <div class="flex items-center justify-center md:justify-start space-x-3">
+              <Image src={Talk} alt="KakaoTalk" loading="lazy" class="relative size-[5.15625rem]" />
+              <Image src={QrCode} alt="QR Code" loading="lazy" class="relative size-[5.15625rem]" />
+            </div>
           </dl>
         </div>
-      ))}
-    </div>
-  </section>
 
-  <section class="py-12 md:py-24">
-    <h2 class="titles font-bold text-center mb-8 md:mb-16">Why Pickup Korea?</h2>
-    <article class="space-y-12 md:space-y-[3.44rem]">
-      <div class="bg-primary py-12 md:py-24 px-8 md:px-16 max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:gap-20 justify-center items-center">
-        <Image src={Clock} alt="Clock" class="flex-shrink-0 h-48 md:h-[19.0625rem] w-48 md:w-[20.9375rem] mx-auto" />
-        <dl class="flex flex-col gap-4 md:gap-8 text-center md:text-left">
-          <dt class="sub-large-texts font-bold">Quick response</dt>
-          <dd class="sub-texts-2 max-w-full md:max-w-[48rem] leading-[100%]">
-            We work from 9 to 5 p.m. in Korean time during weekdays, but the KakaoTalk chat is always open to respond to your urgent request.
-            <br />
-            Please understand that it may be difficult to respond immediately.
-          </dd>
-          <div class="flex items-center justify-center md:justify-start space-x-4">
-            <Image src={Talk} alt="KakaoTalk" loading="lazy" class="relative size-[6.875rem]" />
-            <Image src={QrCode} alt="QR Code" loading="lazy" class="relative size-[6.875rem]" />
-          </div>
-        </dl>
-      </div>
-
-      <div class="py-12 md:py-24 px-8 md:px-16 max-w-7xl mx-auto flex flex-col-reverse md:flex-row gap-8 md:gap-20 justify-center items-center">
-        <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-48 md:h-[19.0625rem] w-48 md:w-[20.9375rem] mx-auto" />
-        <dl class="flex flex-col gap-4 md:gap-8 text-center md:text-left">
-          <dt class="font-bold sub-large-texts">Free services & Cheap delivery.</dt>
-          <dd class="sub-texts-2 max-w-full md:max-w-[45rem] leading-[100%]">
-            Free address! Even package consolidation and re-packing are offered by no extra cost.
-            <br />
-            You can choose the better shipper between EMS and Express carrier like FEDEX, UPS and DHL.
-          </dd>
-        </dl>
-      </div>
-
-      <div class="bg-primary py-12 md:py-24 px-8 md:px-16 max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:gap-20 justify-center items-center">
-        <Image src={Hand} alt="Hand" class="flex-shrink-0 h-48 md:h-[19.0625rem] w-48 md:w-[20.9375rem] mx-auto" />
-        <dl class="flex flex-col gap-4 md:gap-8 text-center md:text-left">
-          <dt class="sub-large-texts font-bold">Friendly helper</dt>
-          <dd class="sub-texts-2 max-w-full md:max-w-[45rem] leading-[100%]">
-            Friendly customer service is ready to meet your various needs. Whatever ask if you need any help about shopping in Korea.
-          </dd>
-        </dl>
-      </div>
-    </article>
-  </section>
-
-  <section class="py-20 px-4 sm:px-16 flex items-center justify-center">
-    <div class="relative w-full h-auto p-6 xl:p-[99.5px_288.5px] bg-primaryBeige rounded-[25px] flex flex-col items-center justify-center gap-8 sm:gap-16">
-      <h3 class="titles font-bold text-center whitespace-nowrap">CHECK TRACKING</h3>
-      <dl class="sub-texts space-y-4 flex flex-col gap-4">
-        {shippingData.map((item) => (
-          <>
-            <dt class="sub-large-texts font-bold">{item.title}</dt>
-            <dd class="sub-texts break-all">
-              <a href={item.url} target="_blank" rel="noreferrer" class="break-all">
-                {item.url}
-              </a>
+        <div class="py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col-reverse md:flex-row gap-6 md:gap-15 justify-center items-center">
+          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
+          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+            <dt class="font-bold sub-large-texts">Free services & Cheap delivery.</dt>
+            <dd class="sub-texts-2 max-w-full md:max-w-[33.75rem] leading-[100%]">
+              Free address! Even package consolidation and re-packing are offered by no extra cost.
+              <br />
+              You can choose the better shipper between EMS and Express carrier like FEDEX, UPS and DHL.
             </dd>
-          </>
-        ))}
-      </dl>
-    </div>
-  </section>
-</main>
+          </dl>
+        </div>
+
+        <div class="bg-primary py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col md:flex-row gap-6 md:gap-15 justify-center items-center">
+          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
+          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+            <dt class="sub-large-texts font-bold">Friendly helper</dt>
+            <dd class="sub-texts-2 max-w-full md:max-w-[33.75rem] leading-[100%]">
+              Friendly customer service is ready to meet your various needs. Whatever ask if you need any help about shopping in Korea.
+            </dd>
+          </dl>
+        </div>
+      </article>
+    </section>
+
+    <section class="py-15 px-3 sm:px-12 flex items-center justify-center">
+      <div class="relative w-full h-auto p-4 xl:p-[74.625px_216.375px] bg-primaryBeige rounded-[18.75px] flex flex-col items-center justify-center gap-6 sm:gap-12">
+        <h3 class="titles font-bold text-center whitespace-nowrap">CHECK TRACKING</h3>
+        <dl class="sub-texts space-y-3 flex flex-col gap-3">
+          {shippingData.map((item) => (
+            <>
+              <dt class="sub-large-texts font-bold">{item.title}</dt>
+              <dd class="sub-texts break-all">
+                <a href={item.url} target="_blank" rel="noreferrer" class="break-all">
+                  {item.url}
+                </a>
+              </dd>
+            </>
+          ))}
+        </dl>
+      </div>
+    </section>
+  </main>
 </MainLayout>
 
 <style>
   .titles {
-    @apply font-bold text-[2rem] md:text-[4rem];
+    @apply font-bold text-[1.5rem] md:text-[3rem];
   }
 
   .sub-large-texts {
-    @apply text-xl md:text-[2.5rem];
+    @apply text-[0.75rem] md:text-[1.875rem];
   }
 
   .sub-texts-2 {
-    @apply text-lg md:text-[2rem];
+    @apply text-[0.75rem] md:text-[1.5rem];
   }
 
   .sub-texts {
-    @apply text-lg sm:text-2xl;
+    @apply text-[0.75rem] sm:text-[1.125rem];
   }
 </style>
