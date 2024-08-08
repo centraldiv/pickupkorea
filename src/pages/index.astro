@@ -44,8 +44,9 @@ export const prerender = true;
 ---
 <MainLayout title="Pickup Korea" currentRoute="/">
   <main>
-    <section class="flex flex-col lg:flex-row items-start py-9 px-3 md:px-6 max-w-5xl mx-auto gap-4 md:gap-7 justify-center">
-      <div class="w-full h-auto flex flex-col gap-4 md:gap-9 text-center lg:text-left">
+
+    <section class="flex flex-col lg:flex-row items-start py-2 md:py-9 px-1 md:px-6 max-w-5xl mx-auto gap-2 md:gap-7 justify-center">
+      <div class="w-full h-auto flex flex-col gap-2 md:gap-9 my-16 lg:my-[11.25rem] text-center lg:text-left">
         <h1 class="titles leading-tight md:leading-[normal]">
           Shop in Korea,
           <br />
@@ -54,12 +55,15 @@ export const prerender = true;
         <p class="sub-texts-2">Korean Free address & Shopping helper.</p>
       </div>
       <Image
-        src={ShoppingBanner}
+        src={ShoppingBanner} 
         alt="Shopping banner"
-        class="w-full h-full flex-1 max-w-[18.75rem] mx-auto"
+        class="lg:w-[420px] lg:h-[378px] max-w-full max-h-full flex-1 mx-auto my-12 lg:my-[96.5px]"
         loading="eager"
       />
     </section>
+    
+
+
     <section class="flex justify-center py-6">
       <button class="bg-[#F8B62D] sub-texts font-bold rounded-[20px] flex items-center justify-center w-[170px] h-[33px]">
         Start ordering
@@ -94,84 +98,93 @@ export const prerender = true;
         ))}
       </div>
     </section>
-
+    
     <section class="py-9 md:py-18">
       <h2 class="titles font-bold text-center mb-6 md:mb-12">Why Pickup Korea?</h2>
       <article class="space-y-9 md:space-y-[2.58rem]">
-        <div class="bg-primary py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col md:flex-row gap-6 md:gap-15 justify-center items-center">
-          <Image src={Clock} alt="Clock" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
+        <div class="bg-primary w-full h-auto py-[3.75rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.5rem] md:gap-[5rem] justify-center items-center">
+          <Image src={Clock} alt="Clock" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] md:mr-[0.625rem]" />
           <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
             <dt class="sub-large-texts font-bold">Quick response</dt>
-            <dd class="sub-texts-2 max-w-full md:max-w-[36rem] leading-[100%]">
+            <dd class="sub-texts-2 leading-[100%] w-full md:w-[31.375rem] h-auto md:h-[18.75rem]">
               We work from 9 to 5 p.m. in Korean time during weekdays, but the KakaoTalk chat is always open to respond to your urgent request.
-              <br />
+              <br /><br />
               Please understand that it may be difficult to respond immediately.
             </dd>
             <div class="flex items-center justify-center md:justify-start space-x-3">
-              <Image src={Talk} alt="KakaoTalk" loading="lazy" class="relative size-[5.15625rem]" />
-              <Image src={QrCode} alt="QR Code" loading="lazy" class="relative size-[5.15625rem]" />
+              <Image src={Talk} alt="KakaoTalk" loading="lazy" class="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20" />
+              <Image src={QrCode} alt="QR Code" loading="lazy" class="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20" />
             </div>
           </dl>
-        </div>
-
-        <div class="py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col-reverse md:flex-row gap-6 md:gap-15 justify-center items-center">
-          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
-          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+        </div> 
+    
+        <div class="w-full h-auto py-[9.875rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.0625rem] justify-center items-center">
+          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left py- my-[2.834375rem]">
             <dt class="font-bold sub-large-texts">Free services & Cheap delivery.</dt>
-            <dd class="sub-texts-2 max-w-full md:max-w-[33.75rem] leading-[100%]">
+            <dd class="sub-texts-2 leading-[100%] w-full md:w-[32.1875rem] h-auto md:h-[8.5rem]">
               Free address! Even package consolidation and re-packing are offered by no extra cost.
               <br />
               You can choose the better shipper between EMS and Express carrier like FEDEX, UPS and DHL.
             </dd>
           </dl>
+          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
         </div>
-
-        <div class="bg-primary py-9 md:py-18 px-6 md:px-12 max-w-5xl mx-auto flex flex-col md:flex-row gap-6 md:gap-15 justify-center items-center">
-          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-36 md:h-[14.296875rem] w-36 md:w-[15.703125rem] mx-auto" />
-          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+    
+        <div class="bg-primary w-full h-auto py-[10.4375rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.0625rem] justify-center items-center">
+          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
+          
+          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left my-[1.765625rem]">
             <dt class="sub-large-texts font-bold">Friendly helper</dt>
-            <dd class="sub-texts-2 max-w-full md:max-w-[33.75rem] leading-[100%]">
+            <dd class="sub-texts-2 leading-[100%] w-full md:w-[29.9375rem] h-auto md:h-[11.8125rem]">
               Friendly customer service is ready to meet your various needs. Whatever ask if you need any help about shopping in Korea.
             </dd>
           </dl>
         </div>
       </article>
     </section>
+    
+    
 
-    <section class="py-15 px-3 sm:px-12 flex items-center justify-center">
-      <div class="relative w-full h-auto p-4 xl:p-[74.625px_216.375px] bg-primaryBeige rounded-[18.75px] flex flex-col items-center justify-center gap-6 sm:gap-12">
-        <h3 class="titles font-bold text-center whitespace-nowrap">CHECK TRACKING</h3>
-        <dl class="sub-texts space-y-3 flex flex-col gap-3">
+
+
+    <section class="py-15 mt-[6.5rem] mb-[4.25rem] px-3 sm:px-12 flex items-center justify-center">
+      <div class="relative w-full max-w-[63.125rem] h-auto sm:h-[34.0625rem] p-8 sm:pt-[1.875rem] sm:pb-[6.25rem] sm:pl-[3.125rem] sm:pr-[3.125rem] bg-primaryBeige rounded-[1.5625rem] flex flex-col items-center justify-start gap-8 sm:gap-[5.375rem]">
+        <h3 class="titles font-bold text-center whitespace-nowrap text-lg sm:text-2xl mt-0 sm:mt-0">CHECK TRACKING</h3>
+        <dl class="sub-texts space-y-7 flex flex-col gap-7 w-full sm:w-auto">
           {shippingData.map((item) => (
-            <>
-              <dt class="sub-large-texts font-bold">{item.title}</dt>
-              <dd class="sub-texts break-all">
-                <a href={item.url} target="_blank" rel="noreferrer" class="break-all">
+            <div key={item.title} class="flex flex-col items-start w-full sm:w-auto">
+              <dt class="sub-large-texts font-bold text-sm sm:text-lg">{item.title}</dt>
+              <dd class="sub-texts break-all text-xs sm:text-base">
+                <a href={item.url} target="_blank" rel="noreferrer" class="break-all hover:underline">
                   {item.url}
                 </a>
               </dd>
-            </>
+            </div>
           ))}
         </dl>
       </div>
     </section>
+        
+    
+    
+    
   </main>
 </MainLayout>
 
 <style>
   .titles {
-    @apply font-bold text-[1.5rem] md:text-[3rem];
+    @apply font-bold text-[2.35rem] md:text-[2.8875rem];
   }
 
   .sub-large-texts {
-    @apply text-[0.75rem] md:text-[1.875rem];
+    @apply text-[0.85em] md:text-[1.5rem];
   }
 
   .sub-texts-2 {
-    @apply text-[0.75rem] md:text-[1.5rem];
+    @apply text-[1.25rem] md:text-[1.125rem];
   }
 
   .sub-texts {
-    @apply text-[0.75rem] sm:text-[1.125rem];
+    @apply text-[0.85rem] sm:text-[1.125rem];
   }
 </style>
