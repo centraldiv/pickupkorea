@@ -12,11 +12,11 @@ export const prerender = true;
 >
   <main>
     <section class="section-container">
-      <h1 class="font-sans text-[2.25rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[3.75rem] lg:text-[1.875rem]">
-      Express Rate Table
+      <h1 class="font-sans text-[1.5rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[2.5rem] lg:text-[2.5rem]">
+        Express Rate Table
       </h1>
-      <p class="w-full text-[0.75rem] font-bold leading-[1.25] text-left mb-[1.5rem] sm:text-[1.5rem] sm:mb-12 md:text-[2.25rem] lg:text-[1.5rem]">
-      (UPS/Fedex/DHL/TXT - cannot choose carrier)
+      <p class="w-full max-w-[72rem] mt-3 text-[1rem] font-bold leading-[1.25] text-left sm:text-[1.5rem] md:text-[1rem] lg:text-[1.5rem]">
+        (UPS/Fedex/DHL/TXT - cannot choose carrier)
       </p>
       <article class="w-full p-3 px-6 gap-6">
         <ul class="list-disc pl-3 mt-3 sm:pl-4.5 sm:mt-[2.625rem]">
@@ -44,7 +44,7 @@ export const prerender = true;
           <Image
             src={serviceCountry}
             alt="Service Country Table"
-            class="block min-w-[46.875rem]"
+            class="block min-w-[46.875rem] sm:min-w-[56.875rem] md:min-w-[66.875rem]"
           />
         </div>
       </article>
@@ -52,11 +52,11 @@ export const prerender = true;
     <article class="section-container">
       <section class="section-container">
         <h2 class="title-medium">Express Rate Table (Unit: KRW)</h2>
-        <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem]">
+        <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem] sm:max-w-[40rem] md:max-w-[50rem]">
           <Image
             src={expressTable}
             alt="Express Rate Table (Unit: KRW)"
-            class="block min-w-[30rem]"
+            class="block min-w-[30rem] sm:min-w-[40rem] md:min-w-[50rem]"
           />
         </div>
       </section>
@@ -77,3 +77,4 @@ export const prerender = true;
     @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-2xl md:text-3xl lg:text-[1.875rem];
   }
 </style>
+

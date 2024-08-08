@@ -102,9 +102,13 @@ export const prerender = true;
     <section class="py-9 md:py-18">
       <h2 class="titles font-bold text-center mb-6 md:mb-12">Why Pickup Korea?</h2>
       <article class="space-y-9 md:space-y-[2.58rem]">
-        <div class="bg-primary w-full h-auto py-[3.75rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.5rem] md:gap-[5rem] justify-center items-center">
-          <Image src={Clock} alt="Clock" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] md:mr-[0.625rem]" />
-          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left">
+        <div class="bg-primary w-full h-auto py-2 md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-2 md:gap-[1rem] justify-center items-center">
+          <Image 
+            src={Clock} 
+            alt="Clock" 
+            class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] md:mr-[0.625rem] object-contain md:min-w-[15.703125rem] md:min-h-[14.296875rem]" 
+          />
+          <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left">
             <dt class="sub-large-texts font-bold">Quick response</dt>
             <dd class="sub-texts-2 leading-[100%] w-full md:w-[31.375rem] h-auto md:h-[18.75rem]">
               We work from 9 to 5 p.m. in Korean time during weekdays, but the KakaoTalk chat is always open to respond to your urgent request.
@@ -112,14 +116,25 @@ export const prerender = true;
               Please understand that it may be difficult to respond immediately.
             </dd>
             <div class="flex items-center justify-center md:justify-start space-x-3">
-              <Image src={Talk} alt="KakaoTalk" loading="lazy" class="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20" />
-              <Image src={QrCode} alt="QR Code" loading="lazy" class="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20" />
+              <Image 
+                src={Talk} 
+                alt="KakaoTalk" 
+                loading="lazy" 
+                class="object-contain h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+              />
+              <Image 
+                src={QrCode} 
+                alt="QR Code" 
+                loading="lazy" 
+                class="object-contain h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+              />
             </div>
           </dl>
-        </div> 
-    
-        <div class="w-full h-auto py-[9.875rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.0625rem] justify-center items-center">
-          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left py- my-[2.834375rem]">
+        </div>
+        
+
+        <div class="w-full h-auto py-2 md:py-[9.875rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center">
+          <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-2 md:my-[2.834375rem]">
             <dt class="font-bold sub-large-texts">Free services & Cheap delivery.</dt>
             <dd class="sub-texts-2 leading-[100%] w-full md:w-[32.1875rem] h-auto md:h-[8.5rem]">
               Free address! Even package consolidation and re-packing are offered by no extra cost.
@@ -127,19 +142,22 @@ export const prerender = true;
               You can choose the better shipper between EMS and Express carrier like FEDEX, UPS and DHL.
             </dd>
           </dl>
-          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
+          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-24 w-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
         </div>
+                
     
-        <div class="bg-primary w-full h-auto py-[10.4375rem] md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-[2.0625rem] justify-center items-center">
-          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
+        <div class="bg-primary w-full h-auto py-4 md:py-[10.4375rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center">
+          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
           
-          <dl class="flex flex-col gap-3 md:gap-6 text-center md:text-left my-[1.765625rem]">
+          <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-[1.765625rem]">
             <dt class="sub-large-texts font-bold">Friendly helper</dt>
             <dd class="sub-texts-2 leading-[100%] w-full md:w-[29.9375rem] h-auto md:h-[11.8125rem]">
               Friendly customer service is ready to meet your various needs. Whatever ask if you need any help about shopping in Korea.
             </dd>
           </dl>
         </div>
+        
+        
       </article>
     </section>
     
@@ -177,11 +195,11 @@ export const prerender = true;
   }
 
   .sub-large-texts {
-    @apply text-[0.85em] md:text-[1.5rem];
+    @apply text-[1.5em] md:text-[1.5rem];
   }
 
   .sub-texts-2 {
-    @apply text-[1.25rem] md:text-[1.125rem];
+    @apply text-[1rem] md:text-[1.125rem];
   }
 
   .sub-texts {
