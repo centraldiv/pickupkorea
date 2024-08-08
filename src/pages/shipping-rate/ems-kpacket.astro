@@ -11,7 +11,7 @@ export const prerender = true;
   currentRoute="/shipping-rate/ems-kpacket"
 >
   <main>
-    <section class="section-container">
+    <section class="section-container-ems">
       <h1 class="font-sans text-[1.5rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[2.5rem] lg:text-[2.5rem]">
         EMS & K-packet Official Rate Table
       </h1>
@@ -21,40 +21,40 @@ export const prerender = true;
           fees and additional handling fees.
         </p>
         <ul class="list-disc pl-3 sm:pl-4.5 mt-3 sm:mt-10.5">
-          <li class="text-list">
+          <li class="text-list-ems">
             The postage is applied to the higher of the actual weight and volume
             weight of the mail.
           </li>
-          <li class="text-list list-none ml-3 sm:ml-6">
+          <li class="text-list-ems list-none ml-3 sm:ml-6">
             Volume weight (kg): Width (cm) X Length (cm) X Height (cm) / 6,000
           </li>
-          <li class="text-list">
+          <li class="text-list-ems">
             The delivery date will take about 3-7 days.
           </li>
-          <li class="text-list">
+          <li class="text-list-ems">
             The EMS delivery limit is 30kg mostly, but we handle up to about
             20KG for the safety of the delivery man.
           </li>
-          <li class="text-list">
+          <li class="text-list-ems">
             If you want to send small package under 2kg, you can choose
             K-packets. However, the delivery can take about 2-4 weeks.
           </li>
-          <li class="text-list">
+          <li class="text-list-ems">
             If you can't find your country in the table below, you can check the
             Rate by clicking the link:<br/><br/>
           </li>
         </ul>
           <a
             href="https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en"
-            class="text-[#3b82f6] underline break-words text-list pl-6"
+            class="text-[#3b82f6] underline break-words text-list-ems pl-6"
           >
             https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en
           </a>
       </article>
     </section>
     <div class="w-full bg-primaryBeige">
-      <section class="section-container">
-        <h2 class="title-medium">EMS Rate Table (Unit : KRW)</h2>
+      <section class="section-container-ems">
+        <h2 class="title-medium-ems">EMS Rate Table (Unit : KRW)</h2>
         <figure class="relative overflow-x-scroll">
           <Image
             src={EMSRateTable}
@@ -63,8 +63,8 @@ export const prerender = true;
           />
         </figure>
       </section>
-      <section class="section-container">
-        <h2 class="title-medium">K-packet Rate Table (Unit: KRW)</h2>
+      <section class="section-container-ems">
+        <h2 class="title-medium-ems">K-packet Rate Table (Unit: KRW)</h2>
         <figure class="relative overflow-x-scroll">
           <Image
             src={KPacketRateTable}
@@ -77,16 +77,3 @@ export const prerender = true;
   </main>
 </MainLayout>
 
-<style>
-  .section-container {
-    @apply max-w-[80rem] p-9 pt-[4.5rem] px-6 pb-[4.5rem] mx-auto gap-6 sm:pt-[4.5rem] sm:px-12 sm:pb-[4.5rem] md:px-24 lg:px-24;
-  }
-  
-  .title-medium {
-    @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-[1.88rem] md:text-[2rem] lg:text-[1.875rem];
-  }
-
-  .text-list {
-    @apply text-[0.75rem] leading-[1.5] text-left mt-3 font-normal sm:text-[1.125rem] md:text-[1.5rem];
-  }
-</style>

@@ -57,6 +57,105 @@
     @apply bg-background text-foreground;
     font-family: "Noto Sans", sans-serif;
   }
+/* global.css */
 
+/* Text Styles */
+.font-titles {
+  @apply font-bold text-[2.35rem] md:text-[2.8875rem];
+}
+
+.font-sub-large-texts {
+  @apply text-[1.5em] md:text-[1.5rem];
+}
+
+.font-sub-texts-2 {
+  @apply text-[1rem] md:text-[1.125rem];
+}
+
+.font-sub-texts {
+  @apply text-[0.85rem] sm:text-[1.125rem];
+}
+
+.text-list-ex {
+  @apply text-[0.75rem] leading-[1.5] text-left mt-3 sm:text-[1.125rem] md:text-[1.5rem];
+}
+
+.text-list-ems {
+  @apply text-[0.75rem] leading-[1.5] text-left mt-3 font-normal sm:text-[1.125rem] md:text-[1.5rem];
+}
+
+.title-medium-ex {
+  @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-2xl md:text-3xl lg:text-[1.875rem];
+}
+
+.title-medium-ems {
+  @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-[1.88rem] md:text-[2rem] lg:text-[1.875rem];
+}
+
+.heading {
+  @apply text-[1.125rem] sm:text-[1.875rem] leading-[1.5rem] sm:leading-[2.554rem] font-bold text-center;
+}
+
+.text-black {
+  @apply font-bold text-sm sm:text-xl;
+}
+
+.subtext {
+  @apply text-[1.125rem] sm:text-[1rem] lg:text-[1.125rem] leading-[1.5rem] sm:leading-[1.25rem] lg:leading-[1.532344rem] text-left;
+}
+
+.steps-list {
+  @apply text-[1rem] font-bold leading-[1.02140625rem] text-center;
+}
+
+/* Container Styles */
+.container {
+  @apply max-w-5xl mx-auto;
+}
+
+.section-container-ex {
+  @apply w-full max-w-[80rem] p-9 pt-[4.5rem] px-6 pb-[4.5rem] mx-auto gap-6 sm:pt-[4.5rem] sm:px-12 sm:pb-[4.5rem] md:px-24 lg:px-24;
+}
+
+.section-container-ems {
+  @apply max-w-[80rem] p-9 pt-[4.5rem] px-6 pb-[4.5rem] mx-auto gap-6 sm:pt-[4.5rem] sm:px-12 sm:pb-[4.5rem] md:px-24 lg:px-24;
+}
+
+.section-container-sr {
+  @apply py-9 sm:py-[4.5rem] w-full flex flex-col justify-center items-center px-4;
+}
+
+.container-primary {
+  @apply bg-primaryBeige p-3 sm:p-[4.5rem] rounded-3xl w-full max-w-[51.875rem] mx-auto flex flex-col justify-start my-9 sm:my-[4.5rem];
+}
+
+/* Layout and Flex Styles */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.placement {
+  @apply flex flex-col items-center w-full h-auto gap-[0.75rem] list-none;
+}
+
+/* Background Styles */
+.bg-gray-section {
+  @apply w-full bg-primaryGray;
+}
+
+/* Miscellaneous Styles */
+.article-text {
+  @apply text-base sm:text-xl text-left max-w-[90%] sm:max-w-[62.5rem] mx-auto px-4 sm:px-20;
+}
+
+.image-loc {
+  @apply mt-[0.9375rem] relative gap-0;
+}
+
+.dotted-border {
+  @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black;
+}
+
+  
   
 }

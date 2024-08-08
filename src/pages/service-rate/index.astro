@@ -33,7 +33,7 @@ export const prerender = true;
 
 <MainLayout title="Service Rate | Pickup Korea" currentRoute="/service-rate">
   <main>
-    <section class="section-container">
+    <section class="section-container-sr">
         <h1 class="heading mb-8 sm:mb-[2.578125rem]">
           Warehouse
         </h1>
@@ -58,7 +58,7 @@ export const prerender = true;
         </div>
     </section>
 
-    <section class="section-container bg-gray-section">
+    <section class="section-container-sr bg-gray-section">
         <h2 class="heading mb-8 sm:mb-[4.171875rem]">
           Purchase
         </h2>
@@ -80,7 +80,7 @@ export const prerender = true;
         </div>
     </section>
     
-    <section class="section-container ">     
+    <section class="section-container-sr ">     
       <h2 class="heading mb-8 sm:mb-[2.578125rem]">
         Optional
       </h2>
@@ -105,7 +105,7 @@ export const prerender = true;
       </div>
     </section>
     
-    <section class="section-container bg-gray-section">
+    <section class="section-container-sr bg-gray-section">
       <h2 class="heading mb-8 sm:mb-24">
         Forwarding & Pickup
       </h2>
@@ -131,27 +131,5 @@ export const prerender = true;
     </main>
     </MainLayout>
     
-    <style>
-      .section-container {
-        @apply py-9 sm:py-[4.5rem] w-full flex flex-col justify-center items-center px-4;
-      }
-      .bg-gray-section {
-        @apply w-full bg-primaryGray;
-      }
-      .heading {
-        @apply text-[1.125rem] sm:text-[1.875rem] leading-[1.5rem] sm:leading-[2.554rem] font-bold text-center;
-      }
-      .article-text {
-        @apply text-base sm:text-xl text-left max-w-[90%] sm:max-w-[62.5rem] mx-auto px-4 sm:px-20;
-      }
-      .container-primary {
-        @apply bg-primaryBeige p-3 sm:p-[4.5rem] rounded-3xl w-full max-w-[51.875rem] mx-auto flex flex-col justify-start my-9 sm:my-[4.5rem];
-      }
-      .text-black {
-        @apply font-bold text-sm sm:text-xl;
-      }
-      .dotted-border {
-        @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black;
-      }
-    </style>
+
     
