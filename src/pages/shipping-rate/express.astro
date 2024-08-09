@@ -11,26 +11,26 @@ export const prerender = true;
   currentRoute="/shipping-rate/express"
 >
   <main>
-    <section class="section-container">
-      <h1 class="font-sans text-[2.25rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[3.75rem] lg:text-[1.875rem]">
-      Express Rate Table
+    <section class="section-container-ex">
+      <h1 class="font-sans text-[1.5rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[2.5rem] lg:text-[2.5rem]">
+        Express Rate Table
       </h1>
-      <p class="w-full text-[0.75rem] font-bold leading-[1.25] text-left mb-[1.5rem] sm:text-[1.5rem] sm:mb-12 md:text-[2.25rem] lg:text-[1.5rem]">
-      (UPS/Fedex/DHL/TXT - cannot choose carrier)
+      <p class="w-full max-w-[72rem] mt-3 text-[1rem] font-bold leading-[1.25] text-left sm:text-[1.5rem] md:text-[1rem] lg:text-[1.5rem]">
+        (UPS/Fedex/DHL/TXT - cannot choose carrier)
       </p>
       <article class="w-full p-3 px-6 gap-6">
         <ul class="list-disc pl-3 mt-3 sm:pl-4.5 sm:mt-[2.625rem]">
-          <li class="text-list">
+          <li class="text-list-ex">
             The postage is applied to the higher of the actual weight and volume
             weight of the mail.
           </li>
-          <li class="text-list list-none ml-3 sm:ml-6">
+          <li class="text-list-ex list-none ml-3 sm:ml-6">
             Volume weight (kg): Width (cm) X Length (cm) X Height (cm) / 6,000
           </li>
-          <li class="text-list">
+          <li class="text-list-ex">
             The delivery date will take about 3-7 days.
           </li>
-          <li class="text-list">
+          <li class="text-list-ex">
             Please check the ZONE containing your country first and then check
             the rate.
           </li>
@@ -38,42 +38,30 @@ export const prerender = true;
       </article>
     </section>
     <div class="w-full bg-primaryBeige">
-      <article class="section-container">
-        <h2 class="title-medium">Service Country</h2>
+      <article class="section-container-ex">
+        <h2 class="title-medium-ex">Service Country</h2>
         <div class="relative overflow-x-scroll">
           <Image
             src={serviceCountry}
             alt="Service Country Table"
-            class="block min-w-[46.875rem]"
+            class="block min-w-[46.875rem] sm:min-w-[56.875rem] md:min-w-[66.875rem]"
           />
         </div>
       </article>
     </div>
-    <article class="section-container">
-      <section class="section-container">
-        <h2 class="title-medium">Express Rate Table (Unit: KRW)</h2>
-        <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem]">
+
+      <section class="section-container-ex">
+        <h2 class="title-medium-ex">Express Rate Table (Unit: KRW)</h2>
+        <div class="overflow-x-scroll relative w-full mx-auto max-w-[30rem] sm:max-w-[40rem] md:max-w-[50rem]">
           <Image
             src={expressTable}
             alt="Express Rate Table (Unit: KRW)"
-            class="block min-w-[30rem]"
+            class="block min-w-[30rem] sm:min-w-[40rem] md:min-w-[50rem]"
           />
         </div>
       </section>
-    </article>
   </main>
 </MainLayout>
 
-<style>
-  .section-container {
-    @apply w-full max-w-[80rem] p-9 pt-[4.5rem] px-6 pb-[4.5rem] mx-auto gap-6 sm:pt-[4.5rem] sm:px-12 sm:pb-[4.5rem] md:px-24 lg:px-24;
-  }
 
-  .text-list {
-    @apply text-[0.75rem] leading-[1.5] text-left mt-3 sm:text-[1.125rem] md:text-[1.5rem];
-  }
 
-  .title-medium {
-    @apply text-[1.5rem] font-bold leading-[1.25] text-left mb-[2.0625rem] sm:text-2xl md:text-3xl lg:text-[1.875rem];
-  }
-</style>
