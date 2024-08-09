@@ -16,7 +16,7 @@ const data = [
   {
     title: "Get your <br/> Korean address",
     description:
-      "Click the MY menu after you sign up. You can find your address.",
+      "Click the <b>MY menu</b> after you sign up. You can find your address.",
     image: Location,
   },
   {
@@ -90,7 +90,7 @@ export const prerender = true;
               <dt class="font-bold bg-black text-white flex items-center justify-center rounded-[1.6875rem] h-[3.75rem] sm:h-[5.4375rem] px-3">
                 <span set:html={item.title} />
               </dt>
-              <dd>{item.description}</dd>
+              <dd><span set:html={item.description}/></dd>
             </dl>
           </div>
         ))}
@@ -118,13 +118,13 @@ export const prerender = true;
                 src={Talk} 
                 alt="KakaoTalk" 
                 loading="lazy" 
-                class="object-contain h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+                class="object-contain rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
               />
               <Image 
                 src={QrCode} 
                 alt="QR Code" 
                 loading="lazy" 
-                class="object-contain h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+                class="object-contain rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
               />
             </div>
           </dl>
@@ -178,6 +178,3 @@ export const prerender = true;
     
   </main>
 </MainLayout>
-
-
-
