@@ -42,11 +42,15 @@ const shippingData = [
 
 export const prerender = true;
 ---
+
 <MainLayout title="Pickup Korea" currentRoute="/">
   <main>
-
-    <section class="py-2 md:py-9 px-1 md:px-6 max-w-5xl mx-auto flex flex-col lg:flex-row items-start gap-2 md:gap-7 justify-center">
-      <div class="w-full h-auto flex flex-col gap-2 md:gap-9 my-16 lg:my-[11.25rem] text-center lg:text-left">
+    <section
+      class="py-2 md:py-9 px-1 md:px-6 max-w-5xl mx-auto flex flex-col lg:flex-row items-start gap-2 md:gap-7 justify-center"
+    >
+      <div
+        class="w-full h-auto flex flex-col gap-2 md:gap-9 my-16 lg:my-[11.25rem] text-center lg:text-left"
+      >
         <h1 class="font-titles leading-tight md:leading-[normal]">
           Shop in Korea,
           <br />
@@ -55,126 +59,182 @@ export const prerender = true;
         <p class="font-sub-texts-2">Korean Free address & Shopping helper.</p>
       </div>
       <Image
-        src={ShoppingBanner} 
+        src={ShoppingBanner}
         alt="Shopping banner"
         class="lg:w-[420px] lg:h-[378px] max-w-full max-h-full flex-1 mx-auto my-12 lg:my-[96.5px]"
         loading="eager"
       />
     </section>
-    
+
     <section class="flex-center py-6">
-      <button class="bg-[#F8B62D] sub-texts font-bold rounded-[20px] flex items-center justify-center w-[170px] h-[33px]">
+      <button
+        class="bg-[#F8B62D] sub-texts font-bold rounded-[20px] flex items-center justify-center w-[170px] h-[33px]"
+      >
         Start ordering
       </button>
     </section>
-    <section class="bg-white py-12 px-3 flex flex-col items-center max-w-5xl mx-auto w-full">
+    <section
+      class="bg-white py-12 px-3 flex flex-col items-center max-w-5xl mx-auto w-full"
+    >
       <h2 class="text-center font-titles mb-12 text-black">How It Works</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-15">
-        {data.map((item, index) => (
-          <div class:list={[
-            "flex flex-col items-center gap-6 max-w-[16.875rem] mx-auto",
-            index === 2 && "sm:col-span-2 flex justify-center lg:col-span-1",
-          ]}>
-            <Image
-              src={item.image}
-              alt={item.title}
-              height={60}
-              width={60}
-              class={cn(
-                index === 0 && "w-[2.8875rem] h-15",
-                index === 1 && "size-15",
-                index === 2 && "w-[3.35175rem] h-15"
-              )}
-            />
-            <dl class="flex flex-col gap-3 sm:gap-6 font-sub-texts text-center">
-              <dt class="font-bold bg-black text-white flex items-center justify-center rounded-[1.6875rem] h-[3.75rem] sm:h-[5.4375rem] px-3">
-                <span set:html={item.title} />
-              </dt>
-              <dd><span set:html={item.description}/></dd>
-            </dl>
-          </div>
-        ))}
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-15"
+      >
+        {
+          data.map((item, index) => (
+            <div
+              class:list={[
+                "flex flex-col items-center gap-6 max-w-[16.875rem] mx-auto",
+                index === 2 &&
+                  "sm:col-span-2 flex justify-center lg:col-span-1",
+              ]}
+            >
+              <Image
+                src={item.image}
+                alt={item.title}
+                height={60}
+                width={60}
+                class={cn(
+                  index === 0 && "w-[2.8875rem] h-15",
+                  index === 1 && "size-15",
+                  index === 2 && "w-[3.35175rem] h-15"
+                )}
+              />
+              <dl class="flex flex-col gap-3 sm:gap-6 font-sub-texts text-center">
+                <dt class="font-bold bg-black text-white flex items-center justify-center rounded-[1.6875rem] h-[3.75rem] sm:h-[5.4375rem] px-3">
+                  <span set:html={item.title} />
+                </dt>
+                <dd>
+                  <span set:html={item.description} />
+                </dd>
+              </dl>
+            </div>
+          ))
+        }
       </div>
     </section>
-    
+
     <section class="py-9 md:py-18">
       <h2 class="font-titles text-center mb-6 md:mb-12">Why Pickup Korea?</h2>
       <article class="space-y-9 md:space-y-[2.58rem]">
-        <div class="bg-primary w-full h-auto py-2 md:py-18 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-2 md:gap-[1rem] justify-center items-center">
-          <Image 
-            src={Clock} 
-            alt="Clock" 
-            class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] md:mr-[0.625rem] object-contain md:min-w-[15.703125rem] md:min-h-[14.296875rem]" 
+        <div
+          class="bg-primary w-full h-auto py-6 md:py-16 px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-2 md:gap-[1rem] justify-center items-center"
+        >
+          <Image
+            src={Clock}
+            alt="Clock"
+            class="flex-shrink-0 h-24 w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] md:mr-[0.625rem] object-contain md:min-w-[15.703125rem] md:min-h-[14.296875rem]"
           />
           <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left">
             <dt class="font-sub-large-texts font-bold">Quick response</dt>
-            <dd class="font-sub-texts-2 leading-[100%] w-full md:w-[31.375rem] h-auto md:h-[18.75rem]">
-              We work from 9 to 5 p.m. in Korean time during weekdays, but the KakaoTalk chat is always open to respond to your urgent request.
+            <dd
+              class="font-sub-texts-2 leading-[100%] w-full md:w-[31.375rem] h-auto md:h-[12.75rem]"
+            >
+              We work from 9 to 5 p.m. in Korean time during weekdays, but the
+              KakaoTalk chat is always open to respond to your urgent request.
               <br /><br />
               Please understand that it may be difficult to respond immediately.
             </dd>
-            <div class="flex-center space-x-3">
-              <Image 
-                src={Talk} 
-                alt="KakaoTalk" 
-                loading="lazy" 
-                class="object-contain rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+            <div class="flex justify-center md:justify-start space-x-3">
+              <Image
+                src={Talk}
+                alt="KakaoTalk"
+                loading="lazy"
+                class="object-contain rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]"
               />
-              <Image 
-                src={QrCode} 
-                alt="QR Code" 
-                loading="lazy" 
-                class="object-contain rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]" 
+              <Image
+                src={QrCode}
+                alt="QR Code"
+                loading="lazy"
+                class="object-contain bg-white p-0.5 rounded-md h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 min-h-[3rem] min-w-[3rem]"
               />
             </div>
           </dl>
         </div>
-        
 
-        <div class="w-full h-auto py-2 md:py-[4.5rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center">
-          <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-2 md:my-[2.834375rem]">
-            <dt class="font-bold font-sub-large-texts">Free services & Cheap delivery.</dt>
-            <dd class="font-sub-texts-2 leading-[100%] w-full md:w-[32.1875rem] h-auto md:h-[8.5rem]">
-              Free address! Even package consolidation and re-packing are offered by no extra cost.
+        <div
+          class="w-full h-auto py-2 md:py-[4.5rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center"
+        >
+          <dl
+            class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-2 md:my-[2.834375rem]"
+          >
+            <dt class="font-bold font-sub-large-texts">
+              Free services & Cheap delivery.
+            </dt>
+            <dd
+              class="font-sub-texts-2 leading-[100%] w-full md:w-[32.1875rem] h-auto md:h-[8.5rem]"
+            >
+              Free address! Even package consolidation and re-packing are
+              offered by no extra cost.
               <br />
-              You can choose the better shipper between EMS and Express carrier like FEDEX, UPS and DHL.
+              You can choose the better shipper between EMS and Express carrier like
+              FEDEX, UPS and DHL.
             </dd>
           </dl>
-          <Image src={Plane} alt="Airplane" class="flex-shrink-0 h-24 w-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
+          <Image
+            src={Plane}
+            alt="Airplane"
+            class="flex-shrink-0 h-24 w-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto"
+          />
         </div>
-                
-    
-        <div class="bg-primary w-full h-auto py-2 md:py-[4.5rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center">
-          <Image src={Hand} alt="Hand" class="flex-shrink-0 h-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto" />
-          
-          <dl class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-[1.765625rem]">
+
+        <div
+          class="bg-primary w-full h-auto py-2 md:py-[4.5rem] px-4 sm:px-10 md:px-12 lg:px-[34.375rem] mx-auto flex flex-col md:flex-row gap-4 md:gap-[2.0625rem] justify-center items-center"
+        >
+          <Image
+            src={Hand}
+            alt="Hand"
+            class="flex-shrink-0 h-24 md:min-w-[15.703125rem] md:min-h-[14.296875rem] w-24 sm:h-28 sm:w-28 md:h-[14.296875rem] md:w-[15.703125rem] mx-auto"
+          />
+
+          <dl
+            class="flex flex-col gap-2 md:gap-6 text-center md:text-left my-[1.765625rem]"
+          >
             <dt class="font-sub-large-texts font-bold">Friendly helper</dt>
-            <dd class="font-sub-texts-2 leading-[100%] w-full md:w-[29.9375rem] h-auto md:h-[11.8125rem]">
-              Friendly customer service is ready to meet your various needs. Whatever ask if you need any help about shopping in Korea.
+            <dd
+              class="font-sub-texts-2 leading-[100%] w-full md:w-[29.9375rem] h-auto md:h-[11.8125rem]"
+            >
+              Friendly customer service is ready to meet your various needs.
+              Whatever ask if you need any help about shopping in Korea.
             </dd>
           </dl>
         </div>
-        
       </article>
     </section>
-    
-    <section class="py-15 mt-[6.5rem] mb-[4.25rem] px-3 sm:px-12 flex items-center justify-center">
-      <div class="relative w-full max-w-[63.125rem] h-auto sm:h-[34.0625rem] p-8 sm:pt-[1.875rem] sm:pb-[6.25rem] sm:pl-[3.125rem] sm:pr-[3.125rem] bg-primaryBeige rounded-[1.5625rem] flex flex-col items-center justify-start gap-8 sm:gap-[5.375rem]">
-        <h3 class="font-titles text-center text-lg sm:text-2xl mt-0">CHECK TRACKING</h3>
-        <dl class="font-sub-texts space-y-7 flex flex-col gap-7 w-full sm:w-auto">
-          {shippingData.map((item) => (
-            <div key={item.title} class="flex flex-col items-start w-full sm:w-auto">
-              <dt class="font-bold font-sub-large-texts text-sm sm:text-lg">{item.title}</dt>
-              <dd class="font-sub-texts break-all text-xs sm:text-base">
-                <a href={item.url} target="_blank" rel="noreferrer" class="break-all hover:underline">
-                  {item.url}
-                </a>
-              </dd>
-            </div>
-          ))}
+
+    <section
+      class="py-15 mt-[6.5rem] mb-[4.25rem] px-3 sm:px-12 flex items-center justify-center"
+    >
+      <div
+        class="relative w-full max-w-[63.125rem] h-auto sm:h-[34.0625rem] p-8 sm:pt-[1.875rem] sm:pb-[6.25rem] sm:pl-[3.125rem] sm:pr-[3.125rem] bg-primaryBeige rounded-[1.5625rem] flex flex-col items-center justify-start gap-8 sm:gap-[5.375rem]"
+      >
+        <h3 class="font-titles text-center text-lg sm:text-2xl mt-0">
+          CHECK TRACKING
+        </h3>
+        <dl
+          class="font-sub-texts space-y-7 flex flex-col gap-7 w-full sm:w-auto"
+        >
+          {
+            shippingData.map((item) => (
+              <div class="flex flex-col items-start w-full sm:w-auto">
+                <dt class="font-bold font-sub-large-texts text-sm sm:text-lg">
+                  {item.title}
+                </dt>
+                <dd class="font-sub-texts break-all text-xs sm:text-base">
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="break-all hover:underline"
+                  >
+                    {item.url}
+                  </a>
+                </dd>
+              </div>
+            ))
+          }
         </dl>
       </div>
     </section>
-    
   </main>
 </MainLayout>

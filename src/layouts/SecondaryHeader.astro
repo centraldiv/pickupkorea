@@ -23,7 +23,7 @@ const { currentRoute } = Astro.props;
   currentRoute && (
     <nav class="bg-primary py-2 flex justify-center lg:block">
       <MobileMenu client:load links={links} />
-      <ul class="lg:flex justify-between items-center w-full scrollbar-hide h-16 mx-auto text-lg sm:text-2xl font-semibold px-4 hidden gap-4 xl:px-12">
+      <ul class="lg:flex justify-between items-center w-full scrollbar-hide h-16 mx-auto text-lg sm:text-2xl font-semibold px-4 hidden gap-4 xl:px-12 max-w-7xl">
         {links.map((link) => {
           if (link.href === "/shipping-rate") {
             return (
@@ -83,18 +83,3 @@ const { currentRoute } = Astro.props;
     </nav>
   )
 }
-
-<script>
-  const shippingRateLabel = document.getElementById("shipping-rate-label");
-  const shippingRateDropdown = document.getElementById(
-    "shipping-rate-dropdown"
-  );
-
-  shippingRateLabel!.addEventListener("click", () => {
-    shippingRateDropdown!.classList.toggle("flex");
-  });
-
-  shippingRateDropdown!.addEventListener("mouseleave", () => {
-    shippingRateDropdown!.classList.toggle("flex");
-  });
-</script>

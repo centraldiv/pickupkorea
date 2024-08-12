@@ -34,102 +34,128 @@ export const prerender = true;
 <MainLayout title="Service Rate | Pickup Korea" currentRoute="/service-rate">
   <main>
     <section class="section-container-sr">
-        <h1 class="heading mb-8 sm:mb-[2.578125rem]">
-          Warehouse
-        </h1>
-        <article class="article-text ">
-          <p>
-            For members only, we will give you an address to ship your order.<br />
-            The address can be found on <strong>MY menu</strong> after signing up.<br />
-            Product can be stored for free up to 30 days from the date of confirmation after delivery.<br />
-            At the end of the free storage period, if you pay an extension storage fee, you can keep it for up to 90 days and it may be discarded after that.
-          </p>
-        </article>
-        <div class="container-primary px-4 sm:px-[4.5rem]">
-          <dl>
-            {details.map((item, index) => (
-              <div class="flex gap-3 justify-between mb-4 w-full" key={index}>
-                <dt class="text-black">{item.label}</dt>
+      <h1 class="heading mb-8 sm:mb-[2.578125rem]">Warehouse</h1>
+      <article class="article-text">
+        <p>
+          For members only, we will give you an address to ship your order.<br
+          />
+          The address can be found on <strong>MY menu</strong> after signing up.<br
+          />
+          Product can be stored for free up to 30 days from the date of confirmation
+          after delivery.<br />
+          At the end of the free storage period, if you pay an extension storage
+          fee, you can keep it for up to 90 days and it may be discarded after that.
+        </p>
+      </article>
+      <div class="container-primary px-4 sm:px-[4.5rem]">
+        <dl>
+          {
+            details.map((item, index) => (
+              <div class="flex gap-3 justify-between mb-4 w-full">
+                <dt class="font-bold text-sm md:text-base">{item.label}</dt>
                 <span class="dotted-border" />
-                <dd class="text-black">{item.value}</dd>
+                <dd class="font-bold text-sm md:text-base">{item.value}</dd>
               </div>
-            ))}
-          </dl>
-        </div>
+            ))
+          }
+        </dl>
+      </div>
     </section>
 
     <section class="section-container-sr bg-gray-section">
-        <h2 class="heading mb-8 sm:mb-[4.171875rem]">
-          Purchase
-        </h2>
-        <article class="article-text" >
-          <p>
-            We can help to purchase the items you want by the Korean online or offline shop.
-          </p>
-        </article>
-        <div class="container-primary mt-8 sm:mt-[4.171875rem] mb-12 sm:mb-24 mx-4 sm:mx-[3.984375rem] px-4 sm:px-[4.5rem]">
-          <dl>
-            {purchaseDetails.map((item, index) => (
-              <div key={index} className={`flex gap-4 flex-col sm:flex-row mb-4 w-full items-center sm:items-baseline ${item.value ? "justify-between" : "justify-end"}`}>
-                <dt class="text-black">{item.label}</dt>
-                {index !== purchaseDetails.length - 1 && <span class="dotted-border hidden sm:block" />}
-                {item.value && <dd class="text-black">{item.value}</dd>}
-              </div>
-            ))}
-          </dl>
-        </div>
-    </section>
-    
-    <section class="section-container-sr ">     
-      <h2 class="heading mb-8 sm:mb-[2.578125rem]">
-        Optional
-      </h2>
+      <h2 class="heading mb-8 sm:mb-[4.171875rem]">Purchase</h2>
       <article class="article-text">
         <p>
-          If you want to check your package inside, please use the unboxing service.<br />
+          We can help to purchase the items you want by the Korean online or
+          offline shop.
+        </p>
+      </article>
+      <div
+        class="container-primary mt-8 sm:mt-[4.171875rem] mb-12 sm:mb-24 mx-4 sm:mx-[3.984375rem] px-4 sm:px-[4.5rem]"
+      >
+        <dl>
+          {
+            purchaseDetails.map((item, index) => (
+              <div
+                class={`flex gap-4 flex-col sm:flex-row mb-4 w-full items-center sm:items-baseline ${item.value ? "justify-between" : "justify-end"}`}
+              >
+                <dt class="font-bold text-sm md:text-base">{item.label}</dt>
+                {index !== purchaseDetails.length - 1 && (
+                  <span class="dotted-border hidden sm:block" />
+                )}
+                {item.value && (
+                  <dd class="font-bold text-sm md:text-base">{item.value}</dd>
+                )}
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="section-container-sr">
+      <h2 class="heading mb-8 sm:mb-[2.578125rem]">Optional</h2>
+      <article class="article-text">
+        <p>
+          If you want to check your package inside, please use the unboxing
+          service.<br />
           We can help you check the status and quantity.<br />
-          If you only want inclusion in your albums, please use the inclusion only service.<br />
+          If you only want inclusion in your albums, please use the inclusion only
+          service.<br />
           You can save shipping costs by drastically reducing the volume and weight.
         </p>
       </article>
-      <div class="container-primary mt-8 sm:mt-24 mb-12 sm:mb-24 px-4 sm:px-[4.5rem] sm:mx-[4.5rem]">
+      <div
+        class="container-primary mt-8 sm:mt-24 mb-12 sm:mb-24 px-4 sm:px-[4.5rem] sm:mx-[4.5rem]"
+      >
         <dl>
-          {optionalDetails.map((item, index) => (
-            <div key={index} class="flex flex-col gap-4 md:flex-row justify-between mb-4 w-full items-center md:items-baseline">
-              <dt class="text-black">{item.label}</dt>
-              <span class="dotted-border hidden md:block" />
-              <dd class="text-black">{item.value}</dd>
-            </div>
-          ))}
+          {
+            optionalDetails.map((item, index) => (
+              <div class="flex flex-col gap-4 md:flex-row justify-between mb-4 w-full items-center md:items-baseline">
+                <dt class="font-bold text-sm md:text-base">{item.label}</dt>
+                <span class="dotted-border hidden md:block" />
+                <dd class="font-bold text-sm md:text-base">{item.value}</dd>
+              </div>
+            ))
+          }
         </dl>
       </div>
     </section>
-    
+
     <section class="section-container-sr bg-gray-section">
-      <h2 class="heading mb-8 sm:mb-24">
-        Forwarding & Pickup
-      </h2>
+      <h2 class="heading mb-8 sm:mb-24">Forwarding & Pickup</h2>
       <article class="article-text px">
         <p>
-          If you would like to receive your packages, please use forwarding service.<br />
-          We could combine multiple packages into one box (consolidation) and ship via EMS, K-packet, and other express carriers.<br />
-          If you have a plan to visit Korea within the storage period, you can also pick up the delivered items in person from Pickup Korea office with advance notice 7 days prior to the visit date.
+          If you would like to receive your packages, please use forwarding
+          service.<br />
+          We could combine multiple packages into one box (consolidation) and ship
+          via EMS, K-packet, and other express carriers.<br />
+          If you have a plan to visit Korea within the storage period, you can also
+          pick up the delivered items in person from Pickup Korea office with advance
+          notice 7 days prior to the visit date.
         </p>
       </article>
-      <div class="container-primary mt-8 sm:mt-24 mb-12 sm:mb-24 px-4 sm:px-[4.5rem]">
+      <div
+        class="container-primary mt-8 sm:mt-24 mb-12 sm:mb-24 px-4 sm:px-[4.5rem]"
+      >
         <dl>
-          {forwardingDetails.map((item, index) => (
-            <div key={index} className={`flex gap-4 justify-between mb-4 w-full ${item.value ? "justify-between" : "justify-end"}`}>
-              <dt class="text-black">{item.label}</dt>
-              {index !== forwardingDetails.length - 1 && <span class="dotted-border" />}
-              {item.value && <dd class="text-black">{item.value}</dd>}
-            </div>
-          ))}
+          {
+            forwardingDetails.map((item, index) => (
+              <div
+                class={`flex gap-4 justify-between mb-4 w-full ${item.value ? "justify-between" : "justify-end"}`}
+              >
+                <dt class="font-bold text-sm md:text-base">{item.label}</dt>
+                {index !== forwardingDetails.length - 1 && (
+                  <span class="dotted-border" />
+                )}
+                {item.value && (
+                  <dd class="font-bold text-sm md:text-base">{item.value}</dd>
+                )}
+              </div>
+            ))
+          }
         </dl>
       </div>
     </section>
-    </main>
-    </MainLayout>
-    
-
-    
+  </main>
+</MainLayout>

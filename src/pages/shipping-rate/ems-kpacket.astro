@@ -6,17 +6,22 @@ import { Image } from "astro:assets";
 
 export const prerender = true;
 ---
+
 <MainLayout
   title="EMS & K-packet shipping Rate | Pickup Korea"
   currentRoute="/shipping-rate/ems-kpacket"
 >
   <main>
     <section class="section-container-ems">
-      <h1 class="font-sans text-[1.5rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[2.5rem] lg:text-[2.5rem]">
+      <h1
+        class="font-sans text-[1.5rem] font-bold leading-[1.25] text-left sm:text-3xl md:text-[2.5rem] lg:text-[2.5rem]"
+      >
         EMS & K-packet Official Rate Table
       </h1>
       <article class="w-full max-w-[76rem] p-1.5 px-6 gap-[2.625rem]">
-        <p class="w-full max-w-[72rem] mt-3 text-[1rem] font-bold leading-[1.25] text-left sm:text-[1.5rem] md:text-[1rem] lg:text-[1.5rem]">
+        <p
+          class="w-full max-w-[72rem] mt-3 text-[1rem] font-bold leading-[1.25] text-left sm:text-[1.5rem] md:text-[1rem] lg:text-[1.5rem]"
+        >
           ※ The international mail fee below includes additional transportation
           fees and additional handling fees.
         </p>
@@ -41,15 +46,15 @@ export const prerender = true;
           </li>
           <li class="text-list-ems">
             If you can't find your country in the table below, you can check the
-            Rate by clicking the link:<br/><br/>
+            Rate by clicking the link:<br /><br />
           </li>
         </ul>
-          <a
-            href="https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en"
-            class="text-[#3b82f6] underline break-words text-list-ems pl-6"
-          >
-            https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en
-          </a>
+        <a
+          href="https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en"
+          class="text-[#3b82f6] underline break-words text-list-ems pl-6"
+        >
+          https://ems.epost.go.kr/front.EmsDeliveryDelivery09.postal?langtype=en
+        </a>
       </article>
     </section>
     <div class="w-full bg-primaryBeige">
@@ -59,7 +64,7 @@ export const prerender = true;
           <Image
             src={EMSRateTable}
             alt="Service Country Table"
-            class="block mx-auto min-w-[80rem] min-h-[55rem] sm:min-w-[90rem] sm:min-h-[65rem]"
+            class="block mx-auto min-w-[80rem] min-h-[55rem] sm:min-w-[120rem] sm:min-h-[65rem]"
           />
         </figure>
       </section>
@@ -69,11 +74,10 @@ export const prerender = true;
           <Image
             src={KPacketRateTable}
             alt="K-packet Rate Table"
-            class="block mx-auto min-w-[52.875rem] min-h-[22rem] sm:min-w-[62.875rem] sm:min-h-[32rem]"
+            class="block mx-auto min-w-[52.875rem] min-h-[22rem] sm:min-w-[90rem] sm:min-h-[32rem]"
           />
         </figure>
       </section>
     </div>
   </main>
 </MainLayout>
-
