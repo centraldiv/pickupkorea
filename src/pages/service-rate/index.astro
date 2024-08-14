@@ -51,7 +51,7 @@ export const prerender = true;
         <dl>
           {
             details.map((item, index) => (
-              <div class="flex gap-3 justify-between mb-4 w-full">
+              <div class="flex gap-3 flex-col items-center [@media(min-width:389px)]:flex-row justify-between mb-4 w-full">
                 <dt class="font-bold text-sm md:text-base">{item.label}</dt>
                 <span class="dotted-border" />
                 <dd class="font-bold text-sm md:text-base">{item.value}</dd>
@@ -77,11 +77,11 @@ export const prerender = true;
           {
             purchaseDetails.map((item, index) => (
               <div
-                class={`flex gap-4 flex-col sm:flex-row mb-4 w-full items-center sm:items-baseline ${item.value ? "justify-between" : "justify-end"}`}
+                class={`flex gap-4 flex-col [@media(min-width:389px)]:flex-row mb-4 w-full items-center sm:items-baseline ${item.value ? "justify-between" : "justify-end"}`}
               >
                 <dt class="font-bold text-sm md:text-base">{item.label}</dt>
                 {index !== purchaseDetails.length - 1 && (
-                  <span class="dotted-border hidden sm:block" />
+                  <span class="dotted-border" />
                 )}
                 {item.value && (
                   <dd class="font-bold text-sm md:text-base">{item.value}</dd>
@@ -111,9 +111,9 @@ export const prerender = true;
         <dl>
           {
             optionalDetails.map((item, index) => (
-              <div class="flex flex-col gap-4 md:flex-row justify-between mb-4 w-full items-center md:items-baseline">
+              <div class="flex gap-4 flex-col [@media(min-width:389px)]:flex-row justify-between mb-4 w-full items-center sm:items-baseline">
                 <dt class="font-bold text-sm md:text-base">{item.label}</dt>
-                <span class="dotted-border hidden md:block" />
+                <span class="dotted-border" />
                 <dd class="font-bold text-sm md:text-base">{item.value}</dd>
               </div>
             ))
@@ -142,9 +142,11 @@ export const prerender = true;
           {
             forwardingDetails.map((item, index) => (
               <div
-                class={`flex gap-4 justify-between mb-4 w-full ${item.value ? "justify-between" : "justify-end"}`}
+                class={`flex gap-4 flex-col items-center [@media(min-width:389px)]:flex-row justify-between mb-4 w-full ${item.value ? "justify-between" : "justify-end"}`}
               >
-                <dt class="font-bold text-sm md:text-base">{item.label}</dt>
+                <dt class="font-bold text-sm md:text-base [@media(max-width:389px)]:text-center">
+                  {item.label}
+                </dt>
                 {index !== forwardingDetails.length - 1 && (
                   <span class="dotted-border" />
                 )}

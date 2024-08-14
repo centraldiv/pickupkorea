@@ -149,6 +149,6 @@
   }
 
   .dotted-border {
-    @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black;
+    @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black [@media(max-width:389px)]:hidden;
   }
 }
