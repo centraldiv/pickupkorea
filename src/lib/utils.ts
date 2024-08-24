@@ -118,3 +118,6 @@ export const omitKey = (object: Record<string, any>, key: string) => {
 };
 
 export const parseAccountInfo = (key: keyof user) => {};
+
+
+export const baseUrl = import.meta.env.DEV ? "http://localhost:3000" : "https://www.pickupkorea.com:3000";

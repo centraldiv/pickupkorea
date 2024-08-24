@@ -34,14 +34,11 @@ const MobileMenu = ({
         />
       </DrawerTrigger>
       <DrawerContent className="text-xl">
-        <nav>
-          
-        </nav>
         <nav className="flex flex-col px-4 divide-y">
           {links.map((link) => {
             if (link.href === "/shipping-rate")
               return (
-                <Accordion type="single" collapsible>
+                <Accordion type="single" collapsible key={link.href}>
                   <AccordionItem value="item-1" className="border-0">
                     <AccordionTrigger className="no-underline border-0 hover:no-underline p-4">
                       Shipping rate
@@ -75,6 +72,7 @@ const MobileMenu = ({
             return (
               <a
                 href={link.href}
+                key={link.href}
                 className="p-4 hover:bg-gray-200 transition-colors duration-300"
                 onClick={() => setOpen(false)}
               >

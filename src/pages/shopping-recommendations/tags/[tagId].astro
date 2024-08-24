@@ -3,42 +3,45 @@ import CMSTags from "@/components/badges/CMS_Tags.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { baseUrl } from "@/lib/utils";
 import Image from "astro/components/Image.astro";
-import qs from "qs";
-export const prerender = false;
+const params = Astro.params;
+const { tagId } = params;
 
-const cmsUrl = (path: string, query: string) =>
-  `${baseUrl}/api/${path}${query}`;
+if (!tagId) {
+  return Astro.redirect("/shopping-recommendations");
+}
+const response = await fetch(`${baseUrl}/api/tag`);
 
-const query = {
-  limit: 100,
-  depth: 5,
-};
+const tagData: CMS_JSONResponse<CMS_Tag> = await response.json();
 
-const stringifiedQuery = qs.stringify(query, { addQueryPrefix: true });
-const contentResponse = await fetch(`${baseUrl}/custom/pages`);
-const contentJson: CMS_JSONResponse<CMS_Page> = await contentResponse.json();
-const response = await fetch(cmsUrl("tag", stringifiedQuery));
-const json: CMS_JSONResponse<CMS_Tag> = await response.json();
-console.log(json.docs);
+const currentTag = tagData.docs.find((item) => item.id === Number(tagId));
+
+if (!currentTag) {
+  return Astro.redirect("/shopping-recommendations");
+}
+
+const tagResponse = await fetch(`${baseUrl}/custom/pages/${currentTag?.id}`);
+const contentJson: CMS_JSONResponse<CMS_Page> = await tagResponse.json();
 ---
 
 <MainLayout
-  title="Shopping Recommendations | Pickup Korea"
-  currentRoute="/shopping-recommendations"
+  title=" | Shopping Recommendations | Pickup Korea"
+  currentRoute="/shopping-recommendations/recommendations"
 >
-  <main
-    class="flex flex-col justify-start items-center min-h-[30rem] py-16 px-12"
-  >
-    <h1 class="text-4xl font-bold">Shopping Recommendations</h1>
-
+  <main class="py-16 px-4">
+    <h1 class="text-4xl font-bold text-center">Shopping Recommendations</h1>
     <aside class="my-16 max-w-4xl w-full mx-auto">
       <ul class="flex flex-wrap mx-auto justify-center gap-4">
         {
-          json.docs.map((item) => (
+          tagData.docs.map((item) => (
             <li class="bg-primary py-2 px-4 rounded-full">
               <a
                 href={encodeURI(`/shopping-recommendations/tags/${item.id}`)}
-                class="hover:text-white transition-colors duration-300"
+                class:list={[
+                  "hover:text-white transition-colors duration-300",
+                  item.name === currentTag?.name
+                    ? "text-white font-semibold"
+                    : "",
+                ]}
               >
                 {item.name}
               </a>
@@ -47,7 +50,6 @@ console.log(json.docs);
         }
       </ul>
     </aside>
-
     <section
       class="max-w-7xl w-full mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
     >
