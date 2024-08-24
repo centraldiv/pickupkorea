@@ -2,13 +2,23 @@
 import { Image } from "astro:assets";
 ---
 
-<header class="flex px-12 py-4 items-center h-28">
+<header class="flex flex-col sm:flex-row sm:px-12 px-4 py-4 items-center h-28">
   <a href="/">
-    <Image src="/core/logo.svg" alt="logo" height="50" width="250" />
+    <Image
+      src="/core/logo.svg"
+      alt="logo"
+      height="50"
+      width="250"
+      class="sm:flex-1 shrink-[2] scale-75 sm:scale-100"
+    />
   </a>
-  <div class="mr-0 ml-auto space-x-12" id="auth-links"></div>
+  <div
+    class="mx-auto sm:mr-0 sm:ml-auto sm:space-x-12 space-x-4 shrink-0"
+    id="auth-links"
+  >
+  </div>
 </header>
-<!-- 
+
 <script>
   import { logoutFn } from "@/lib/utils";
 
@@ -25,12 +35,10 @@ import { Image } from "astro:assets";
       const logoutButton = document.createElement("button");
       const accountLink = document.createElement("a");
       logoutButton.innerText = "Logout";
-      logoutButton.classList.add("font-semibold");
-      logoutButton.classList.add("text-xl");
+      logoutButton.id = "logout-button";
       accountLink.href = "/account";
       accountLink.innerText = "Account";
-      accountLink.classList.add("font-semibold");
-      accountLink.classList.add("text-xl");
+      accountLink.id = "account-link";
       authLinks.appendChild(accountLink);
       authLinks.appendChild(logoutButton);
 
@@ -46,13 +54,11 @@ import { Image } from "astro:assets";
     const registerLink = document.createElement("a");
     loginLink.href = "/login";
     loginLink.innerText = "Login";
-    loginLink.classList.add("font-semibold");
-    loginLink.classList.add("text-xl");
+    loginLink.id = "login-link";
     registerLink.href = "/signup";
     registerLink.innerText = "Sign up";
-    registerLink.classList.add("font-semibold");
-    registerLink.classList.add("text-xl");
+    registerLink.id = "register-link";
     authLinks.appendChild(loginLink);
     authLinks.appendChild(registerLink);
   }
-</script> -->
+</script>

@@ -34,6 +34,9 @@ const MobileMenu = ({
         />
       </DrawerTrigger>
       <DrawerContent className="text-xl">
+        <nav>
+          
+        </nav>
         <nav className="flex flex-col px-4 divide-y">
           {links.map((link) => {
             if (link.href === "/shipping-rate")

@@ -151,4 +151,20 @@
   .dotted-border {
     @apply flex-1 border-b-2 sm:border-b-4 border-dotted border-black [@media(max-width:389px)]:hidden;
   }
+
+  #logout-button {
+    @apply lg:text-xl font-semibold;
+  }
+
+  #account-link {
+    @apply lg:text-xl font-semibold;
+  }
+
+  #login-link {
+    @apply lg:text-xl font-semibold;
+  }
+
+  #register-link {
+    @apply lg:text-xl font-semibold;
+  }
 }
