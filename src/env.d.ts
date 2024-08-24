@@ -61,3 +61,9 @@ declare type CMS_Content_RichText = {
     createdAt: Date;
 };
 
+declare type CMS_FAQ = {
+    id: number;
+    question: string;
+    answer: string;
+    createdAt: Date;
+};

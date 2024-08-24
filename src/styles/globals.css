@@ -171,4 +171,8 @@
   .multi-truncate {
     @apply [-webkit-line-clamp:3] [-webkit-box-orient:vertical] overflow-hidden [display:-webkit-box];
   }
+
+  .page-title {
+    @apply text-[1.5rem] lg:text-[1.875rem] leading-[1.875rem] lg:leading-[2.55375rem] font-bold;
+  }
 }

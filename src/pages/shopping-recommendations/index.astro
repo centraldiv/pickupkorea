@@ -1,13 +1,11 @@
 ---
 import CMSTags from "@/components/badges/CMS_Tags.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
-import { baseUrl } from "@/lib/utils";
+import { baseUrl, cmsUrl } from "@/lib/utils";
 import Image from "astro/components/Image.astro";
+import { format } from "date-fns";
 import qs from "qs";
 export const prerender = false;
-
-const cmsUrl = (path: string, query: string) =>
-  `${baseUrl}/api/${path}${query}`;
 
 const query = {
   limit: 100,
@@ -29,13 +27,13 @@ console.log(json.docs);
   <main
     class="flex flex-col justify-start items-center min-h-[30rem] py-16 px-12"
   >
-    <h1 class="text-4xl font-bold">Shopping Recommendations</h1>
+    <h1 class="page-title">Shopping Recommendations</h1>
 
     <aside class="my-16 max-w-4xl w-full mx-auto">
       <ul class="flex flex-wrap mx-auto justify-center gap-4">
         {
           json.docs.map((item) => (
-            <li class="bg-primary py-2 px-4 rounded-full">
+            <li class="bg-primary py-2 px-4 rounded-full font-medium">
               <a
                 href={encodeURI(`/shopping-recommendations/tags/${item.id}`)}
                 class="hover:text-white transition-colors duration-300"
@@ -68,10 +66,13 @@ console.log(json.docs);
                 height={item.thumbnail.height}
               />
               <h2 class="text-lg font-bold my-2">{item.title}</h2>
-              <p class="text-base break-keep multi-truncate grow basis-[70px]">
+              <p class="text-base break-keep multi-truncate grow basis-[70px] text-gray-600">
                 {item.subTitle}
               </p>
               <CMSTags tags={item.tags} className="mb-0 mt-auto" />
+              <div class="text-xs text-gray-500 text-right">
+                Posted On: {format(new Date(item.createdAt), "yyyy-MM-dd")}
+              </div>
             </article>
           </a>
         ))

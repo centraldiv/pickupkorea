@@ -3,6 +3,10 @@ import CMSTags from "@/components/badges/CMS_Tags.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { baseUrl } from "@/lib/utils";
 import Image from "astro/components/Image.astro";
+import { format } from "date-fns";
+
+export const prerender = false;
+
 const params = Astro.params;
 const { tagId } = params;
 
@@ -24,20 +28,24 @@ const contentJson: CMS_JSONResponse<CMS_Page> = await tagResponse.json();
 ---
 
 <MainLayout
-  title=" | Shopping Recommendations | Pickup Korea"
+  title=`${currentTag.name} | Shopping Recommendations | Pickup Korea`
   currentRoute="/shopping-recommendations/recommendations"
 >
   <main class="py-16 px-4">
-    <h1 class="text-4xl font-bold text-center">Shopping Recommendations</h1>
+    <h1 class="page-title text-center">Shopping Recommendations</h1>
     <aside class="my-16 max-w-4xl w-full mx-auto">
       <ul class="flex flex-wrap mx-auto justify-center gap-4">
         {
           tagData.docs.map((item) => (
             <li class="bg-primary py-2 px-4 rounded-full">
               <a
-                href={encodeURI(`/shopping-recommendations/tags/${item.id}`)}
+                href={
+                  item.id === currentTag?.id
+                    ? "/shopping-recommendations"
+                    : encodeURI(`/shopping-recommendations/tags/${item.id}`)
+                }
                 class:list={[
-                  "hover:text-white transition-colors duration-300",
+                  "hover:text-white transition-colors duration-300 font-medium",
                   item.name === currentTag?.name
                     ? "text-white font-semibold"
                     : "",
@@ -70,10 +78,13 @@ const contentJson: CMS_JSONResponse<CMS_Page> = await tagResponse.json();
                 height={item.thumbnail.height}
               />
               <h2 class="text-lg font-bold my-2">{item.title}</h2>
-              <p class="text-base break-keep multi-truncate grow basis-[70px]">
+              <p class="text-base break-keep multi-truncate grow basis-[70px] text-gray-600">
                 {item.subTitle}
               </p>
               <CMSTags tags={item.tags} className="mb-0 mt-auto" />
+              <div class="text-xs text-gray-500 text-right">
+                Posted On: {format(new Date(item.createdAt), "yyyy-MM-dd")}
+              </div>
             </article>
           </a>
         ))

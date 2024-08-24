@@ -1,11 +1,59 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
+import { baseUrl, cmsUrl } from "@/lib/utils";
+import qs from "qs";
 
-export const prerender = true;
+export const prerender = false;
+
+const query = {
+  limit: 1000,
+};
+
+const stringifiedQuery = qs.stringify(query, { addQueryPrefix: true });
+
+const response = await fetch(cmsUrl("faq", stringifiedQuery));
+const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
 ---
 
 <MainLayout title="Q/A | Pickup Korea" currentRoute="/faq">
-  <main class="flex justify-center min-h-[30rem] py-16">
-    <h1 class="text-4xl font-bold uppercase">Coming Soon</h1>
+  <main
+    class="flex flex-col justify-start items-center min-h-[30rem] py-16 px-12"
+  >
+    <h1 class="page-title text-center">Q/A - Frequently Asked Question</h1>
+
+    <section class="flex flex-col gap-4 my-16">
+      {
+        json.docs.map((item) => (
+          <dl class="flex flex-col gap-2 break-keep">
+            <dt class="text-lg font-bold">{item.question}</dt>
+            <dd class="text-base">{item.answer}</dd>
+          </dl>
+        ))
+      }
+      {
+        json.docs.map((item) => (
+          <dl class="flex flex-col gap-2 break-keep">
+            <dt class="text-lg font-bold">{item.question}</dt>
+            <dd class="text-base">{item.answer}</dd>
+          </dl>
+        ))
+      }
+      {
+        json.docs.map((item) => (
+          <dl class="flex flex-col gap-2 break-keep">
+            <dt class="text-lg font-bold">{item.question}</dt>
+            <dd class="text-base">{item.answer}</dd>
+          </dl>
+        ))
+      }
+      {
+        json.docs.map((item) => (
+          <dl class="flex flex-col gap-2 break-keep">
+            <dt class="text-lg font-bold">{item.question}</dt>
+            <dd class="text-base">{item.answer}</dd>
+          </dl>
+        ))
+      }
+    </section>
   </main>
 </MainLayout>
