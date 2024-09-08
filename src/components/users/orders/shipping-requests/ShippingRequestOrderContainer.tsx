@@ -4,12 +4,12 @@ import ShippingRequestsTable from "./ShippingRequestsTable";
 const ShippingRequestOrderContainer = () => {
   const { data, isLoading, isError } = useShippingRequestOrders();
 
-  if (isLoading) return <div className="">Loading...</div>;
+  if (isLoading) return <div className="text-center py-12">Loading...</div>;
 
-  if (isError) return <div className="">Error</div>;
+  if (isError) return <div className="text-center py-12">Error</div>;
 
   if (data && !data.length) {
-    return <div className="">No forwarding orders</div>;
+    return <div className="text-center py-12">No Shipping Requests</div>;
   }
 
   if (data && data.length) {

@@ -68,6 +68,11 @@ export const GET = async (context: APIContext) => {
         shippingMethod: true,
         toShipItems: {
           include: {
+            user: {
+              select: {
+                pfCode: true,
+              },
+            },
             item: {
               include: {
                 buyOrder: {

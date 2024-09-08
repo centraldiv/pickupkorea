@@ -204,7 +204,7 @@ const AdminSingleOrderInfo = ({
           />
           <Label className=" font-medium">주문자 PF Code:</Label>
           <Input
-            value={data.user.pfCode ?? ""}
+            value={data.user?.pfCode ?? ""}
             disabled
             className="disabled:!opacity-100"
           />

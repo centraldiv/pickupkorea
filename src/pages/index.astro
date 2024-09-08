@@ -68,6 +68,7 @@ export const prerender = true;
 
     <section class="flex-center py-6">
       <button
+        id="start-ordering"
         class="bg-[#F8B62D] sub-texts font-bold rounded-[20px] flex items-center justify-center w-[170px] h-[33px]"
       >
         Start ordering
@@ -238,3 +239,27 @@ export const prerender = true;
     </section>
   </main>
 </MainLayout>
+
+<script>
+  const response = await fetch("/api/auth/get-session", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.ok) {
+    const session = await response.json();
+
+    document.getElementById("start-ordering")?.addEventListener("click", () => {
+      if (session.userId) {
+        window.location.href = "/account/submit-order";
+      } else {
+        window.location.href = "/login";
+      }
+    });
+  } else {
+    document.getElementById("start-ordering")?.addEventListener("click", () => {
+      window.location.href = "/login";
+    });
+  }
+</script>

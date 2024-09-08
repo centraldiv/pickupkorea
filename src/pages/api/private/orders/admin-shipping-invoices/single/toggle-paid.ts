@@ -61,7 +61,7 @@ export const PATCH = async (context: APIContext) => {
           update: {
             data: {
               orderStatus: paid
-                ? PFOrderStatus.AWAITING_SHIPPING
+                ? PFOrderStatus.PENDING_SHIPMENT
                 : PFOrderStatus.SHIPPING_INVOICED,
             },
           },
@@ -76,7 +76,7 @@ export const PATCH = async (context: APIContext) => {
           update: {
             data: {
               orderStatus: paid
-                ? PFOrderStatus.AWAITING_SHIPPING
+                ? PFOrderStatus.PENDING_SHIPMENT
                 : PFOrderStatus.SHIPPING_INVOICED,
             },
           },

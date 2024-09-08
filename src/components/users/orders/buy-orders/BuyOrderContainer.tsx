@@ -4,12 +4,12 @@ import BuyOrdersTable from "./BuyOrdersTable";
 const BuyOrderContainer = () => {
   const { data, isLoading, isError } = useBuyOrders();
 
-  if (isLoading) return <div className="">Loading...</div>;
+  if (isLoading) return <div className="text-center py-12">Loading...</div>;
 
-  if (isError) return <div className="">Error</div>;
+  if (isError) return <div className="text-center py-12">Error</div>;
 
   if (data && !data.length) {
-    return <div className="">No buy orders</div>;
+    return <div className="text-center py-12">No buy orders</div>;
   }
 
   if (data && data.length) {

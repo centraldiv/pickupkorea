@@ -54,9 +54,9 @@ export const RawSignUpSchema = z.object({
   country: z.string().trim(),
   kakaoId: z
     .string()
-    .regex(kakaoRegex, { message: "Invalid Kakao ID" })
     .trim()
-    .nullish(),
+    .nullish()
+    .optional(),
 });
 
 export const KakaoSchema = RawSignUpSchema.pick({

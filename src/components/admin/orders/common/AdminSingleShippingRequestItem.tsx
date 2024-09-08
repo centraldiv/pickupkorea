@@ -47,7 +47,7 @@ const AdminSingleShippingRequestItem = ({
   if (!("toShipItems" in data)) return null;
 
   const currentData = data?.toShipItems[index];
-
+  console.log(currentData);
   const unboxMutation = useMutation(
     {
       mutationKey: getPrivateQueryKeys({
@@ -485,7 +485,7 @@ const AdminSingleShippingRequestItem = ({
               href={`/account/admin/pf-orders/${currentData.item.pfOrderId}`}
               target="_blank"
             >
-              {currentData.user.pfCode}
+              {currentData.user?.pfCode}
             </a>
           )}
         </span>
