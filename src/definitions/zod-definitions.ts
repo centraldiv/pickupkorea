@@ -55,7 +55,7 @@ export const RawSignUpSchema = z.object({
   kakaoId: z
     .string()
     .trim()
-    .nullish()
+    .nullable()
     .optional(),
 });
 
