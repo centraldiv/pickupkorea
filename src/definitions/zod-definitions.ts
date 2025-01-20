@@ -52,11 +52,10 @@ export const RawSignUpSchema = z.object({
     .max(20, { message: "Password must be less than 20 characters" })
     .trim(),
   country: z.string().trim(),
-  kakaoId: z
-    .string()
-    .trim()
-    .nullable()
-    .optional(),
+  kakaoId: z.string().trim().nullable().optional(),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  }),
 });
 
 export const KakaoSchema = RawSignUpSchema.pick({

@@ -22,11 +22,12 @@ import type { z } from "zod";
 import { useState } from "react";
 import { SignUpSchema } from "@/definitions/zod-definitions";
 import type { country } from "@prisma/client";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const SignUpForm = ({ countries }: { countries: country[] }) => {
   const [message, setMessage] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
-  const form = useForm({
+  const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",
@@ -36,6 +37,7 @@ const SignUpForm = ({ countries }: { countries: country[] }) => {
       fullName: "",
       country: "",
       kakaoId: "",
+      acceptTerms: false,
     },
   });
 
@@ -173,14 +175,47 @@ const SignUpForm = ({ countries }: { countries: country[] }) => {
         <FormField
           control={form.control}
           name="kakaoId"
-          render={({ field }) => (
+          render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel>Kakao ID (optional)</FormLabel>
               <FormControl>
-                <Input type="text" {...field} placeholder="Optional" />
+                <Input
+                  type="text"
+                  value={value ?? ""}
+                  onChange={(e) => onChange(e.target.value || null)}
+                  {...field}
+                  placeholder="Optional"
+                />
               </FormControl>
-
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="acceptTerms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  I accept the{" "}
+                  <a
+                    href="/terms-and-conditions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    terms and conditions
+                  </a>
+                </FormLabel>
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
