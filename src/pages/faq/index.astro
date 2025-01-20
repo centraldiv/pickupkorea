@@ -30,30 +30,6 @@ const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
           </dl>
         ))
       }
-      {
-        json.docs.map((item) => (
-          <dl class="flex flex-col gap-2 break-keep">
-            <dt class="text-lg font-bold">{item.question}</dt>
-            <dd class="text-base">{item.answer}</dd>
-          </dl>
-        ))
-      }
-      {
-        json.docs.map((item) => (
-          <dl class="flex flex-col gap-2 break-keep">
-            <dt class="text-lg font-bold">{item.question}</dt>
-            <dd class="text-base">{item.answer}</dd>
-          </dl>
-        ))
-      }
-      {
-        json.docs.map((item) => (
-          <dl class="flex flex-col gap-2 break-keep">
-            <dt class="text-lg font-bold">{item.question}</dt>
-            <dd class="text-base">{item.answer}</dd>
-          </dl>
-        ))
-      }
     </section>
   </main>
 </MainLayout>
