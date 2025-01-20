@@ -21,7 +21,7 @@ const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
   >
     <h1 class="page-title text-center">Q/A - Frequently Asked Question</h1>
 
-    <section class="flex flex-col gap-4 my-16">
+    <section class="flex flex-col gap-4 my-16 w-full max-w-xl">
       {
         json.docs.map((item) => (
           <dl class="flex flex-col gap-2 break-keep">
