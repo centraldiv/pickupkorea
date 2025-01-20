@@ -119,8 +119,9 @@ export const omitKey = (object: Record<string, any>, key: string) => {
 
 export const parseAccountInfo = (key: keyof user) => {};
 
-
-export const baseUrl = import.meta.env.DEV ? "http://localhost:3000" : "https://www.pickupkorea.com:3000";
+export const baseUrl = import.meta.env.DEV
+  ? "http://localhost:3000"
+  : "https://www.pickupkorea.com:3000";
 
 export const cmsUrl = (path: string, query: string) =>
-  `${baseUrl}/api/${path}${query}`;
+  `https://cms.pickupkorea.co.kr/api/${path}${query}`;
