@@ -40,6 +40,7 @@ export const GET = async (context: APIContext) => {
       status: 200,
     });
   } catch (error) {
+    console.log(error);
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
     });
@@ -139,6 +140,7 @@ export async function POST(context: APIContext) {
       }
     );
   } catch (error) {
+    console.log(error);
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
     });
