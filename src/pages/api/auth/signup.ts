@@ -45,7 +45,7 @@ export async function POST(context: APIContext) {
     ]);
 
     if (data.kakaoId) {
-      userWithKakao = await prisma.user.findUnique({
+      userWithKakao = await prisma.user.findFirst({
         where: {
           kakaoId: data.kakaoId,
         },
@@ -57,7 +57,7 @@ export async function POST(context: APIContext) {
         JSON.stringify({ message: "Username already exists" }),
         {
           status: 400,
-        },
+        }
       );
     }
 
@@ -71,8 +71,8 @@ export async function POST(context: APIContext) {
       return new Response(
         JSON.stringify({ message: "Kakao ID already exists" }),
         {
-          status: 4000,
-        },
+          status: 400,
+        }
       );
     }
 
@@ -116,7 +116,7 @@ export async function POST(context: APIContext) {
           data: {
             pfCode: generatePFCode(
               user.country!.code,
-              countriesCount?.count || 0,
+              countriesCount?.count || 0
             ),
           },
         });
@@ -142,15 +142,15 @@ export async function POST(context: APIContext) {
           }),
           {
             status: 500,
-          },
+          }
         );
       }
       return new Response(
-        JSON.stringify({ message: "Thank you for signing up!" }),
+        JSON.stringify({ message: "Thank you for signing up!" })
       );
     } else
       throw new Error(
-        "Something went wrong during sign up. Please contact staff.",
+        "Something went wrong during sign up. Please contact staff."
       );
   } catch (error) {
     console.error(error);
