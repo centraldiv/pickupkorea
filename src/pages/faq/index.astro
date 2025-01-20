@@ -23,12 +23,19 @@ const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
 
     <section class="flex flex-col gap-4 my-16 w-full max-w-xl">
       {
-        json.docs.map((item) => (
-          <dl class="flex flex-col gap-2 break-keep">
-            <dt class="text-lg font-bold">{item.question}</dt>
-            <dd class="text-base">{item.answer}</dd>
-          </dl>
-        ))
+        json.docs.map((item) => {
+          const answer = item.answer.replace(
+            /(https?:\/\/[^\s]+)/g,
+            '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">$1</a>'
+          );
+
+          return (
+            <dl class="flex flex-col gap-2 break-keep">
+              <dt class="text-lg font-bold">{item.question}</dt>
+              <dd class="text-base" set:html={answer} />
+            </dl>
+          );
+        })
       }
     </section>
   </main>

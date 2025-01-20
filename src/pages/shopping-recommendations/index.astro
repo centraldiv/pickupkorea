@@ -13,7 +13,7 @@ const query = {
 };
 
 const stringifiedQuery = qs.stringify(query, { addQueryPrefix: true });
-const contentResponse = await fetch(`${baseUrl}/custom/pages`);
+const contentResponse = await fetch(cmsUrl("custom/pages", stringifiedQuery));
 const contentJson: CMS_JSONResponse<CMS_Page> = await contentResponse.json();
 const response = await fetch(cmsUrl("tag", stringifiedQuery));
 const json: CMS_JSONResponse<CMS_Tag> = await response.json();
