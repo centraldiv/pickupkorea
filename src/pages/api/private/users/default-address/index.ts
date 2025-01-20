@@ -1,5 +1,6 @@
 import { DefaultAddressSchema } from "@/definitions/zod-definitions";
 import { verifySession } from "@/lib/sessions";
+import prisma from "@/lib/prisma";
 import type { APIContext } from "astro";
 
 export const GET = async (context: APIContext) => {
