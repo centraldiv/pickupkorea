@@ -62,7 +62,7 @@ const json: CMS_JSONResponse<CMS_Tag> = await response.json();
               <Image
                 class="max-h-[200px] h-[200px] grow"
                 src={encodeURI(
-                  "https://cms.pickupkorea.co.kr/" + item.thumbnail.url
+                  "https://cms.pickupkorea.co.kr" + item.thumbnail.url
                 )}
                 width={item.thumbnail.width}
                 alt={item.title}
