@@ -61,7 +61,9 @@ const json: CMS_JSONResponse<CMS_Tag> = await response.json();
             <article class="border p-2 rounded-md shadow-sm max-h-[600px] flex-col gap-2 flex group-hover:scale-105 transition-transform duration-300">
               <Image
                 class="max-h-[200px] h-[200px] grow"
-                src={encodeURI(baseUrl + item.thumbnail.url)}
+                src={encodeURI(
+                  "https://cms.pickupkorea.co.kr/" + item.thumbnail.url
+                )}
                 width={item.thumbnail.width}
                 alt={item.title}
                 height={item.thumbnail.height}

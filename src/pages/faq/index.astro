@@ -32,7 +32,7 @@ const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
           return (
             <dl class="flex flex-col gap-2 break-keep">
               <dt class="text-lg font-bold">{item.question}</dt>
-              <dd class="text-base" set:html={answer} />
+              <dd class="text-base whitespace-pre-wrap" set:html={answer} />
             </dl>
           );
         })
