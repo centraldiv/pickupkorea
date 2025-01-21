@@ -59,15 +59,17 @@ const json: CMS_JSONResponse<CMS_Tag> = await response.json();
             class="group"
           >
             <article class="border p-2 rounded-md shadow-sm max-h-[600px] flex-col gap-2 flex group-hover:scale-105 transition-transform duration-300">
-              <Image
-                class="max-h-[200px] h-[200px] grow"
-                src={encodeURI(
-                  "https://cms.pickupkorea.co.kr" + item.thumbnail.url
-                )}
-                width={item.thumbnail.width}
-                alt={item.title}
-                height={item.thumbnail.height}
-              />
+              <div class="relative w-full h-[200px]">
+                <Image
+                  class="object-cover w-full h-full rounded-md"
+                  src={encodeURI(
+                    "https://cms.pickupkorea.co.kr" + item.thumbnail.url
+                  )}
+                  width={item.thumbnail.width}
+                  alt={item.title}
+                  height={item.thumbnail.height}
+                />
+              </div>
               <h2 class="text-lg font-bold my-2">{item.title}</h2>
               <p class="text-base break-keep multi-truncate grow basis-[70px] text-gray-600">
                 {item.subTitle}
