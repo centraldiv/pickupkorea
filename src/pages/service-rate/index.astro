@@ -4,11 +4,11 @@ import MainLayout from "@/layouts/MainLayout.astro";
 const details = [
   { label: "Korean Address ", value: "Free" },
   { label: "Storage (30 days ) ", value: "Free" },
-  { label: "Ext. Storage", value: "1,000KRW" },
+  { label: "Ext. Storage", value: "1,500KRW/Package daily" },
 ];
 
 const purchaseDetails = [
-  { label: "Online Purchase ", value: "2,000KRW" },
+  { label: "Online Purchase ", value: "3,000KRW" },
   { label: "Offline Purchase (Seoul) ", value: "40,000KRW/1hr" },
   { label: "+15,000KRW/Extra hr", value: "" },
 ];
@@ -39,8 +39,9 @@ export const prerender = true;
         <p>
           For members only, we will give you an address to ship your order.<br
           />
-          The address can be found on <strong>MY menu</strong> after signing up.<br
-          />
+          The address can be found on <a href="/account"
+            ><strong>Account</strong></a
+          > after signing up.<br />
           Product can be stored for free up to 30 days from the date of confirmation
           after delivery.<br />
           At the end of the free storage period, if you pay an extension storage

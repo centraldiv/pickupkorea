@@ -1,6 +1,6 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import { baseUrl, cmsUrl } from "@/lib/utils";
+import { cmsUrl } from "@/lib/utils";
 import qs from "qs";
 
 export const prerender = false;
@@ -15,11 +15,11 @@ const response = await fetch(cmsUrl("faq", stringifiedQuery));
 const json: CMS_JSONResponse<CMS_FAQ> = await response.json();
 ---
 
-<MainLayout title="Q/A | Pickup Korea" currentRoute="/faq">
+<MainLayout title="Notice | Pickup Korea" currentRoute="/faq">
   <main
     class="flex flex-col justify-start items-center min-h-[30rem] py-16 px-12"
   >
-    <h1 class="page-title text-center">Q/A - Frequently Asked Question</h1>
+    <h1 class="page-title text-center">Notice &</h1>
 
     <section class="flex flex-col gap-4 my-16 w-full max-w-xl">
       {
