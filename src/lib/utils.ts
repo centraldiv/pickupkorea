@@ -123,5 +123,5 @@ export const baseUrl = import.meta.env.DEV
   ? "http://localhost:3000"
   : "https://www.pickupkorea.com:3000";
 
-export const cmsUrl = (path: string, query: string) =>
-  `https://cms.pickupkorea.co.kr/api/${path}${query}`;
+export const cmsUrl = (path: string, query?: string) =>
+  `https://cms.pickupkorea.co.kr/api/${path}${query ? `?${query}` : ""}`;

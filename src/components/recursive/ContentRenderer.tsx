@@ -1,4 +1,4 @@
-import { baseUrl, cn } from "@/lib/utils";
+import { baseUrl, cmsUrl, cn } from "@/lib/utils";
 
 const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
   return content.map((node, i) => {
@@ -16,10 +16,14 @@ const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
     }
 
     if (node.type === "upload") {
+      const url = node.value?.url as string;
+      const isAbsoluteUrl = url?.startsWith('http://') || url?.startsWith('https://');
+      const imageUrl = isAbsoluteUrl ? url : cmsUrl(url);
+      
       return (
         <img
           key={`${node.value?.url}-${i}`}
-          src={encodeURI(baseUrl + node.value?.url)}
+          src={encodeURI(imageUrl)}
           alt={node.value?.alt}
           width={node.value?.width}
           height={node.value?.height}
