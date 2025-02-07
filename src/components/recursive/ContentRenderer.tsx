@@ -1,4 +1,4 @@
-import { baseUrl, cmsUrl, cn } from "@/lib/utils";
+import {  cmsUrl, cn } from "@/lib/utils";
 
 const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
   return content.map((node, i) => {
@@ -18,8 +18,10 @@ const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
     if (node.type === "upload") {
       const url = node.value?.url as string;
       const isAbsoluteUrl = url?.startsWith('http://') || url?.startsWith('https://');
-      const imageUrl = isAbsoluteUrl ? url : cmsUrl(url);
-      
+      const imageUrl = isAbsoluteUrl
+        ? url
+        : encodeURI("https://cms.pickupkorea.co.kr" + url);
+
       return (
         <img
           key={`${node.value?.url}-${i}`}
