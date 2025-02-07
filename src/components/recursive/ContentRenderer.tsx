@@ -1,4 +1,4 @@
-import {  cmsUrl, cn } from "@/lib/utils";
+import {   cn } from "@/lib/utils";
 
 const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
   return content.map((node, i) => {
@@ -25,7 +25,7 @@ const ContentRenderer = ({ content }: { content: CMS_Content_RichText[] }) => {
       return (
         <img
           key={`${node.value?.url}-${i}`}
-          src={encodeURI(imageUrl)}
+          src={imageUrl}
           alt={node.value?.alt}
           width={node.value?.width}
           height={node.value?.height}
